@@ -1,0 +1,586 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+}
+
+#INTERVIEW_CONTAINER {
+    display: flex;
+    height: 100vh;
+}
+
+#INTERVIEW_MAIN {
+    flex: 1;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    overflow: hidden;
+}
+
+#TASKBAR {
+    width: 70px;
+    background: #0a0a0a;
+    border-left: 2px solid #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    gap: 1rem;
+}
+
+#QUESTION_PANEL {
+    flex: 0 0 45%;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#QUESTION_HEADER {
+    background: #0a0a0a;
+    border-bottom: 2px solid #4cc9f0;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#QUESTION_HEADER h6 {
+    color: #4cc9f0;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#QUESTION_HEADER small {
+    color: #888;
+    font-size: 0.95rem;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+#HEADER_STATUS {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#QUESTION_CONTENT {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+#QUESTION_CONTENT pre {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    font-family: 'Consolas', monospace;
+}
+
+#QUESTION_CONTENT code {
+    font-family: 'Consolas', monospace;
+    color: #4cc9f0;
+}
+
+#CODE_PANEL {
+    flex: 0 0 55%;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#CODE_HEADER {
+    background: #0a0a0a;
+    border-bottom: 2px solid #4cc9f0;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+#CODE_HEADER h6 {
+    color: #4cc9f0;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+#LANG_SELECT {
+    background: #0a0a0a;
+    color: #4cc9f0;
+    border: 1px solid #4cc9f0;
+    border-radius: 0.25rem;
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+}
+
+#CODE_EDITOR_CONTAINER {
+    flex: 1;
+}
+
+#CODE_EDITOR {
+    width: 100%;
+    height: 100%;
+}
+
+#CODE_ACTIONS {
+    background: #0a0a0a;
+    border-top: 1px solid #333;
+    padding: 0.75rem 1rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 0.5rem 1.25rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-success {
+    background: #06d6a0;
+    color: #000;
+}
+
+.btn-primary {
+    background: #4cc9f0;
+    color: #000;
+}
+
+.window {
+    position: fixed;
+    background: #1a1a1a;
+    border: 2px solid #4cc9f0;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 20px rgba(76, 201, 240, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.window.hidden {
+    display: none;
+}
+
+.window-header {
+    background: #4cc9f0;
+    color: #000;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    cursor: move;
+    user-select: none;
+}
+
+.window-header h6 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.window-btn {
+    background: none;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.window-content {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+#INTERVIEWER_WINDOW {
+    width: 350px;
+    height: 320px;
+    top: 20%;
+    right: 20px;
+    cursor: grab;
+    z-index: 1100;
+}
+
+#INTERVIEWER_WINDOW:active {
+    cursor: grabbing;
+}
+
+#VIDEO_WINDOW {
+    width: 400px;
+    height: 320px;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#CHAT_WINDOW {
+    width: 350px;
+    height: 500px;
+    bottom: 20px;
+    right: 20px;
+}
+
+.taskbar-icon {
+    width: 50px;
+    height: 50px;
+    background: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #666;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.taskbar-icon:hover {
+    border-color: #4cc9f0;
+    color: #4cc9f0;
+    transform: scale(1.05);
+}
+
+.taskbar-icon.minimized {
+    background: #4cc9f0;
+    border-color: #4cc9f0;
+    color: #000;
+    box-shadow: 0 0 15px rgba(76, 201, 240, 0.5);
+}
+
+.taskbar-icon.minimized:hover {
+    background: #3ab8db;
+    transform: scale(1.1);
+}
+
+.detached-window {
+    position: fixed;
+    background: #1a1a1a;
+    border: 2px solid #4cc9f0;
+    border-radius: 0.5rem;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+}
+
+.detached-window.active {
+    display: flex;
+}
+
+.detached-window.hidden {
+    display: none;
+}
+
+.window-header {
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    border-bottom: 2px solid #4cc9f0;
+    padding: 0.75rem 1rem;
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+}
+
+.window-header span {
+    color: #4cc9f0;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-icon-sm {
+    background: transparent;
+    border: none;
+    color: #4cc9f0;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.btn-icon-sm:hover {
+    color: #fff;
+    transform: scale(1.2);
+}
+
+.window-content {
+    flex: 1;
+    padding: 1rem;
+    overflow: auto;
+}
+
+.window-content.no-padding {
+    padding: 0;
+}
+
+#AI_VISUAL {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+#AI_ICON_WRAPPER {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+#AI_ICON {
+    font-size: 4rem;
+    color: #4cc9f0;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+#MIC_ICON {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    font-size: 1.75rem;
+    color: #ff006e;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+#AUDIO_WAVE {
+    display: flex;
+    gap: 0.4rem;
+    height: 50px;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.wave-bar {
+    width: 6px;
+    background: linear-gradient(180deg, #4cc9f0, #3a86ff);
+    border-radius: 3px;
+    animation: wave 1s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0s; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes wave {
+    0%, 100% { height: 15px; }
+    50% { height: 45px; }
+}
+
+#AI_STATUS {
+    color: #4cc9f0;
+    font-weight: 600;
+}
+
+#VIDEO_STREAM {
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a;
+}
+
+#VIDEO_PLACEHOLDER {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #666;
+}
+
+#VIDEO_PLACEHOLDER i {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+#CHAT_MESSAGES {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    min-height: 0;
+}
+
+.chat-message {
+    background: #0a0a0a;
+    border-left: 3px solid #4cc9f0;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.chat-message.system-message {
+    border-left-color: #06d6a0;
+    background: rgba(6, 214, 160, 0.1);
+}
+
+.chat-message i {
+    color: #4cc9f0;
+    margin-right: 0.5rem;
+}
+
+.chat-message p {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+#CHAT_INPUT_CONTAINER {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#CHAT_INPUT {
+    flex: 1;
+    background: #0a0a0a;
+    border: 1px solid #4cc9f0;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+#CHAT_INPUT:focus {
+    box-shadow: 0 0 0 2px rgba(76, 201, 240, 0.3);
+}
+
+#BTN_SEND_CHAT {
+    background: #4cc9f0;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    color: #000;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+#BTN_SEND_CHAT:hover {
+    background: #3a86ff;
+    color: #fff;
+}
+
+#CODE_FOOTER {
+    background: #0a0a0a;
+    border-top: 1px solid #333;
+    padding: 0.5rem 1rem;
+}
+
+#CONSOLE_OUTPUT {
+    background: #000;
+    border: 1px solid #333;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    max-height: 80px;
+    overflow-y: auto;
+    font-family: 'Consolas', monospace;
+    font-size: 0.8rem;
+    color: #4cc9f0;
+}
+
+#CODE_ACTIONS {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+#CODE_STATUS {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.btn-success, .btn-primary {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.85rem;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #06d6a0, #04b881);
+    color: #000;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4cc9f0, #3a86ff);
+    color: #fff;
+}
+
+.btn-success:hover, .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 201, 240, 0.4);
+}
+
+#LANGUAGE_SELECT {
+    background: #0a0a0a;
+    color: #4cc9f0;
+    border: 1px solid #4cc9f0;
+    border-radius: 0.25rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    outline: none;
+}
+
+#LANGUAGE_SELECT:focus {
+    box-shadow: 0 0 0 2px rgba(76, 201, 240, 0.3);
+}
+
+.badge {
+    padding: 0.35rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 0.25rem;
+}
+
+.bg-success {
+    background: #06d6a0 !important;
+    color: #000;
+}
+
+.bg-primary {
+    background: #4cc9f0 !important;
+    color: #000;
+}
+
+#TIMER_BADGE {
+    font-family: 'Consolas', monospace;
+    min-width: 60px;
+    text-align: center;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4cc9f0;
+    border-radius: 4px;
+}
