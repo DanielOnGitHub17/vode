@@ -24,19 +24,20 @@ class Role(models.Model):
 class Round(models.Model):
     """Represents a single interview round for a role"""
     DIFFICULTY_CHOICES = [
+        ('very_easy', 'Very Easy'),
         ('easy', 'Easy'),
         ('medium', 'Medium'),
         ('hard', 'Hard'),
+        ('very_hard', 'Very Hard'),
     ]
 
     role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='rounds')
     round_number = models.PositiveIntegerField(help_text="Round number (1, 2, 3, etc.)")
     name = models.CharField(max_length=200, help_text="Round name (e.g., Coding Challenge)")
     description = models.TextField(blank=True, help_text="Description of the round")
-    difficulty_level = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='medium')
+    difficulty_level = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='easy')
     data_structures = models.TextField(blank=True, help_text="Comma-separated list of topics")
     time_limit = models.PositiveIntegerField(default=30, help_text="Time limit in minutes")
-    max_score = models.PositiveIntegerField(default=100, help_text="Maximum score for this round")
 
     class Meta:
         ordering = ['round_number']

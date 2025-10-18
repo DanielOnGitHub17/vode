@@ -11,7 +11,7 @@ class RoleAdmin(admin.ModelAdmin):
 
 @admin.register(Round)
 class RoundAdmin(admin.ModelAdmin):
-    list_display = ('role', 'round_number', 'name', 'difficulty_level', 'time_limit', 'max_score')
+    list_display = ('role', 'round_number', 'name', 'difficulty_level', 'time_limit')
     search_fields = ('name', 'role__title')
     list_filter = ('difficulty_level', 'role')
     ordering = ('role', 'round_number')

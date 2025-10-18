@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from recruit.models import Role, Round
+from recruit.models import Role, Round, Candidate
 
 
 def index(request):
@@ -12,8 +12,6 @@ def role_detail(request, role_id):
     """SWE view for a specific role - shows round configurations"""
     role = get_object_or_404(Role, pk=role_id)
     active_tab = int(request.GET.get('tab', 1))
-    
-    # Validate tab is within range
     if active_tab > role.num_rounds or active_tab < 1:
         active_tab = 1
     
@@ -28,4 +26,17 @@ def role_detail(request, role_id):
         'rounds': rounds,
         'active_round_config': active_round_config,
         'all_rounds_config': all_rounds,
+    })
+
+
+def review_candidates(request, role_id):
+    """SWE view for candidates who need manual review for a specific role"""
+    role = get_object_or_404(Role, pk=role_id)
+    
+    # Get all candidates for this role who need review
+    candidates_needing_review = role.candidates.filter(needs_review=True).order_by('-current_round', '-ai_score')
+    
+    return render(request, 'swe/review_candidates.html', {
+        'role': role,
+        'candidates': candidates_needing_review,
     })
