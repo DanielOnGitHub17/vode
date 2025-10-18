@@ -1,48 +1,68 @@
 {% extends "base.html" %}
 
-{% block title %}{{ role.title }}{% endblock %}
+{% block title %}{{ role.title }} - Recruiter{% endblock %}
 
 {% block content %}
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <div class="d-flex align-items-center gap-3">
+  <!-- Header with back button -->
+  <div class="mb-4 pb-3 border-bottom">
+    <div class="d-flex align-items-center gap-3 mb-2">
       <a href="{% url 'recruit:index' %}" class="btn btn-outline-secondary btn-sm" title="Back to Roles">
         ← Back
       </a>
       <div>
-        <h1 class="mb-0">{{ role.title }}</h1>
+        <h1 class="mb-1 glow">⭐ {{ role.title }}</h1>
         <p class="text-muted mb-0">{{ role.description }}</p>
       </div>
     </div>
+    <div class="mt-3">
+      <span class="badge bg-primary">✨ {{ role.num_rounds }} Interview Rounds</span>
+    </div>
   </div>
 
-  <ul class="nav nav-tabs mb-3" role="tablist">
+  <ul class="nav nav-tabs mb-4" role="tablist">
     {% for round_num in rounds %}
       <li class="nav-item">
-        <a class="nav-link {% if active_tab == round_num %}active{% endif %}" href="?tab={{ round_num }}">Round {{ round_num }}</a>
+        <a class="nav-link {% if active_tab == round_num %}active{% endif %}" href="?tab={{ round_num }}">
+          ⭐ Round {{ round_num }}
+        </a>
       </li>
     {% endfor %}
   </ul>
 
   {% if candidates %}
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="mb-3">
+      <h5 class="text-muted">
+        ⭐ Candidates in Round {{ active_tab }} <span class="badge bg-info">{{ candidates|length }}</span>
+      </h5>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       {% for c in candidates %}
         <div class="col">
-          <div class="card candidate-tile candidate-card">
+          <div class="card candidate-tile candidate-card h-100">
             <div class="card-body">
-              <h5 class="card-title">{{ c.name }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ c.email }}</h6>
-              <p class="card-text text-truncate">{{ c.notes }}</p>
+              <h5 class="card-title mb-1">✨ {{ c.name }}</h5>
+              <p class="card-subtitle text-muted small mb-3">
+                📧 {{ c.email }}
+              </p>
+              <p class="card-text small">{{ c.notes }}</p>
             </div>
-            <div class="card-footer d-flex justify-content-between">
-              <small class="text-muted">Round {{ c.current_round }}</small>
-              <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+            <div class="card-footer bg-transparent border-top d-flex justify-content-between align-items-center">
+              <small class="text-muted">
+                ⭐ {{ c.ai_score|floatformat:2 }}/1.0
+              </small>
+              <a href="#" class="btn btn-sm btn-outline-primary">
+                👁️ View
+              </a>
             </div>
           </div>
         </div>
       {% endfor %}
     </div>
   {% else %}
-    <div class="alert alert-info">No candidates in this round.</div>
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      ℹ️ <strong>No candidates</strong> in Round {{ active_tab }} yet.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   {% endif %}
 
 {% endblock %}
