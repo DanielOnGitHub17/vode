@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from recruit.models import Role, Round, Candidate
+from interview.models import Role, Round, Candidate
 
 
 def index(request):

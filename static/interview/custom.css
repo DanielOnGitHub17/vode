@@ -287,7 +287,7 @@ body {
 }
 
 .window-header {
-    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    background: #0a0a0a;
     border-bottom: 2px solid #4cc9f0;
     padding: 0.75rem 1rem;
     cursor: move;
@@ -337,59 +337,24 @@ body {
 }
 
 #AI_ICON_WRAPPER {
-    position: relative;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 #AI_ICON {
     font-size: 4rem;
     color: #4cc9f0;
-    animation: pulse 2s ease-in-out infinite;
+    animation: breathe 2s ease-in-out infinite;
 }
 
-#MIC_ICON {
-    position: absolute;
-    bottom: -10px;
-    right: -10px;
-    font-size: 1.75rem;
-    color: #ff006e;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-}
-
-#AUDIO_WAVE {
-    display: flex;
-    gap: 0.4rem;
-    height: 50px;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.wave-bar {
-    width: 6px;
-    background: linear-gradient(180deg, #4cc9f0, #3a86ff);
-    border-radius: 3px;
-    animation: wave 1s ease-in-out infinite;
-}
-
-.wave-bar:nth-child(1) { animation-delay: 0s; }
-.wave-bar:nth-child(2) { animation-delay: 0.1s; }
-.wave-bar:nth-child(3) { animation-delay: 0.2s; }
-.wave-bar:nth-child(4) { animation-delay: 0.3s; }
-.wave-bar:nth-child(5) { animation-delay: 0.4s; }
-
-@keyframes wave {
-    0%, 100% { height: 15px; }
-    50% { height: 45px; }
+@keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
 }
 
 #AI_STATUS {
     color: #4cc9f0;
     font-weight: 600;
+    margin-top: 1rem;
 }
 
 #VIDEO_STREAM {
@@ -515,23 +480,21 @@ body {
     border-radius: 0.25rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
     font-size: 0.85rem;
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #06d6a0, #04b881);
+    background: #06d6a0;
     color: #000;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #4cc9f0, #3a86ff);
-    color: #fff;
+    background: #4cc9f0;
+    color: #000;
 }
 
 .btn-success:hover, .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(76, 201, 240, 0.4);
+    opacity: 0.9;
 }
 
 #LANGUAGE_SELECT {

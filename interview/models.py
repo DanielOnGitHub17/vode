@@ -1,3 +1,82 @@
 from django.db import models
 
-# Create your models here.
+from swe.models import SWE
+from cand.models import Candidate
+
+class Interview(models.Model):
+    """Represents an interview session between a candidate and interviewer for a specific round"""
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name='interviews')
+    round = models.ForeignKey('Round', on_delete=models.CASCADE, related_name='interviews')
+    score = models.PositiveIntegerField(
+        default=0,
+        help_text="Interview score as percentage (0-100)"
+    )
+    notes = models.TextField(blank=True, help_text="Interview notes and feedback")
+    screen_video = models.URLField(max_length=500, blank=True, help_text="URL to screen recording video")
+    candidate_video = models.URLField(max_length=500, blank=True, help_text="URL to candidate video recording")
+    completed_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Interview"
+        verbose_name_plural = "Interviews"
+
+    def __str__(self):
+        return f"{self.candidate} - {self.round.role.title} Round {self.round.round_number}"
+
+class Role(models.Model):
+    """Represents a job role with multiple interview rounds"""
+    title = models.CharField(max_length=200, help_text="Job title (e.g., Backend Engineer)")
+    description = models.TextField(blank=True, help_text="Role description and responsibilities")
+    num_rounds = models.PositiveIntegerField(
+        default=3,
+        help_text="Number of interview rounds for this role"
+    )
+    assigned_swe = models.ForeignKey(SWE, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_roles')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Role"
+        verbose_name_plural = "Roles"
+
+    def __str__(self):
+        return f"{self.title} ({self.num_rounds} rounds)"
+
+
+class Round(models.Model):
+    """Represents a single interview round for a role"""
+    DIFFICULTY_CHOICES = [
+        ('very_easy', 'Very Easy'),
+        ('easy', 'Easy'),
+        ('medium', 'Medium'),
+        ('hard', 'Hard'),
+        ('very_hard', 'Very Hard'),
+    ]
+
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='rounds')
+    round_number = models.PositiveIntegerField(help_text="Round number (1, 2, 3, etc.)")
+    name = models.CharField(max_length=200, help_text="Round name (e.g., Coding Challenge)")
+    description = models.TextField(blank=True, help_text="Description of the round")
+    difficulty_level = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='easy')
+    data_structures = models.TextField(blank=True, help_text="Comma-separated list of topics")
+    time_limit = models.PositiveIntegerField(default=30, help_text="Time limit in minutes")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['round_number']
+        verbose_name = "Round"
+        verbose_name_plural = "Rounds"
+        unique_together = ('role', 'round_number')
+
+    def __str__(self):
+        return f"{self.role.title} - Round {self.round_number}: {self.name}"
+
+    @property
+    def data_structures_list(self):
+        """Returns data_structures as a list"""
+        return [s.strip() for s in self.data_structures.split(',') if s.strip()]
