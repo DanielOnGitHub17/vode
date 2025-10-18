@@ -4,25 +4,23 @@
 
 {% block content %}
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-      <h1>{{ role.title }}</h1>
-      <p class="text-muted">{{ role.description }}</p>
-    </div>
-    <div>
-      <a class="btn btn-secondary" href="{% url 'recruit:index' %}">Back to Roles</a>
+    <div class="d-flex align-items-center gap-3">
+      <a href="{% url 'recruit:index' %}" class="btn btn-outline-secondary btn-sm" title="Back to Roles">
+        ← Back
+      </a>
+      <div>
+        <h1 class="mb-0">{{ role.title }}</h1>
+        <p class="text-muted mb-0">{{ role.description }}</p>
+      </div>
     </div>
   </div>
 
   <ul class="nav nav-tabs mb-3" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link {% if active_tab == 1 %}active{% endif %}" href="?tab=1">Round 1</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link {% if active_tab == 2 %}active{% endif %}" href="?tab=2">Round 2</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link {% if active_tab == 3 %}active{% endif %}" href="?tab=3">Final Interview</a>
-    </li>
+    {% for round_num in rounds %}
+      <li class="nav-item">
+        <a class="nav-link {% if active_tab == round_num %}active{% endif %}" href="?tab={{ round_num }}">Round {{ round_num }}</a>
+      </li>
+    {% endfor %}
   </ul>
 
   {% if candidates %}

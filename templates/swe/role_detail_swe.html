@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}{{ role.title }} - SWE Round Config{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex align-items-center gap-3">
+      <a href="{% url 'swe:index' %}" class="btn btn-outline-secondary btn-sm" title="Back to Roles">
+        ← Back
+      </a>
+      <div>
+        <h1 class="mb-0">{{ role.title }}</h1>
+        <p class="text-muted mb-0">{{ role.description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs for each round -->
+  <ul class="nav nav-tabs mb-4" role="tablist">
+    {% for round_num in rounds %}
+      <li class="nav-item">
+        <a class="nav-link {% if active_tab == round_num %}active{% endif %}" href="?tab={{ round_num }}">
+          Round {{ round_num }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <!-- Active round configuration -->
+  {% if active_round_config %}
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">{{ active_round_config.name }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="text-muted">Description</h6>
+            <p>{{ active_round_config.description }}</p>
+
+            <h6 class="text-muted">Difficulty Level</h6>
+            <span class="badge bg-info">{{ active_round_config.difficulty_level }}</span>
+
+            <h6 class="text-muted mt-3">Time Limit</h6>
+            <p><strong>{{ active_round_config.time_limit }}</strong> minutes</p>
+
+            <h6 class="text-muted">Max Score</h6>
+            <p><strong>{{ active_round_config.max_score }}</strong> points</p>
+          </div>
+
+          <div class="col-md-6">
+            <h6 class="text-muted">Data Structures & Topics</h6>
+            <div class="d-flex flex-wrap gap-2">
+              {% for topic in active_round_config.data_structures_list %}
+                <span class="badge bg-secondary">{{ topic }}</span>
+              {% empty %}
+                <p class="text-muted small">No topics specified</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary of all rounds -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">All Rounds Summary</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Round</th>
+                <th>Name</th>
+                <th>Difficulty</th>
+                <th>Time (min)</th>
+                <th>Max Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for round in all_rounds_config %}
+                <tr class="{% if round.round_number == active_tab %}table-primary{% endif %}">
+                  <td><strong>{{ round.round_number }}</strong></td>
+                  <td>{{ round.name }}</td>
+                  <td>
+                    <span class="badge 
+                      {% if round.difficulty_level == 'easy' %}bg-success
+                      {% elif round.difficulty_level == 'medium' %}bg-warning
+                      {% else %}bg-danger{% endif %}">
+                      {{ round.get_difficulty_level_display }}
+                    </span>
+                  </td>
+                  <td>{{ round.time_limit }}</td>
+                  <td>{{ round.max_score }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  {% else %}
+    <div class="alert alert-warning">No configuration found for this round.</div>
+  {% endif %}
+
+{% endblock %}

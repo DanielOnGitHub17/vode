@@ -8,7 +8,7 @@
     <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for role in roles %}
             <div class="col">
-                <a href="" style="text-decoration: none; color: inherit;">
+                <a href="{% url 'recruit:role_detail' role.id %}" style="text-decoration: none; color: inherit;">
                     <div class="card role-tile h-100" style="cursor: pointer; transition: transform 0.2s;">
                         <div class="card-body">
                             <h5 class="card-title">{{ role.title }}</h5>
