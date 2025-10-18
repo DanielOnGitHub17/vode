@@ -10,12 +10,12 @@
         ← Back
       </a>
       <div>
-        <h1 class="mb-1 glow">⭐ {{ role.title }}</h1>
+        <h1 class="mb-1 glow">{{ role.title }}</h1>
         <p class="text-muted mb-0">{{ role.description }}</p>
       </div>
     </div>
     <div class="mt-3">
-      <span class="badge bg-info">✨ {{ role.num_rounds }} Interview Rounds</span>
+      <span class="badge bg-info">{{ role.num_rounds }} Interview Rounds</span>
     </div>
   </div>
 
@@ -24,7 +24,7 @@
     {% for round_num in rounds %}
       <li class="nav-item">
         <a class="nav-link {% if active_tab == round_num %}active{% endif %}" href="?tab={{ round_num }}">
-          ⭐ Round {{ round_num }}
+          Round {{ round_num }}
         </a>
       </li>
     {% endfor %}
@@ -36,7 +36,7 @@
     <div class="card mb-4 border-left border-primary" style="border-left-width: 4px;">
       <div class="card-header bg-gradient" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);">
         <h4 class="mb-0" style="color: var(--accent-cyan);">
-          ⭐ {{ active_round_config.name }}
+          {{ active_round_config.name }}
         </h4>
       </div>
       <div class="card-body">
