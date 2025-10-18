@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ role.title }}{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h1>{{ role.title }}</h1>
+      <p class="text-muted">{{ role.description }}</p>
+    </div>
+    <div>
+      <a class="btn btn-secondary" href="{% url 'recruit:index' %}">Back to Roles</a>
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs mb-3" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link {% if active_tab == 1 %}active{% endif %}" href="?tab=1">Round 1</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if active_tab == 2 %}active{% endif %}" href="?tab=2">Round 2</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if active_tab == 3 %}active{% endif %}" href="?tab=3">Final Interview</a>
+    </li>
+  </ul>
+
+  {% if candidates %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for c in candidates %}
+        <div class="col">
+          <div class="card candidate-tile candidate-card">
+            <div class="card-body">
+              <h5 class="card-title">{{ c.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ c.email }}</h6>
+              <p class="card-text text-truncate">{{ c.notes }}</p>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <small class="text-muted">Round {{ c.current_round }}</small>
+              <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">No candidates in this round.</div>
+  {% endif %}
+
+{% endblock %}

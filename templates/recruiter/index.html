@@ -1,1 +1,25 @@
 {% extends "base.html" %}
+
+{% block title %}Recruiter - Roles{% endblock %}
+
+{% block content %}
+	<h1 class="mb-4">Roles</h1>
+
+	<div class="row row-cols-1 row-cols-md-3 g-4">
+		{% for role in roles %}
+			<div class="col">
+				<div class="card role-tile h-100" onclick="location.href='{% url 'recruit:role_detail' role.id %}'">
+					<div class="card-body">
+						<h5 class="card-title">{{ role.title }}</h5>
+						<p class="card-text text-truncate">{{ role.description }}</p>
+					</div>
+				</div>
+			</div>
+		{% empty %}
+			<div class="col-12">
+				<p>No roles found. Add some in the admin.</p>
+			</div>
+		{% endfor %}
+	</div>
+
+{% endblock %}
