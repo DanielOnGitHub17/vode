@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'cand/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="role">
+        <h2 class="role-title">{{ role.title }}</h2>
+        <p class="role-description">{{ role.description }}</p>
+        <div class="round">
+            <h3 class="round-title">Round {{ round.number }}</h3>
+            <p class="round-time">Start Time: {{ round.start_time }}</p>
+            <button id="startInterview" class="btn-start" disabled>Start Interview</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
