@@ -1,19 +1,26 @@
 {% extends "base.html" %}
-{% load static %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'cand/custom.css' %}">
-{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="role">
-        <h2 class="role-title">{{ role.title }}</h2>
-        <p class="role-description">{{ role.description }}</p>
-        <div class="round">
-            <h3 class="round-title">Round {{ round.number }}</h3>
-            <p class="round-time">Start Time: {{ round.start_time }}</p>
-            <button id="startInterview" class="btn-start" disabled>Start Interview</button>
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="card shadow-lg border-0 mb-4">
+            <div class="card-body p-4">
+                <h2 class="card-title text-primary fw-bold mb-3">{{ role.title }}</h2>
+                <p class="card-text text-muted fs-5 mb-4">{{ role.description }}</p>
+                
+                <div class="alert alert-info border-start border-primary border-4">
+                    <h3 class="alert-heading h5 text-primary mb-3">
+                        <i class="bi bi-calendar-check"></i> Round {{ round.number }}
+                    </h3>
+                    <p class="mb-3">
+                        <strong>Start Time:</strong> 
+                        <span class="badge bg-primary">{{ round.start_time }}</span>
+                    </p>
+                    <button id="startInterview" class="btn btn-primary btn-lg px-4" disabled>
+                        <i class="bi bi-play-circle"></i> Start Interview
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
