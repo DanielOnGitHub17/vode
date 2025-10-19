@@ -53,11 +53,16 @@ function sendMessage() {
     const msg = input.value.trim();
     if (!msg) return;
     
+    // Display user message in chat
     const msgDiv = make('div', { className: 'chat-message' });
     msgDiv.innerHTML = `<i class="bi bi-person-fill"></i><p>${msg}</p>`;
     add(chatMessages, msgDiv);
     
     chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Send message to backend with current code context
+    const currentCode = editor ? editor.getValue() : "";
+    sendText(msg, currentCode);
 }
 
 // Initialize everything when DOM is ready

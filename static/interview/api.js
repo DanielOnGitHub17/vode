@@ -13,7 +13,6 @@ function endInterview() {
 }
 
 async function sendTextCode(transcribedText = "", code = "") {
-    return;
     try {
         const response = await fetch(API_URL, {
             method: "POST",
@@ -84,11 +83,15 @@ function submitInterview(finalCode, duration) {
 
 function typeAndSay(data) {
     if (!data || !data.reasoning) return;
-
-    // Add AI message to chat using sendMessage from page.js
-    if (typeof sendMessage === 'function') {
-        const typingElement = sendMessage(data.reasoning, true, 'ai-typing');
+    
+    const chatMessages = get('CHAT_MESSAGES');
+    if (chatMessages) {
+        const msgDiv = make('div', { className: 'chat-message ai-message' });
+        msgDiv.innerHTML = `<i class="bi bi-robot"></i><p id="ai-typing"></p>`;
+        add(chatMessages, msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
         
+        const typingElement = get('ai-typing');
         if (typingElement) {
             // Type animation for reasoning text in chat
             typeText(typingElement, data.reasoning, 30);
