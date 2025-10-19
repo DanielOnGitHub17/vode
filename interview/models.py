@@ -43,6 +43,7 @@ class Round(models.Model):
     data_structures = models.TextField(blank=True, help_text="Comma-separated list of topics")
     success_metrics = models.TextField(blank=True, help_text="Metrics set by SWE for each round")
     time_limit = models.PositiveIntegerField(default=30, help_text="Time limit in minutes")
+    # score_threshold = models.PositiveIntegerField(default=70)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -75,6 +76,7 @@ class Interview(models.Model):
     notes = models.TextField(blank=True, help_text="Interview notes and feedback")
     screen_video = models.URLField(max_length=500, blank=True, help_text="URL to screen recording video")
     candidate_video = models.URLField(max_length=500, blank=True, help_text="URL to candidate video recording")
+    started_at = models.DateTimeField(null=True, blank=True)
     completed_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
