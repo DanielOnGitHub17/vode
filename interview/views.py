@@ -93,7 +93,8 @@ def get_response(request):
     - interview_id: Which interview
     
     Backend returns:
-    - audio: MP3 audio feedback (binary response)
+    - reasoning: Text response from AI
+    - audio: Base64 encoded MP3 audio feedback
     """
     try:
         data = json.loads(request.body)
@@ -115,9 +116,16 @@ def get_response(request):
             audio_transcript,
             context
         )
-        
+
+        print("got result", result)
+
         if result['success']:
-            return HttpResponse(result['audio'], content_type='audio/mpeg')
+            # Return JSON with reasoning text and audio
+            return JsonResponse({
+                'reasoning': result.get('reasoning', result.get('message', '')),
+                'audio': result.get('audio', ''),  # Base64 encoded audio
+                'success': True
+            })
         else:
             return JsonResponse({'error': result['error']}, status=500)
     except Interview.DoesNotExist:

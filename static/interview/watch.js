@@ -155,37 +155,41 @@ function setupEditorListeners() {
 // ============================================
 
 function watchChatBox() {
+    console.log("Watching")
     const chatInput = get("CHAT_INPUT");
     const sendButton = get("BTN_SEND_CHAT");
 
-    if (chatInput) {
         // Monitor chat input
-        chatInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                handleChatMessage();
-            }
-        });
-
-        // Monitor send button
-        if (sendButton) {
-            sendButton.addEventListener("click", () => {
-                handleChatMessage();
-            });
+    chatInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            console.log("hit enter");
+            handleChatMessage();
         }
-    }
+    });
+
+    // Monitor send button
+    sendButton.addEventListener("click", () => {
+        console.log("hit button");
+        handleChatMessage();
+        console.log("finised hit button");
+    });
 }
 
 function handleChatMessage() {
+    sendMessage();
     const chatInput = get("CHAT_INPUT");
     const message = chatInput.value.trim();
+    console.log("Entered handler")
     
-    if (message && message !== lastChatMessage) {
+    if (message) {
+        console.log("Entered handler message")
         lastChatMessage = message;
         
         // Send chat message with current code context
         const currentCode = editor ? editor.getValue() : "";
         sendText(message, currentCode);
-    }
+    };
+    chatInput.value = "";
 }
 
 // ============================================

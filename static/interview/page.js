@@ -44,12 +44,6 @@ get('LANGUAGE_SELECT').addEventListener('change', (e) => {
     monaco.editor.setModelLanguage(editor.getModel(), langMap[e.target.value]);
 });
 
-// Chat functionality
-get('BTN_SEND_CHAT')?.addEventListener('click', sendMessage);
-get('CHAT_INPUT')?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') sendMessage();
-});
-
 function sendMessage() {
     const input = get('CHAT_INPUT');
     const chatMessages = get('CHAT_MESSAGES');
@@ -63,7 +57,6 @@ function sendMessage() {
     msgDiv.innerHTML = `<i class="bi bi-person-fill"></i><p>${msg}</p>`;
     add(chatMessages, msgDiv);
     
-    input.value = '';
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 

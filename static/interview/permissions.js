@@ -14,7 +14,7 @@ window.isUserSpeaking = false;
 
 // Interview ID
 let url = window.location.pathname.split('/');
-window.interviewId = parseInt(url[0]);
+window.interviewId = parseInt(url[url.length - 2]);
 
 // Talker
 Window.speaker = new Audio();
@@ -74,7 +74,7 @@ async function requestPermissions() {
             window.location.href = "/candidate/";
         };
 
-        // Initialize speech recognition here
+        // // Initialize speech recognition here
         initializeSpeechRecognition();
 
         // All permissions granted - show the page
@@ -82,6 +82,8 @@ async function requestPermissions() {
         
         // Request fullscreen on user click
         document.body.onclick = () => {
+            // alert("please click your screen");
+            // initializeSpeechRecognition();
             document.body.requestFullscreen();
             document.body.onclick = null;
         };
@@ -105,11 +107,6 @@ function initializeSpeechRecognition() {
     window.recognition.continuous = true;
     window.recognition.interimResults = true;
     window.recognition.lang = 'en-US';
-    
-    // Process speech locally instead of sending to server
-    if ('webkitSpeechRecognition' in window) {
-        window.recognition.processLocally = true;
-    }
 
     window.recognition.onstart = () => {
         console.log('Speech recognition started');
@@ -146,8 +143,17 @@ function initializeSpeechRecognition() {
 
     window.recognition.onerror = (event) => {
         console.error('Speech recognition error:', event.error);
+        
         if (event.error === 'no-speech') {
             window.isUserSpeaking = false;
+        }
+        
+        // Don't restart on certain fatal errors
+        if (event.error === 'language-not-supported' || 
+            event.error === 'not-allowed' || 
+            event.error === 'service-not-allowed') {
+            console.warn('Speech recognition not available:', event.error);
+            return;
         }
     };
 
