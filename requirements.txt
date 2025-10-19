@@ -12,6 +12,5 @@ gunicorn==21.2.0
 whitenoise==6.6.0
 dj-database-url==2.1.0
 
-# PostgreSQL adapter - only needed on Heroku, not for local SQLite development
-# Heroku's Python buildpack will install this properly
-psycopg2-binary==2.9.9; platform_system != "Windows"
+# For Heroku production only - comment out for local development
+# psycopg2-binary==2.9.9
