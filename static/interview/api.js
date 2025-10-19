@@ -19,8 +19,6 @@ function endInterview() {
 }
 
 async function sendTextCode(transcribedText = "", code = "") {
-    console.log("GOT SEND TEXT")
-    return;
     try {
         const response = await fetch(API_URL, {
             method: "POST",

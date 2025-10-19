@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Configure Round - {{ round.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <!-- Header -->
+        <div class="mb-5">
+            <a href="{% url 'swe:role_rounds' role.id %}" class="text-muted small mb-3 d-inline-block">&larr; Back to Rounds</a>
+            <h1 class="h2 fw-bold mb-2">Configure Round {{ round.round_number }}</h1>
+            <p class="text-muted">{{ role.title }} - Edit round properties and evaluation metrics</p>
+        </div>
+
+        <!-- Edit Form -->
+        <div class="card">
+            <div class="card-body">
+                <form method="post" class="needs-validation">
+                    {% csrf_token %}
+
+                    <!-- Round Name -->
+                    <div class="mb-4">
+                        <label for="name" class="form-label fw-bold">Round Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ round.name }}" placeholder="e.g., Coding Challenge" required>
+                        <small class="text-muted">Descriptive name for this round</small>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <label for="description" class="form-label fw-bold">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Describe what candidates need to accomplish in this round...">{{ round.description }}</textarea>
+                        <small class="text-muted">Detailed description of the round objectives</small>
+                    </div>
+
+                    <!-- Difficulty Level -->
+                    <div class="mb-4">
+                        <label for="difficulty_level" class="form-label fw-bold">Difficulty Level</label>
+                        <select class="form-select" id="difficulty_level" name="difficulty_level" required>
+                            {% for value, label in difficulty_choices %}
+                                <option value="{{ value }}" {% if round.difficulty_level == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        <small class="text-muted">Expected difficulty for candidates</small>
+                    </div>
+
+                    <!-- Time Limit -->
+                    <div class="mb-4">
+                        <label for="time_limit" class="form-label fw-bold">Time Limit (minutes)</label>
+                        <input type="number" class="form-control" id="time_limit" name="time_limit" value="{{ round.time_limit }}" min="1" max="480" required>
+                        <small class="text-muted">Duration candidates have to complete this round</small>
+                    </div>
+
+                    <!-- Data Structures / Topics -->
+                    <div class="mb-4">
+                        <label for="data_structures" class="form-label fw-bold">Topics (comma-separated)</label>
+                        <textarea class="form-control" id="data_structures" name="data_structures" rows="2" placeholder="e.g., Hash Maps, Arrays, Two Pointers">{{ round.data_structures }}</textarea>
+                        <small class="text-muted">Data structures and concepts covered in this round</small>
+                    </div>
+
+                    <!-- Success Metrics -->
+                    <div class="mb-4">
+                        <label for="success_metrics" class="form-label fw-bold">Evaluation Metrics (comma-separated)</label>
+                        <textarea class="form-control" id="success_metrics" name="success_metrics" rows="3" placeholder="e.g., Correctness, Code Efficiency, Problem-Solving Approach, Communication, Code Quality">{{ round.success_metrics }}</textarea>
+                        <small class="text-muted">Metrics used to evaluate candidate performance in this round</small>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1">
+                            Save Changes
+                        </button>
+                        <a href="{% url 'swe:role_rounds' role.id %}" class="btn btn-outline-primary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Round Info Card -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title fw-bold mb-3">Current Configuration</h5>
+                <div class="space-y-2">
+                    <div class="d-flex justify-content-between pb-2 border-bottom border-dark">
+                        <span class="text-muted">Role</span>
+                        <span class="text-light fw-bold">{{ role.title }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between pb-2 border-bottom border-dark">
+                        <span class="text-muted">Round Number</span>
+                        <span class="text-light fw-bold">{{ round.round_number }} of {{ role.num_rounds }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Created</span>
+                        <span class="text-light fw-bold">{{ round.created_at|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .space-y-2 > div + div {
+        margin-top: 0.5rem;
+    }
+</style>
+
+{% endblock %}
