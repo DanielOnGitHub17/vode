@@ -11,8 +11,11 @@ class ElevenLabsService:
         self.base_url = "https://api.elevenlabs.io/v1"
         self.headers = {"xi-api-key": self.api_key}
     
-    def text_to_speech(self, text, voice_id="Rachel"):
-        """Convert text to speech using Eleven Labs"""
+    def text_to_speech(self, text, voice_id="21m00Tcm4TlvDq8ikWAM"):
+        """
+        Convert text to speech using Eleven Labs.
+        Default voice_id: "21m00Tcm4TlvDq8ikWAM" (Rachel)
+        """
         endpoint = f"{self.base_url}/text-to-speech/{voice_id}"
         
         payload = {
