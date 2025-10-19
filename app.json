@@ -1,0 +1,52 @@
+{
+  "name": "VODE - AI Interview Platform",
+  "description": "An AI-powered technical interview platform with real-time feedback",
+  "repository": "https://github.com/DanielOnGitHub17/vode",
+  "keywords": ["python", "django", "ai", "interview", "gemini"],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "SECRET_KEY": {
+      "description": "Django secret key for cryptographic signing",
+      "generator": "secret"
+    },
+    "DEBUG": {
+      "description": "Enable Django debug mode (set to False in production)",
+      "value": "False"
+    },
+    "GEMINI_API_KEY": {
+      "description": "Google Gemini API key for AI interview features",
+      "required": true
+    },
+    "ELEVENLABS_API_KEY": {
+      "description": "ElevenLabs API key for text-to-speech",
+      "required": true
+    },
+    "CLOUDFLARE_API_KEY": {
+      "description": "Cloudflare API key for video storage",
+      "required": false
+    },
+    "CLOUDFLARE_ACCOUNT_ID": {
+      "description": "Cloudflare account ID for video storage",
+      "required": false
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:essential-0",
+      "as": "DATABASE"
+    }
+  ],
+  "scripts": {
+    "postdeploy": "python manage.py migrate"
+  }
+}
