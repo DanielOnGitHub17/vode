@@ -216,7 +216,6 @@ def end_interview_audio(request):
             
             logger.info(f"Interview {interview_id} completed with score {score}/100")
             
-            # Return JSON response with score, feedback, and audio
             return JsonResponse({
                 'score': score,
                 'feedback': feedback,
