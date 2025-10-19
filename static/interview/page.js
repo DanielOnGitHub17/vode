@@ -31,24 +31,44 @@ function startTimer() {
 }
 
 // Language selector
-get('LANGUAGE_SELECT').addEventListener('change', (e) => {
-    const langMap = {
-        'python': 'python',
-        'javascript': 'javascript',
-        'typescript': 'typescript',
-        'java': 'java',
-        'cpp': 'cpp',
-        'csharp': 'csharp',
-        'go': 'go'
-    };
-    monaco.editor.setModelLanguage(editor.getModel(), langMap[e.target.value]);
-});
+function attachLanguageSelector() {
+    const langSelect = get('LANGUAGE_SELECT');
+    if (!langSelect) {
+        console.warn('LANGUAGE_SELECT not found');
+        return;
+    }
+    
+    langSelect.addEventListener('change', (e) => {
+        const langMap = {
+            'python': 'python',
+            'javascript': 'javascript',
+            'typescript': 'typescript',
+            'java': 'java',
+            'cpp': 'cpp',
+            'csharp': 'csharp',
+            'go': 'go'
+        };
+        if (editor && editor.getModel()) {
+            monaco.editor.setModelLanguage(editor.getModel(), langMap[e.target.value]);
+        }
+    });
+}
 
 // Chat functionality
-get('BTN_SEND_CHAT')?.addEventListener('click', sendMessage);
-get('CHAT_INPUT')?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') sendMessage();
-});
+function attachChatListeners() {
+    const btnSend = get('BTN_SEND_CHAT');
+    const chatInput = get('CHAT_INPUT');
+    
+    if (btnSend) {
+        btnSend.addEventListener('click', sendMessage);
+    }
+    
+    if (chatInput) {
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    }
+}
 
 function sendMessage() {
     const input = get('CHAT_INPUT');
@@ -72,4 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
     windowManager = new WindowManager();
     // Timer is handled by watch.js
     initMonaco();
+    attachLanguageSelector();
+    attachChatListeners();
 });

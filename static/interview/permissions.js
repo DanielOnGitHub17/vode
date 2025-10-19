@@ -16,8 +16,8 @@ window.isUserSpeaking = false;
 let url = window.location.pathname.split('/');
 window.interviewId = parseInt(url[0]);
 
-// Talker
-Window.speaker = new Audio();
+// Audio playback for AI responses
+window.speaker = new Audio();
 
 
 async function requestPermissions() {
