@@ -31,10 +31,6 @@ def end(request, id: int):
             messages.error(request, "You are not authorized to view this interview.")
             return redirect("/candidate/")
         
-        if interview_obj.completed_at is None:
-            messages.warning(request, "This interview has not been completed yet.")
-            return redirect(f"/interview/{id}/")
-        
         screen_video = request.GET.get('screen_video', '')
         candidate_video = request.GET.get('candidate_video', '')
         
@@ -49,13 +45,15 @@ def end(request, id: int):
         
         end_result = orchestrator.end_interview(interview_obj.round.success_metrics_list)
         
+        interview_obj.completed_at = datetime.now()
         if interview_obj.score == 0 and end_result.get("success"):
             score = end_result.get("score", 50)
             score = max(0, min(100, int(score))) if score else 50
-            
+
             interview_obj.score = score
             interview_obj.notes = end_result.get("feedback", "")
-            interview_obj.save()
+
+        interview_obj.save()
 
         audio_data = end_result.get("audio", b"")
         if isinstance(audio_data, bytes):

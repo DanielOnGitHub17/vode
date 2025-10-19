@@ -7,9 +7,11 @@ function endInterview() {
         codeEditor.style.opacity = "0.5";
     }
 
-    alert("Time is up! Your interview has ended.");
+    // alert("Time is up! Your interview has ended.");
+    window.location.href = `/interview/end/${window.interviewId}/`;
+    return;
 
-    // Send recordings before navigating to end page
+
     if (typeof window.sendRecordings === 'function') {
         window.sendRecordings();
     } else {
