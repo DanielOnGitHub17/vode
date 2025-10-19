@@ -3,97 +3,101 @@
 {% block title %}Configure Round - {{ round.name }}{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
+<div class="row justify-content-center" style="background: #000; min-height: 100vh; padding: 2rem 0;">
     <div class="col-lg-8 col-xl-6">
-        <!-- Header -->
-        <div class="mb-5">
-            <a href="{% url 'swe:role_rounds' role.id %}" class="text-muted small mb-3 d-inline-block">&larr; Back to Rounds</a>
-            <h1 class="h2 fw-bold mb-2">Configure Round {{ round.round_number }}</h1>
-            <p class="text-muted">{{ role.title }} - Edit round properties and evaluation metrics</p>
+        <div class="mb-5" style="padding: 1rem 0;">
+            <a href="{% url 'swe:role_rounds' role.id %}" style="color: #fff; font-size: 0.95rem; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.color='#4cc9f0'" onmouseout="this.style.color='#fff'">
+                <i class="bi bi-arrow-left" style="margin-right: 0.5rem;"></i>Back to Rounds
+            </a>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">
+                <div style="width: 2.5rem; height: 2.5rem; background: rgba(76, 201, 240, 0.2); border: 2px solid #4cc9f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-layers-fill" style="color: #fff; font-size: 1.2rem;"></i>
+                </div>
+                <h1 class="h2 fw-bold mb-0" style="color: #fff;">Round {{ round.round_number }}</h1>
+            </div>
+            <p style="color: #aaa; font-size: 1.05rem; margin: 0;">{{ role.title }} - Edit round properties and evaluation metrics</p>
         </div>
 
-        <!-- Edit Form -->
-        <div class="card">
-            <div class="card-body">
-                <form method="post" class="needs-validation">
-                    {% csrf_token %}
+        <div style="background: rgba(76, 201, 240, 0.08); border: 2px solid rgba(76, 201, 240, 0.35); border-radius: 1rem; box-shadow: 0 0 30px rgba(76, 201, 240, 0.15), inset 0 0 20px rgba(76, 201, 240, 0.05); padding: 2.5rem;">
+            <form method="post" class="needs-validation">
+                {% csrf_token %}
 
-                    <!-- Round Name -->
-                    <div class="mb-4">
-                        <label for="name" class="form-label fw-bold">Round Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ round.name }}" placeholder="e.g., Coding Challenge" required>
-                        <small class="text-muted">Descriptive name for this round</small>
-                    </div>
+                <div class="mb-4">
+                    <label for="name" class="form-label fw-bold" style="color: #fff; font-size: 1rem;">Round Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ round.name }}" placeholder="e.g., Coding Challenge" required style="background: rgba(76, 201, 240, 0.03); border: 1px solid rgba(208, 208, 208, 0.25); color: #fff; padding: 0.8rem;">
+                    <input type="text" class="form-control" readonly style="background: transparent; border: none; color: #aaa; padding: 0.5rem 0; margin-top: 0.5rem; font-size: 0.85rem;">
+                    <small style="color: #aaa;">Descriptive name for this round</small>
+                </div>
 
-                    <!-- Description -->
-                    <div class="mb-4">
-                        <label for="description" class="form-label fw-bold">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Describe what candidates need to accomplish in this round...">{{ round.description }}</textarea>
-                        <small class="text-muted">Detailed description of the round objectives</small>
-                    </div>
+                <!-- Description -->
+                <div class="mb-4">
+                    <label for="description" class="form-label fw-bold" style="color: #fff; font-size: 1rem;">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Describe what candidates need to accomplish in this round..." style="background: rgba(76, 201, 240, 0.03); border: 1px solid rgba(208, 208, 208, 0.25); color: #fff; padding: 0.8rem;">{{ round.description }}</textarea>
+                    <small style="color: #aaa;">Detailed description of the round objectives</small>
+                </div>
 
-                    <!-- Difficulty Level -->
-                    <div class="mb-4">
-                        <label for="difficulty_level" class="form-label fw-bold">Difficulty Level</label>
-                        <select class="form-select" id="difficulty_level" name="difficulty_level" required>
-                            {% for value, label in difficulty_choices %}
-                                <option value="{{ value }}" {% if round.difficulty_level == value %}selected{% endif %}>{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                        <small class="text-muted">Expected difficulty for candidates</small>
-                    </div>
+                <!-- Difficulty Level -->
+                <div class="mb-4">
+                    <label for="difficulty_level" class="form-label fw-bold" style="color: #fff; font-size: 1rem;">Difficulty Level</label>
+                    <select class="form-select" id="difficulty_level" name="difficulty_level" required style="background: rgba(76, 201, 240, 0.03); border: 1px solid rgba(208, 208, 208, 0.25); color: #fff; padding: 0.8rem;">
+                        {% for value, label in difficulty_choices %}
+                            <option value="{{ value }}" {% if round.difficulty_level == value %}selected{% endif %} style="background: #1a1a1a; color: #fff;">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <small style="color: #aaa;">Expected difficulty for candidates</small>
+                </div>
 
-                    <!-- Time Limit -->
-                    <div class="mb-4">
-                        <label for="time_limit" class="form-label fw-bold">Time Limit (minutes)</label>
-                        <input type="number" class="form-control" id="time_limit" name="time_limit" value="{{ round.time_limit }}" min="1" max="480" required>
-                        <small class="text-muted">Duration candidates have to complete this round</small>
-                    </div>
+                <!-- Time Limit -->
+                <div class="mb-4">
+                    <label for="time_limit" class="form-label fw-bold" style="color: #fff; font-size: 1rem;">Time Limit (minutes)</label>
+                    <input type="number" class="form-control" id="time_limit" name="time_limit" value="{{ round.time_limit }}" min="1" max="480" required style="background: rgba(76, 201, 240, 0.03); border: 1px solid rgba(208, 208, 208, 0.25); color: #fff; padding: 0.8rem;">
+                    <small style="color: #aaa;">Duration candidates have to complete this round</small>
+                </div>
 
-                    <!-- Data Structures / Topics -->
-                    <div class="mb-4">
-                        <label for="data_structures" class="form-label fw-bold">Topics (comma-separated)</label>
-                        <textarea class="form-control" id="data_structures" name="data_structures" rows="2" placeholder="e.g., Hash Maps, Arrays, Two Pointers">{{ round.data_structures }}</textarea>
-                        <small class="text-muted">Data structures and concepts covered in this round</small>
-                    </div>
+                <!-- Data Structures / Topics -->
+                <div class="mb-4">
+                    <label for="data_structures" class="form-label fw-bold" style="color: #fff; font-size: 1rem;">Topics (comma-separated)</label>
+                    <textarea class="form-control" id="data_structures" name="data_structures" rows="2" placeholder="e.g., Hash Maps, Arrays, Two Pointers" style="background: rgba(76, 201, 240, 0.03); border: 1px solid rgba(208, 208, 208, 0.25); color: #fff; padding: 0.8rem;">{{ round.data_structures }}</textarea>
+                    <small style="color: #aaa;">Data structures and concepts covered in this round</small>
+                </div>
 
-                    <!-- Success Metrics -->
-                    <div class="mb-4">
-                        <label for="success_metrics" class="form-label fw-bold">Evaluation Metrics (comma-separated)</label>
-                        <textarea class="form-control" id="success_metrics" name="success_metrics" rows="3" placeholder="e.g., Correctness, Code Efficiency, Problem-Solving Approach, Communication, Code Quality">{{ round.success_metrics }}</textarea>
-                        <small class="text-muted">Metrics used to evaluate candidate performance in this round</small>
-                    </div>
+                <!-- Success Metrics -->
+                <div class="mb-4">
+                    <label for="success_metrics" class="form-label fw-bold" style="color: #fff; font-size: 1rem;">Evaluation Metrics (comma-separated)</label>
+                    <textarea class="form-control" id="success_metrics" name="success_metrics" rows="3" placeholder="e.g., Correctness, Code Efficiency, Problem-Solving Approach, Communication, Code Quality" style="background: rgba(76, 201, 240, 0.03); border: 1px solid rgba(208, 208, 208, 0.25); color: #fff; padding: 0.8rem;">{{ round.success_metrics }}</textarea>
+                    <small style="color: #aaa;">Metrics used to evaluate candidate performance in this round</small>
+                </div>
 
-                    <!-- Form Actions -->
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary flex-grow-1">
-                            Save Changes
-                        </button>
-                        <a href="{% url 'swe:role_rounds' role.id %}" class="btn btn-outline-primary">
-                            Cancel
-                        </a>
-                    </div>
-                </form>
-            </div>
+                <!-- Form Actions -->
+                <div class="d-flex gap-3 pt-3" style="border-top: 1px solid rgba(208, 208, 208, 0.15);">
+                    <button type="submit" class="btn fw-bold" style="background: #4cc9f0; color: #000; border: none; border-radius: 0.5rem; padding: 0.6rem 1.5rem; transition: all 0.3s; font-size: 0.95rem;" onmouseover="this.style.background='#5fd4fb'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#4cc9f0'; this.style.transform='translateY(0)'">
+                        <i class="bi bi-check-circle" style="margin-right: 0.5rem;"></i>Save Changes
+                    </button>
+                    <a href="{% url 'swe:role_rounds' role.id %}" class="btn fw-bold" style="border: 2px solid rgba(208, 208, 208, 0.2); color: #d0d0d0; background: transparent; border-radius: 0.5rem; padding: 0.6rem 1.5rem; transition: all 0.3s;" onmouseover="this.style.backgroundColor='rgba(208, 208, 208, 0.05)'" onmouseout="this.style.backgroundColor='transparent'">
+                        <i class="bi bi-x-circle" style="margin-right: 0.5rem;"></i>Cancel
+                    </a>
+                </div>
+            </form>
         </div>
 
         <!-- Round Info Card -->
-        <div class="card mt-4">
-            <div class="card-body">
-                <h5 class="card-title fw-bold mb-3">Current Configuration</h5>
-                <div class="space-y-2">
-                    <div class="d-flex justify-content-between pb-2 border-bottom border-dark">
-                        <span class="text-muted">Role</span>
-                        <span class="text-light fw-bold">{{ role.title }}</span>
-                    </div>
-                    <div class="d-flex justify-content-between pb-2 border-bottom border-dark">
-                        <span class="text-muted">Round Number</span>
-                        <span class="text-light fw-bold">{{ round.round_number }} of {{ role.num_rounds }}</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <span class="text-muted">Created</span>
-                        <span class="text-light fw-bold">{{ round.created_at|date:"M d, Y" }}</span>
-                    </div>
+        <div style="background: rgba(76, 201, 240, 0.08); border: 2px solid rgba(76, 201, 240, 0.35); border-radius: 1rem; box-shadow: 0 0 30px rgba(76, 201, 240, 0.15), inset 0 0 20px rgba(76, 201, 240, 0.05); padding: 2.5rem; margin-top: 2rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                <i class="bi bi-info-circle-fill" style="color: #4cc9f0; font-size: 1.3rem;"></i>
+                <h5 class="fw-bold mb-0" style="color: #4cc9f0; font-size: 1.1rem;">Current Configuration</h5>
+            </div>
+            <div style="space-y: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid rgba(76, 201, 240, 0.2);">
+                    <span style="color: #aaa;">Role</span>
+                    <span style="color: #fff; font-weight: 600;">{{ role.title }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid rgba(76, 201, 240, 0.2);">
+                    <span style="color: #aaa;">Round Number</span>
+                    <span style="color: #4cc9f0; font-weight: 600;">{{ round.round_number }} of {{ role.num_rounds }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem 0;">
+                    <span style="color: #aaa;">Created</span>
+                    <span style="color: #d0d0d0; font-weight: 600;">{{ round.created_at|date:"M d, Y" }}</span>
                 </div>
             </div>
         </div>
@@ -101,6 +105,18 @@
 </div>
 
 <style>
+    .form-control:focus,
+    .form-select:focus {
+        background: rgba(76, 201, 240, 0.05) !important;
+        border-color: #d0d0d0 !important;
+        box-shadow: 0 0 8px rgba(208, 208, 208, 0.15) !important;
+        color: #fff !important;
+    }
+
+    .form-control::placeholder {
+        color: #666;
+    }
+
     .space-y-2 > div + div {
         margin-top: 0.5rem;
     }
