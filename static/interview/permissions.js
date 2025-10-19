@@ -13,8 +13,8 @@ window.speechBuffer = '';
 window.isUserSpeaking = false;
 
 // Interview ID
-window.URLL = window.location.pathname.split('/');
-window.interviewId = parseInt(URLL[URLL.length - 2]);
+let url = window.location.pathname.split('/');
+window.interviewId = parseInt(url[url.length - 2]);
 
 // Audio playback for AI responses
 window.speaker = new Audio();
@@ -135,6 +135,7 @@ function initializeSpeechRecognition() {
                 window.isUserSpeaking = true;
                 // Callback to watch.js handler if available
                 if (typeof handleSpeechWithCode === 'function') {
+                    console.log(window.transcribedText);
                     handleSpeechWithCode();
                 }
             }
