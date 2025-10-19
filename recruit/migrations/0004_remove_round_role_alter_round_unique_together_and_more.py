@@ -13,14 +13,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='round',
-            name='role',
-        ),
-        migrations.AlterUniqueTogether(
-            name='round',
-            unique_together=None,
-        ),
         migrations.CreateModel(
             name='Recruiter',
             fields=[
