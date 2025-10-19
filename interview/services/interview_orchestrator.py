@@ -42,31 +42,7 @@ class InterviewOrchestrator:
                 'question': MOCK_QUESTION
             }
     
-    def get_question_with_audio(self):
-        """Get the Two Sum question and convert to speech"""
-        try:
-            question = MOCK_QUESTION
-            
-            # Extract clean text for speech - use the HTML-stripped version
-            speech_text = f"{question['title']}. {question['statement']}"
-            
-            # Convert to speech
-            audio = self.elevenlabs.text_to_speech(speech_text)
-            
-            return {
-                'question': question,
-                'audio': audio,
-                'success': True
-            }
-        except Exception as e:
-            logger.error(f"Error getting question: {e}")
-            return {
-                'success': False,
-                'error': str(e),
-                'question': MOCK_QUESTION
-            }
-    
-    def agent_evaluate_submission(self, candidate_code, audio_transcript, interview_context):
+    def get_ai_response(self, candidate_code, audio_transcript, interview_context):
         """
         AI agent evaluates continuous code + audio transcript updates.
         Frontend sends these intermittently based on inactivity.
@@ -117,5 +93,30 @@ class InterviewOrchestrator:
             }
     
     def end_interview(self):
-        """Clean up interview context"""
-        self.gemini.clear_context()
+        """
+        Generate end-of-interview message and convert to speech.
+        Called when interview timer runs out or candidate submits final answer.
+        
+        Returns:
+            Dict with audio bytes and success status
+        """
+        try:
+            end_message = """Thank you for taking the time to interview with us today. We appreciate your participation and the effort you put into solving this problem. Your recruiter will be reaching out to you shortly with feedback and next steps. We look forward to staying in touch!"""
+            
+            # Convert to speech
+            audio = self.elevenlabs.text_to_speech(end_message)
+            
+            # Clear context for next interview
+            self.gemini.clear_context()
+            
+            return {
+                'audio': audio,
+                'message': end_message,
+                'success': True
+            }
+        except Exception as e:
+            logger.error(f"Error generating end-of-interview message: {e}")
+            return {
+                'success': False,
+                'error': str(e)
+            }

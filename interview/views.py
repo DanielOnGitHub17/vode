@@ -27,17 +27,14 @@ def interview(request, id: int):
             "candidate", "round", "round__role", "question"
         ).get(id=id)
         
-        # Security: Verify interview belongs to this candidate
         if interview_obj.candidate != mock_candidate:
             messages.error(request, "You are not authorized to view this interview.")
             return redirect("/candidate/")
         
-        # Check if interview has been completed
         if interview_obj.completed_at is not None:
             messages.warning(request, "This interview has already been completed.")
             return redirect("/candidate/")
         
-        # Generate question if not already assigned
         if interview_obj.question is None:
             question = generate_interview_question(interview_obj)
             interview_obj.question = question
@@ -45,7 +42,6 @@ def interview(request, id: int):
         else:
             question = interview_obj.question
 
-        # Prepare interview context for the AI agent
         interview_context = {
             'role': interview_obj.round.role.title,
             'round': interview_obj.round.round_number,
@@ -69,22 +65,6 @@ def interview(request, id: int):
     except Interview.DoesNotExist:
         messages.error(request, "Interview not found.")
         return redirect("/candidate/")
-
-
-@require_http_methods(["POST"])
-@csrf_exempt
-def get_question_audio(request):
-    """Get question audio stream"""
-    try:
-        result = orchestrator.get_question_with_audio()
-        
-        if result['success']:
-            return HttpResponse(result['audio'], content_type='audio/mpeg')
-        else:
-            return JsonResponse({'error': result['error']}, status=500)
-    except Exception as e:
-        logger.error(f"Error getting question audio: {e}")
-        return JsonResponse({'error': str(e)}, status=500)
 
 
 @require_http_methods(["POST"])
@@ -124,7 +104,7 @@ def get_response(request):
         }
         
         # Get AI coaching feedback (Gemini maintains conversation history)
-        result = orchestrator.agent_evaluate_submission(
+        result = orchestrator.get_ai_response(
             code,
             audio_transcript,
             context
@@ -165,4 +145,26 @@ def generate_interview_question(interview: Interview) -> Question:
     )
     
     return question
+
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def end_interview_audio(request):
+    """
+    Generate end-of-interview closing message as audio.
+    Called when interview timer runs out or candidate completes interview.
+    
+    Returns:
+        MP3 audio bytes with thank you message
+    """
+    try:
+        result = orchestrator.end_interview()
+        
+        if result['success']:
+            return HttpResponse(result['audio'], content_type='audio/mpeg')
+        else:
+            return JsonResponse({'error': result['error']}, status=500)
+    except Exception as e:
+        logger.error(f"Error generating end-of-interview audio: {e}")
+        return JsonResponse({'error': str(e)}, status=500)
 

@@ -6,6 +6,6 @@ app_name = "interview"
 
 urlpatterns = [
     path("<int:id>/", views.interview, name="interview"),
-    path("api/question-audio/", views.get_question_audio, name="get_question_audio"),
     path("api/get-response/", views.get_response, name="get_response"),
+    path("api/end-interview/", views.end_interview_audio, name="end_interview_audio"),
 ]
