@@ -1,10 +1,12 @@
 from django.urls import path
-from .views import interview
+from . import views
 
 
 app_name = "interview"
 
 urlpatterns = [
-    path("<int:id>/", interview, name="interview"),
-    path("end/<int:id>/", interview, name="end-interview"),
+    path("<int:id>/", views.interview, name="interview"),
+    path("end/<int:id>/", views.end, name="end-interview"),
+    path("api/get-response/", views.get_response, name="get_response"),
+    path("api/end-interview/", views.end_interview_audio, name="end_interview_audio"),
 ]
