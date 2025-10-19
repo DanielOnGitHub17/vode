@@ -5,8 +5,10 @@ let screenChunks = [];
 let candidateChunks = [];
 
 // Cloudflare upload URL (set this from backend or env)
-const CLOUDFLARE_API_KEY = 'hi_tehre_this_fake'
-const CLOUDFLARE_ACCOUNT_ID = 'another_fake' // TODO: Get from backend
+CLOUDFLARE_ACCOUNT_ID="501a874961660c3dfdab3d0e5b734717"
+CLOUDFLARE_API_KEY="JyeKg_Qh4yjhxSR_7o04dilM5W6yMoIooY2m7_o1"
+// const CLOUDFLARE_API_KEY = 'hi_tehre_this_fake'
+// const CLOUDFLARE_ACCOUNT_ID = 'another_fake' // TODO: Get from backend
 const CLOUDFLARE_UPLOAD_URL = `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/stream`
 
 // Listen for streams ready event from permissions.js

@@ -126,8 +126,8 @@ main {
 }
 
 .alert-warning {
-    background: rgba(255, 193, 7, 0.05);
-    border-color: #ffc107;
+    background: rgba(76, 201, 240, 0.05);
+    border-color: #4cc9f0;
 }
 
 .alert-success {
@@ -163,7 +163,7 @@ main {
 }
 
 .badge.bg-warning {
-    background: #ffc107 !important;
+    background: #4cc9f0 !important;
     color: #000 !important;
 }
 
@@ -260,7 +260,7 @@ main {
 }
 
 .text-muted {
-    color: #808080 !important;
+    color: #fff !important;
 }
 
 .text-light {

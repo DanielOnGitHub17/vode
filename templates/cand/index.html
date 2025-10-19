@@ -1,26 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row justify-content-center">
+<div class="row justify-content-center" style="background: #000; min-height: 100vh; padding: 2rem 0;">
     <div class="col-lg-12 col-xl-10">
         <!-- Header Section -->
         <div class="mb-5">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                 <div>
-                    <h1 class="h2 fw-bold mb-2">
+                    <h1 class="h2 fw-bold mb-2" style="color: #fff;">
                         {% if candidate %}
-                            Welcome, {{ candidate.user.first_name }}
+                            Welcome, <span style="color: #4cc9f0;">{{ candidate.user.first_name }}</span>
                         {% else %}
                             Candidate Dashboard
                         {% endif %}
                     </h1>
-                    <p class="text-muted mb-0">Manage and prepare for your upcoming interviews</p>
-                </div>
-                <div class="text-end">
-                    <div class="d-inline-block p-3 rounded" style="background: rgba(76, 201, 240, 0.1);">
-                        <p class="text-muted small mb-1">Account Status</p>
-                        <span class="badge bg-success">Active</span>
-                    </div>
+                    <p class="mb-0" style="color: #aaa;">Manage and prepare for your upcoming interviews</p>
                 </div>
             </div>
         </div>
@@ -28,12 +22,12 @@
         <!-- Alert Messages -->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                <div class="alert alert-dismissible fade show mb-4" role="alert" style="background: rgba(76, 201, 240, 0.1); border: 1px solid rgba(76, 201, 240, 0.3); color: #4cc9f0;">
                     <strong>
                         {% if message.tags == 'error' %}Error{% elif message.tags == 'warning' %}Warning{% elif message.tags == 'success' %}Success{% else %}Info{% endif %}
                     </strong>
                     {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="filter: brightness(0) saturate(100%) invert(100%);"></button>
                 </div>
             {% endfor %}
         {% endif %}
@@ -41,53 +35,41 @@
         {% if interviews %}
             <!-- Interviews Grid -->
             <div>
-                <h2 class="h4 fw-bold mb-4">Scheduled Interviews ({{ interviews.count }})</h2>
+                <h2 class="h4 fw-bold mb-4" style="color: #fff;">You have <span style="color: #4cc9f0;">{{ interviews.count }}</span> upcoming interview{{ interviews.count|pluralize }}</h2>
                 
                 <div class="row row-cols-1 row-cols-md-2 g-4">
                     {% for interview in interviews %}
                         <div class="col">
-                            <div class="card interview-card h-100 transition-all">
+                            <div class="card interview-card h-100 transition-all" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
                                 <div class="card-body d-flex flex-column">
                                     <!-- Role Info -->
                                     <div class="mb-4">
                                         <div class="d-flex justify-content-between align-items-start mb-3">
                                             <div>
-                                                <h5 class="card-title fw-bold mb-1">{{ interview.round.role.title }}</h5>
-                                                <p class="text-muted small mb-0">Round {{ interview.round.round_number }} of {{ interview.round.role.num_rounds }}</p>
+                                                <h5 class="card-title fw-bold mb-1" style="color: #4cc9f0;">{{ interview.round.role.title }}</h5>
+                                                <p class="small mb-0" style="color: #fff;">Round {{ interview.round.round_number }} of {{ interview.round.role.num_rounds }}</p>
                                             </div>
-                                            <span class="badge bg-primary">{{ interview.round.difficulty_level|capfirst }}</span>
                                         </div>
                                     </div>
 
                                     <!-- Interview Details -->
-                                    <div class="mb-4 pb-4 border-bottom border-dark">
+                                    <div class="mb-4 pb-4" style="border-bottom: 1px solid rgba(76, 201, 240, 0.2);">
                                         <div class="row g-3 small">
-                                            <div class="col-6 d-flex justify-content-between">
-                                                <p class="text-muted mb-1">Time Limit</p>
-                                                <p class="text-light fw-500">{{ interview.round.time_limit }} min</p>
-                                            </div>
-                                            <div class="col-6 d-flex justify-content-between">
-                                                <p class="text-muted mb-1">Status</p>
-                                                <p class="text-light fw-500">
-                                                    {% if interview.completed_at %}
-                                                        <span class="badge bg-success">Done</span>
-                                                    {% elif interview.started_at %}
-                                                        <span class="badge bg-warning">Active</span>
-                                                    {% else %}
-                                                        <span class="badge bg-secondary">Ready</span>
-                                                    {% endif %}
-                                                </p>
+                                            <div class="col-12 d-flex justify-content-between">
+                                                <p class="mb-1" style="color: #fff;">Time Limit</p>
+                                                <p class="fw-500" style="color: #4cc9f0;">{{ interview.round.time_limit }} min</p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Problem Type -->
+                                    <!-- Description -->
                                     <div class="mb-4">
-                                        <p class="text-muted small mb-2">Problem Type</p>
-                                        <div class="d-flex gap-2 flex-wrap">
-                                            <span class="badge bg-dark border border-light">Algorithm</span>
-                                            <span class="badge bg-dark border border-light">Data Structure</span>
-                                        </div>
+                                        <p class="small mb-0" style="color: #fff; line-height: 1.5;">Get ready for your interview. Take some time to prepare and review key concepts for this role.</p>
+                                    </div>
+
+                                    <!-- Prep Link -->
+                                    <div class="mb-4">
+                                        <a href="#" style="color: #4cc9f0; text-decoration: none; font-weight: 600; font-size: 0.9rem;">→ Prep for this interview</a>
                                     </div>
 
                                     <!-- Action -->
@@ -96,20 +78,14 @@
                                             <form method="post" class="w-100">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="interview_id" value="{{ interview.id }}">
-                                                {% if interview.started_at and not interview.completed_at %}
-                                                    <button type="submit" class="btn btn-primary w-100">
-                                                        Continue Interview
-                                                    </button>
-                                                {% else %}
-                                                    <button type="submit" class="btn btn-primary w-100">
-                                                        Start Interview
-                                                    </button>
-                                                {% endif %}
+                                                <button type="submit" class="btn fw-bold" style="background: #fff; color: #000; border: none; border-radius: 0.5rem; padding: 0.8rem 1.5rem; transition: all 0.3s; width: auto;" onmouseover="this.style.background='#f0f0f0'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#fff'; this.style.transform='translateY(0)'">
+                                                    Start Interview
+                                                </button>
                                             </form>
                                         {% else %}
-                                            <div class="p-3 rounded text-center" style="background: rgba(6, 214, 160, 0.1);">
-                                                <p class="text-muted small mb-1">Final Score</p>
-                                                <p class="h5 text-success fw-bold mb-0">{{ interview.score|default:"—" }}/100</p>
+                                            <div class="p-3 rounded text-center" style="background: rgba(6, 214, 160, 0.15); border: 1px solid rgba(6, 214, 160, 0.3);">
+                                                <p class="small mb-1" style="color: #aaa;">Final Score</p>
+                                                <p class="h5 fw-bold mb-0" style="color: #06d6a0;">{{ interview.score|default:"—" }}/100</p>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -125,10 +101,9 @@
                 <div class="mb-4">
                     <div style="font-size: 3rem; color: rgba(76, 201, 240, 0.3);">○</div>
                 </div>
-                <h3 class="h5 fw-bold mb-2">No Interviews Scheduled</h3>
-                <p class="text-muted mb-0">
-                    You don't have any interviews scheduled at the moment. 
-                    Please check back later or contact your recruiter for more information.
+                <h3 class="h5 fw-bold mb-2" style="color: #fff;">You have no upcoming interviews</h3>
+                <p style="color: #fff; margin-bottom: 0;">
+                    Check back later for your next interview, or contact your recruiter for more information.
                 </p>
             </div>
         {% endif %}
