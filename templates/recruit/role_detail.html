@@ -1,65 +1,98 @@
 {% extends "base.html" %}
 
-{% block title %}{{ role.title }} - Recruiter{% endblock %}
+{% block title %}Manage Candidates - {{ role.title }}{% endblock %}
 
 {% block content %}
-  <!-- Header with back button -->
-  <div class="mb-4 pb-3 border-bottom">
-    <div class="d-flex align-items-center gap-3 mb-2">
-      <a href="{% url 'recruit:index' %}" class="btn btn-outline-primary btn-sm fw-600 px-3" title="Back to Roles">
-        ← Back
-      </a>
-      <div>
-        <h1 class="mb-1 glow">{{ role.title }}</h1>
-        <p class="text-muted mb-0">{{ role.description }}</p>
-      </div>
+    <!-- Header with Back Button -->
+    <div class="mb-5">
+        <a href="{% url 'recruit:index' %}" class="text-muted small mb-3 d-inline-block">&larr; Back to Roles</a>
+        <h1 class="h2 fw-bold mb-2">{{ role.title }}</h1>
+        <p class="text-muted">Manage candidates across interview rounds</p>
     </div>
-    <div class="mt-3">
-      <span class="badge bg-primary">{{ role.num_rounds }} Interview Rounds</span>
-    </div>
-  </div>
 
-  <ul class="nav nav-tabs mb-4" role="tablist">
-    {% for round_num in rounds %}
-      <li class="nav-item">
-        <a class="nav-link {% if active_tab == round_num %}active{% endif %}" href="?tab={{ round_num }}">
-          Round {{ round_num }}
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
+    {% if rounds %}
+        <!-- Rounds Grid -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+            {% for round in rounds %}
+                <div class="col">
+                    <a href="{% url 'recruit:round_candidates' round.id %}" style="text-decoration: none; color: inherit;">
+                        <div class="card round-config-card h-100 transition-all">
+                            <div class="card-body d-flex flex-column">
+                                <!-- Header with Round Number and Difficulty -->
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h5 class="card-title fw-bold mb-1">Round {{ round.round_number }}</h5>
+                                        <p class="text-muted small mb-0">{{ round.name }}</p>
+                                    </div>
+                                    <span class="badge bg-primary">{{ round.get_difficulty_level_display }}</span>
+                                </div>
 
-  {% if candidates %}
-    <div class="mb-3">
-      <h5 class="text-muted">
-        Candidates in Round {{ active_tab }} 
-      </h5>
-    </div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      {% for c in candidates %}
-        <div class="col">
-          <div class="card candidate-tile candidate-card h-100">
-            <div class="card-body">
-              <h5 class="card-title mb-1">{{ c.name }}</h5>
-              <p class="card-subtitle text-muted small mb-3">
-                {{ c.email }}
-              </p>
-              <p class="card-text small">{{ c.notes }}</p>
-            </div>
-            <div class="card-footer bg-transparent border-top d-flex justify-content-between align-items-center">
-              <a href="#" class="btn btn-sm btn-outline-primary">
-                View
-              </a>
-            </div>
-          </div>
+                                <!-- Description -->
+                                <p class="card-text text-muted small flex-grow-1 mb-4">
+                                    {{ round.description|default:"No description" }}
+                                </p>
+
+                                <!-- Candidate Statistics -->
+                                <div class="mb-4 pb-4 border-bottom border-dark">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <p class="text-muted small mb-0">Total Candidates</p>
+                                        <p class="text-light fw-bold mb-0">{{ round.interviews.count }}</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-muted small mb-0">Time Limit</p>
+                                        <p class="text-light fw-bold mb-0">{{ round.time_limit }} min</p>
+                                    </div>
+                                </div>
+
+                                <!-- View Candidates Link -->
+                                <div>
+                                    <p class="text-muted small mb-0">
+                                        Click to view and manage candidates →
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
         </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="alert alert-info alert-dismissible fade show" role="alert">
-      <strong>No candidates</strong> in Round {{ active_tab }} yet.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  {% endif %}
+    {% else %}
+        <!-- Empty State -->
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <div style="font-size: 3rem; color: rgba(76, 201, 240, 0.3);">○</div>
+            </div>
+            <h3 class="h5 fw-bold mb-2">No Rounds Found</h3>
+            <p class="text-muted mb-3">
+                Create rounds for this role in the admin panel to get started.
+            </p>
+            <a href="{% url 'recruit:index' %}" class="btn btn-outline-primary btn-sm">Back to Roles</a>
+        </div>
+    {% endif %}
 
 {% endblock %}
+
+<style>
+  .round-nav {
+    gap: 1.5rem;
+    border-bottom: none !important;
+  }
+
+  .round-nav .nav-link {
+    color: #808080 !important;
+    font-size: 1.375rem;
+    font-weight: 700;
+    padding: 0.75rem 0;
+    border: none !important;
+    border-bottom: 2px solid transparent;
+  }
+
+  .round-nav .nav-link:hover {
+    color: #fff !important;
+  }
+
+  .round-nav .nav-link.active {
+    color: #fff !important;
+    border-bottom-color: #4cc9f0 !important;
+  }
+</style>

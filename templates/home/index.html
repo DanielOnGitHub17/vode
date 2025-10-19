@@ -1,0 +1,313 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Vode - Modern Technical Interview Platform{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero-section py-5" style="min-height: 90vh; display: flex; align-items: center; background: linear-gradient(135deg, rgba(76, 201, 240, 0.05) 0%, rgba(76, 201, 240, 0.02) 100%); padding-top: 6rem !important; padding-bottom: 6rem !important;">
+        <div class="container-fluid px-4">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0 pe-lg-4" style="animation: slideInLeft 0.8s ease-out;">
+                    <h1 class="display-4 fw-bold mb-4" style="color: #fff; line-height: 1.2; margin: 0.5rem;">
+                        Empowering Teams to Hire Efficiently and Effectively
+                    </h1>
+
+                    <p class="lead mb-4" style="font-size: 1.4rem; line-height: 1.6;">
+                        Streamline your hiring process with <span style="color: #4cc9f0;"><b>Vode</b></span>. Conduct seamless technical interviews, manage candidates effortlessly, and make data-driven hiring decisions.
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="#" class="btn btn-lg" style="background: #3eb7dcff; color: #000; font-weight: 700; padding: 0.8rem 2rem; border: none; border-radius: 0.5rem; transition: all 0.3s; box-shadow: 0 4px 15px rgba(76, 201, 240, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(76, 201, 240, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.3)'">
+                            Book a Demo
+                        </a>
+                        <a href="#" class="btn btn-lg" style="border: 2px solid #4cc9f0; color: #4cc9f0; background: transparent; font-weight: 700; padding: 0.8rem 2rem; border-radius: 0.5rem; transition: all 0.3s;" onmouseover="this.style.backgroundColor='rgba(76, 201, 240, 0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                            Sign Up
+                        </a>
+                    </div>
+                    <p class="mt-4" style="color: #666; font-size: 0.9rem;">Already have an account? <a href="#" style="color: #4cc9f0; text-decoration: none; font-weight: 600;">Sign In</a></p>
+                </div>
+
+                <!-- Hero Illustration -->
+                <div class="col-lg-6 ps-lg-4" style="animation: slideInRight 0.8s ease-out;">
+                    <div style="text-align: center;">
+                        <img src="{% static 'images/developer.png' %}" alt="Developer working on code" style="max-width: 100%; height: auto; border-radius: 20px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid Below Hero -->
+            <div style="margin: 7rem; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;">
+                <div style="animation: slideInLeft 1s ease-out 0.2s both; text-align: center;">
+                    <div style="font-size: 3.5rem; font-weight: 800; color: #4cc9f0; line-height: 1;">40%</div>
+                    <p style="font-size: 1rem; margin-top: 1rem; color: #aaa;">Reduce hiring time</p>
+                </div>
+                <div style="animation: slideInLeft 1s ease-out 0.3s both; text-align: center;">
+                    <div style="font-size: 3.5rem; font-weight: 800; color: #4cc9f0; line-height: 1;">$150K</div>
+                    <p style="font-size: 1rem; margin-top: 1rem; color: #aaa;">Annual savings per company</p>
+                </div>
+                <div style="animation: slideInLeft 1s ease-out 0.4s both; text-align: center;">
+                    <div style="font-size: 3.5rem; font-weight: 800; color: #4cc9f0; line-height: 1;">3x</div>
+                    <p style="font-size: 1rem; margin-top: 1rem; color: #aaa;">Faster candidate evaluation</p>
+                </div>
+            </div>
+
+    <!-- Features Section -->
+    <section class="py-5" style="background: rgba(10, 10, 10, 0.5); padding-top: 8rem !important; padding-bottom: 8rem !important;">
+        <div class="container-fluid px-4">
+            <div class="text-center mb-5" style="margin-bottom: 4rem !important;">
+                <h2 class="h1 fw-bold mb-3" style="color: #fff; margin-bottom: 2rem !important;">Powerful Features</h2>
+                <p class="lead" style="color: #aaa;">Everything you need to conduct professional technical interviews</p>
+            </div>
+
+            <div class="row g-4" style="row-gap: 2rem;">
+                <!-- Feature 1 -->
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-people" style="font-size: 2.5rem; color: #000;"></i></div>     
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Smart Candidate Management</h4>
+                        <p style="color: #aaa;">Organize and track candidates through multiple interview rounds with ease.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out 0.1s; animation-fill-mode: both;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-lightning-fill" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Real-Time Collaboration</h4>
+                        <p style="color: #aaa;">Conduct live coding sessions with instant feedback and performance metrics.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out 0.2s; animation-fill-mode: both;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-graph-up" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Analytics & Insights</h4>
+                        <p style="color: #aaa;">Get detailed reports and metrics to improve your hiring decisions.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out 0.3s; animation-fill-mode: both;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-shield-lock" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Enterprise Security</h4>
+                        <p style="color: #aaa;">Bank-grade security to protect your candidate data and interviews.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out 0.4s; animation-fill-mode: both;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-rocket-takeoff" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Scale with Ease</h4>
+                        <p style="color: #aaa;">Handle interviews for dozens to thousands of candidates effortlessly.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out 0.5s; animation-fill-mode: both;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-chat-dots" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Team Collaboration</h4>
+                        <p style="color: #aaa;">Work seamlessly with your team to evaluate and share candidate feedback.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What Does Vode Provide Section -->
+    <section class="py-5" style="background: rgba(10, 10, 10, 0.8); padding-top: 8rem !important; padding-bottom: 8rem !important;">
+        <div class="container-fluid px-4">
+            <div class="text-center mb-5" style="margin-bottom: 4rem !important;">
+                <h2 class="h1 fw-bold mb-3" style="color: #fff; margin-bottom: 2rem !important;">What Does Vode Provide?</h2>
+                <p class="lead" style="color: #aaa;">Everything your hiring team needs to find the best talent</p>
+            </div>
+
+            <div class="row g-4" style="row-gap: 2rem;">
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-clock-history" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Time-Saving Automation</h4>
+                        <p style="color: #aaa; text-align: center;">Automate scheduling, reminders, and candidate tracking to save your team 10+ hours per week</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out 0.1s; animation-fill-mode: both;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-code-square" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Live Code Interviews</h4>
+                        <p style="color: #aaa; text-align: center;">Real-time collaborative coding environment with syntax highlighting and instant feedback</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out 0.2s; animation-fill-mode: both;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-bar-chart-line" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Detailed Scoring</h4>
+                        <p style="color: #aaa; text-align: center;">Standardized evaluation rubrics and performance metrics to make data-driven hiring decisions</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out 0.3s; animation-fill-mode: both;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-people-fill" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Team Collaboration</h4>
+                        <p style="color: #aaa; text-align: center;">Share notes, feedback, and scores with your entire hiring panel in one place</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out 0.4s; animation-fill-mode: both;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-shield-check" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Bank-Level Security</h4>
+                        <p style="color: #aaa; text-align: center;">End-to-end encryption, SOC 2 compliance, and GDPR ready for enterprise security</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.8s ease-out 0.5s; animation-fill-mode: both;">
+                    <div class="card" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; height: 100%; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="width: 4.5rem; height: 4.5rem; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;"><i class="bi bi-plug" style="font-size: 2.5rem; color: #000;"></i></div>
+                        <h4 class="fw-bold mb-3" style="color: #4cc9f0; text-align: center;">Easy Integrations</h4>
+                        <p style="color: #aaa; text-align: center;">Connect with your ATS, Slack, Gmail, and 50+ other tools in minutes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-5" style="background: rgba(76, 201, 240, 0.02); padding-top: 8rem !important; padding-bottom: 8rem !important;">
+        <div class="container-fluid px-4">
+            <div class="text-center mb-5" style="margin-bottom: 4rem !important;">
+                <h2 class="h1 fw-bold mb-3" style="color: #fff; margin-bottom: 2rem !important;">Frequently Asked Questions</h2>
+                <p class="lead" style="color: #aaa;">Get answers to common questions about Vode</p>
+            </div>
+
+            <div class="row" style="max-width: 900px; margin: 0 auto;">
+                <!-- FAQ 1 -->
+                <div class="col-lg-12 mb-4" style="animation: fadeInUp 0.8s ease-out;">
+                    <div style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2rem; cursor: pointer; transition: all 0.3s;" onclick="this.querySelector('[data-faq=1]').style.display = this.querySelector('[data-faq=1]').style.display === 'none' ? 'block' : 'none';" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 class="fw-bold mb-0" style="color: #4cc9f0;">How does Vode work?</h4>
+                            <i class="bi bi-chevron-down" style="color: #4cc9f0; font-size: 1.5rem;"></i>
+                        </div>
+                        <p data-faq="1" style="color: #aaa; margin-top: 1rem; display: none;">Vode provides a unified platform for scheduling technical interviews, conducting live coding sessions, scoring candidates objectively, and collaborating with your team. Simply invite candidates, they join your virtual interview room, and you evaluate their technical skills in real-time with our built-in code editor.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="col-lg-12 mb-4" style="animation: fadeInUp 0.8s ease-out 0.1s; animation-fill-mode: both;">
+                    <div style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2rem; cursor: pointer; transition: all 0.3s;" onclick="this.querySelector('[data-faq=2]').style.display = this.querySelector('[data-faq=2]').style.display === 'none' ? 'block' : 'none';" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 class="fw-bold mb-0" style="color: #4cc9f0;">Is my candidate data secure?</h4>
+                            <i class="bi bi-chevron-down" style="color: #4cc9f0; font-size: 1.5rem;"></i>
+                        </div>
+                        <p data-faq="2" style="color: #aaa; margin-top: 1rem; display: none;">Absolutely. Vode uses bank-grade 256-bit encryption, is SOC 2 Type II compliant, and GDPR ready. All data is encrypted in transit and at rest. We never share your candidate data with third parties without explicit consent.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="col-lg-12 mb-4" style="animation: fadeInUp 0.8s ease-out 0.2s; animation-fill-mode: both;">
+                    <div style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2rem; cursor: pointer; transition: all 0.3s;" onclick="this.querySelector('[data-faq=3]').style.display = this.querySelector('[data-faq=3]').style.display === 'none' ? 'block' : 'none';" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 class="fw-bold mb-0" style="color: #4cc9f0;">Can I integrate Vode with my ATS?</h4>
+                            <i class="bi bi-chevron-down" style="color: #4cc9f0; font-size: 1.5rem;"></i>
+                        </div>
+                        <p data-faq="3" style="color: #aaa; margin-top: 1rem; display: none;">Yes! Vode integrates seamlessly with popular ATS platforms like Greenhouse, Lever, Workday, and 50+ other tools via API and Zapier. We can also build custom integrations for enterprise clients.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="col-lg-12 mb-4" style="animation: fadeInUp 0.8s ease-out 0.3s; animation-fill-mode: both;">
+                    <div style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2rem; cursor: pointer; transition: all 0.3s;" onclick="this.querySelector('[data-faq=4]').style.display = this.querySelector('[data-faq=4]').style.display === 'none' ? 'block' : 'none';" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 class="fw-bold mb-0" style="color: #4cc9f0;">What programming languages do you support?</h4>
+                            <i class="bi bi-chevron-down" style="color: #4cc9f0; font-size: 1.5rem;"></i>
+                        </div>
+                        <p data-faq="4" style="color: #aaa; margin-top: 1rem; display: none;">Vode supports 25+ programming languages including JavaScript, Python, Java, C++, Go, Rust, Ruby, PHP, and more. You can customize the available languages for your team and create language-specific coding challenges.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="col-lg-12 mb-4" style="animation: fadeInUp 0.8s ease-out 0.4s; animation-fill-mode: both;">
+                    <div style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2rem; cursor: pointer; transition: all 0.3s;" onclick="this.querySelector('[data-faq=5]').style.display = this.querySelector('[data-faq=5]').style.display === 'none' ? 'block' : 'none';" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 class="fw-bold mb-0" style="color: #4cc9f0;">How much does Vode cost?</h4>
+                            <i class="bi bi-chevron-down" style="color: #4cc9f0; font-size: 1.5rem;"></i>
+                        </div>
+                        <p data-faq="5" style="color: #aaa; margin-top: 1rem; display: none;">Vode offers flexible pricing starting from Free tier (perfect for testing) to Pro and Enterprise plans. Most teams see ROI within 2-3 months through reduced hiring costs. <a href="#" style="color: #4cc9f0; text-decoration: none;">View pricing details →</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5" style="text-align: center; padding-top: 8rem !important; padding-bottom: 8rem !important;">
+        <div class="container-fluid px-4">
+            <h2 class="h1 fw-bold mb-4" style="color: #fff; margin-bottom: 2rem !important;">Ready to Transform Your Hiring?</h2>
+            <p class="lead mb-5" style="color: #aaa; font-size: 1.1rem; margin-bottom: 3rem !important;">Join companies using Vode to build better technical teams</p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="#" class="btn btn-lg" style="background: #4cc9f0; color: #000; font-weight: 700; padding: 0.8rem 2.5rem; border: none; border-radius: 0.5rem; transition: all 0.3s; box-shadow: 0 4px 15px rgba(76, 201, 240, 0.3);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 25px rgba(76, 201, 240, 0.4)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.3)'">
+                    Get Started Free
+                </a>
+                <a href="#" class="btn btn-lg" style="border: 2px solid #4cc9f0; color: #4cc9f0; background: transparent; font-weight: 700; padding: 0.8rem 2.5rem; border-radius: 0.5rem; transition: all 0.3s;" onmouseover="this.style.backgroundColor='rgba(76, 201, 240, 0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                    Schedule Demo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Animations CSS -->
+    <style>
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .card {
+            box-shadow: none;
+        }
+    </style>
+
+{% endblock %}

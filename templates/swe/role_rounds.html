@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Configure Rounds - {{ role.title }}{% endblock %}
+
+{% block content %}
+    <!-- Header with Back Button -->
+    <div class="mb-5">
+        <a href="{% url 'swe:index' %}" class="text-muted small mb-3 d-inline-block">&larr; Back to Roles</a>
+        <h1 class="h2 fw-bold mb-2">{{ role.title }}</h1>
+        <p class="text-muted">Configure interview rounds for this role</p>
+    </div>
+
+    {% if rounds %}
+        <!-- Rounds Grid -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+            {% for round in rounds %}
+                <div class="col">
+                    <div class="card round-config-card h-100 transition-all">
+                        <div class="card-body d-flex flex-column">
+                            <!-- Header with Round Number and Difficulty -->
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="card-title fw-bold mb-1">Round {{ round.round_number }}</h5>
+                                    <p class="text-muted small mb-0">{{ round.name }}</p>
+                                </div>
+                                <span class="badge bg-primary">{{ round.get_difficulty_level_display }}</span>
+                            </div>
+
+                            <!-- Description -->
+                            <p class="card-text text-muted small flex-grow-1 mb-4">
+                                {{ round.description|default:"No description" }}
+                            </p>
+
+                            <!-- Configuration Details -->
+                            <div class="mb-4 pb-4 border-bottom border-dark">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <p class="text-muted small mb-0">Time Limit</p>
+                                    <p class="text-light fw-bold mb-0">{{ round.time_limit }} min</p>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="text-muted small mb-0">Topics</p>
+                                    <p class="text-light fw-bold mb-0">
+                                        {% if round.data_structures_list %}
+                                            {{ round.data_structures_list|length }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Edit Button -->
+                            <div>
+                                <a href="{% url 'swe:round_edit' round.id %}" class="btn btn-primary w-100 btn-sm">
+                                    Configure
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Empty State -->
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <div style="font-size: 3rem; color: rgba(76, 201, 240, 0.3);">○</div>
+            </div>
+            <h3 class="h5 fw-bold mb-2">No Rounds Found</h3>
+            <p class="text-muted mb-0">
+                Create rounds for this role in the admin panel to get started.
+            </p>
+        </div>
+    {% endif %}
+
+{% endblock %}
