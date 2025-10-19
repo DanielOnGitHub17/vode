@@ -14,7 +14,7 @@
                         Empowering Teams to Hire Efficiently and Effectively
                     </h1>
 
-                    <p class="lead mb-4" style="font-size: 1.4rem; line-height: 1.6;">
+                    <p class="lead mb-4" style="font-size: 1.3rem; line-height: 1.6; color: #cecbcbff; margin-bottom:20px;">
                         Streamline your hiring process with <span style="color: #4cc9f0;"><b>Vode</b></span>. Conduct seamless technical interviews, manage candidates effortlessly, and make data-driven hiring decisions.
                     </p>
                     <div class="d-flex gap-3 flex-wrap">
@@ -25,7 +25,7 @@
                             Sign Up
                         </a>
                     </div>
-                    <p class="mt-4" style="color: #666; font-size: 0.9rem;">Already have an account? <a href="#" style="color: #4cc9f0; text-decoration: none; font-weight: 600;">Sign In</a></p>
+                    <p class="mt-4" style="color: #cfcdcdff; font-size: 0.9rem;">Already have an account? <a href="#" style="color: #4cc9f0; text-decoration: none; font-weight: 600;">Sign In</a></p>
                 </div>
 
                 <!-- Hero Illustration -->
@@ -182,63 +182,82 @@
     <section class="py-5" style="background: rgba(76, 201, 240, 0.02); padding-top: 8rem !important; padding-bottom: 8rem !important;">
         <div class="container-fluid px-4">
             <div class="text-center mb-5" style="margin-bottom: 4rem !important;">
-                <h2 class="h1 fw-bold mb-3" style="color: #fff; margin-bottom: 2rem !important;">Frequently Asked Questions</h2>
-                <p class="lead" style="color: #aaa;">Get answers to common questions about Vode</p>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <i class="bi bi-chat-left-quote" style="color: #4cc9f0; font-size: 2.5rem;"></i>
+                    <h2 class="h1 fw-bold mb-0" style="color: #fff;">Frequently Asked Questions</h2>
+                    <i class="bi bi-chat-right-quote" style="color: #4cc9f0; font-size: 2.5rem;"></i>
+                </div>
+                <p class="lead" style="color: #fff; font-size: 1.1rem; margin-top: 1rem;">Get answers to common questions about Vode</p>
             </div>
 
             <div class="row" style="max-width: 900px; margin: 0 auto;">
                 <!-- FAQ 1 -->
                 <div class="col-lg-12 mb-4" style="animation: fadeInUp 0.8s ease-out;">
-                    <div style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2rem; cursor: pointer; transition: all 0.3s;" onclick="this.querySelector('[data-faq=1]').style.display = this.querySelector('[data-faq=1]').style.display === 'none' ? 'block' : 'none';" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h4 class="fw-bold mb-0" style="color: #4cc9f0;">How does Vode work?</h4>
-                            <i class="bi bi-chevron-down" style="color: #4cc9f0; font-size: 1.5rem;"></i>
+                    <div class="faq-item" style="background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; cursor: pointer; transition: all 0.3s;" onclick="toggleFAQ(this, 1)" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.6)'; this.style.boxShadow='0 8px 25px rgba(76, 201, 240, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; flex: 1;">
+                                <i class="bi bi-question-circle-fill" style="color: #4cc9f0; font-size: 1.5rem; margin-top: 0.3rem; flex-shrink: 0;"></i>
+                                <h4 class="fw-bold mb-0" style="color: #4cc9f0; font-size: 1.1rem; line-height: 1.4;">How does Vode work?</h4>
+                            </div>
+                            <i class="bi bi-chevron-down faq-chevron" style="color: #4cc9f0; font-size: 1.5rem; transition: transform 0.3s ease; flex-shrink: 0;"></i>
                         </div>
-                        <p data-faq="1" style="color: #aaa; margin-top: 1rem; display: none;">Vode provides a unified platform for scheduling technical interviews, conducting live coding sessions, scoring candidates objectively, and collaborating with your team. Simply invite candidates, they join your virtual interview room, and you evaluate their technical skills in real-time with our built-in code editor.</p>
+                        <p data-faq="1" style="color: #fff; margin-top: 1.5rem; display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; line-height: 1.6; font-size: 0.95rem; margin-left: 2.5rem;">Vode provides a unified platform for scheduling technical interviews, conducting live coding sessions, scoring candidates objectively, and collaborating with your team. Simply invite candidates, they join your virtual interview room, and you evaluate their technical skills in real-time with our built-in code editor. The platform handles everything from scheduling logistics to performance analytics, making the entire interview process seamless and efficient.</p>
                     </div>
                 </div>
 
                 <!-- FAQ 2 -->
                 <div class="col-lg-12 mb-4" style="animation: fadeInUp 0.8s ease-out 0.1s; animation-fill-mode: both;">
-                    <div style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2rem; cursor: pointer; transition: all 0.3s;" onclick="this.querySelector('[data-faq=2]').style.display = this.querySelector('[data-faq=2]').style.display === 'none' ? 'block' : 'none';" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h4 class="fw-bold mb-0" style="color: #4cc9f0;">Is my candidate data secure?</h4>
-                            <i class="bi bi-chevron-down" style="color: #4cc9f0; font-size: 1.5rem;"></i>
+                    <div class="faq-item" style="background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; cursor: pointer; transition: all 0.3s;" onclick="toggleFAQ(this, 2)" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.6)'; this.style.boxShadow='0 8px 25px rgba(76, 201, 240, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; flex: 1;">
+                                <i class="bi bi-shield-lock" style="color: #4cc9f0; font-size: 1.5rem; margin-top: 0.3rem; flex-shrink: 0;"></i>
+                                <h4 class="fw-bold mb-0" style="color: #4cc9f0; font-size: 1.1rem; line-height: 1.4;">Is my candidate data secure?</h4>
+                            </div>
+                            <i class="bi bi-chevron-down faq-chevron" style="color: #4cc9f0; font-size: 1.5rem; transition: transform 0.3s ease; flex-shrink: 0;"></i>
                         </div>
-                        <p data-faq="2" style="color: #aaa; margin-top: 1rem; display: none;">Absolutely. Vode uses bank-grade 256-bit encryption, is SOC 2 Type II compliant, and GDPR ready. All data is encrypted in transit and at rest. We never share your candidate data with third parties without explicit consent.</p>
+                        <p data-faq="2" style="color: #fff; margin-top: 1.5rem; display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; line-height: 1.6; font-size: 0.95rem; margin-left: 2.5rem;">Absolutely. Vode uses bank-grade 256-bit encryption, is SOC 2 Type II compliant, and GDPR ready. All data is encrypted in transit and at rest. We never share your candidate data with third parties without explicit consent. Your data is hosted on secure, redundant servers with automatic backups and disaster recovery protocols in place.</p>
                     </div>
                 </div>
 
                 <!-- FAQ 3 -->
                 <div class="col-lg-12 mb-4" style="animation: fadeInUp 0.8s ease-out 0.2s; animation-fill-mode: both;">
-                    <div style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2rem; cursor: pointer; transition: all 0.3s;" onclick="this.querySelector('[data-faq=3]').style.display = this.querySelector('[data-faq=3]').style.display === 'none' ? 'block' : 'none';" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h4 class="fw-bold mb-0" style="color: #4cc9f0;">Can I integrate Vode with my ATS?</h4>
-                            <i class="bi bi-chevron-down" style="color: #4cc9f0; font-size: 1.5rem;"></i>
+                    <div class="faq-item" style="background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; cursor: pointer; transition: all 0.3s;" onclick="toggleFAQ(this, 3)" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.6)'; this.style.boxShadow='0 8px 25px rgba(76, 201, 240, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; flex: 1;">
+                                <i class="bi bi-plug" style="color: #4cc9f0; font-size: 1.5rem; margin-top: 0.3rem; flex-shrink: 0;"></i>
+                                <h4 class="fw-bold mb-0" style="color: #4cc9f0; font-size: 1.1rem; line-height: 1.4;">Can I integrate Vode with my ATS?</h4>
+                            </div>
+                            <i class="bi bi-chevron-down faq-chevron" style="color: #4cc9f0; font-size: 1.5rem; transition: transform 0.3s ease; flex-shrink: 0;"></i>
                         </div>
-                        <p data-faq="3" style="color: #aaa; margin-top: 1rem; display: none;">Yes! Vode integrates seamlessly with popular ATS platforms like Greenhouse, Lever, Workday, and 50+ other tools via API and Zapier. We can also build custom integrations for enterprise clients.</p>
+                        <p data-faq="3" style="color: #fff; margin-top: 1.5rem; display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; line-height: 1.6; font-size: 0.95rem; margin-left: 2.5rem;">Yes! Vode integrates seamlessly with popular ATS platforms like Greenhouse, Lever, Workday, and 50+ other tools via API and Zapier. We can also build custom integrations for enterprise clients. Candidates can be synced automatically, interview results flow back to your ATS instantly, and all data remains synchronized in real-time.</p>
                     </div>
                 </div>
 
                 <!-- FAQ 4 -->
                 <div class="col-lg-12 mb-4" style="animation: fadeInUp 0.8s ease-out 0.3s; animation-fill-mode: both;">
-                    <div style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2rem; cursor: pointer; transition: all 0.3s;" onclick="this.querySelector('[data-faq=4]').style.display = this.querySelector('[data-faq=4]').style.display === 'none' ? 'block' : 'none';" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h4 class="fw-bold mb-0" style="color: #4cc9f0;">What programming languages do you support?</h4>
-                            <i class="bi bi-chevron-down" style="color: #4cc9f0; font-size: 1.5rem;"></i>
+                    <div class="faq-item" style="background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; cursor: pointer; transition: all 0.3s;" onclick="toggleFAQ(this, 4)" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.6)'; this.style.boxShadow='0 8px 25px rgba(76, 201, 240, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; flex: 1;">
+                                <i class="bi bi-code-square" style="color: #4cc9f0; font-size: 1.5rem; margin-top: 0.3rem; flex-shrink: 0;"></i>
+                                <h4 class="fw-bold mb-0" style="color: #4cc9f0; font-size: 1.1rem; line-height: 1.4;">What programming languages do you support?</h4>
+                            </div>
+                            <i class="bi bi-chevron-down faq-chevron" style="color: #4cc9f0; font-size: 1.5rem; transition: transform 0.3s ease; flex-shrink: 0;"></i>
                         </div>
-                        <p data-faq="4" style="color: #aaa; margin-top: 1rem; display: none;">Vode supports 25+ programming languages including JavaScript, Python, Java, C++, Go, Rust, Ruby, PHP, and more. You can customize the available languages for your team and create language-specific coding challenges.</p>
+                        <p data-faq="4" style="color: #fff; margin-top: 1.5rem; display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; line-height: 1.6; font-size: 0.95rem; margin-left: 2.5rem;">Vode supports 25+ programming languages including JavaScript, Python, Java, C++, Go, Rust, Ruby, PHP, TypeScript, C#, Kotlin, and more. You can customize the available languages for your team and create language-specific coding challenges. Our code environment includes syntax highlighting, auto-completion, and real-time compilation feedback.</p>
                     </div>
                 </div>
 
                 <!-- FAQ 5 -->
                 <div class="col-lg-12 mb-4" style="animation: fadeInUp 0.8s ease-out 0.4s; animation-fill-mode: both;">
-                    <div style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2rem; cursor: pointer; transition: all 0.3s;" onclick="this.querySelector('[data-faq=5]').style.display = this.querySelector('[data-faq=5]').style.display === 'none' ? 'block' : 'none';" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 4px 15px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h4 class="fw-bold mb-0" style="color: #4cc9f0;">How much does Vode cost?</h4>
-                            <i class="bi bi-chevron-down" style="color: #4cc9f0; font-size: 1.5rem;"></i>
+                    <div class="faq-item" style="background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; padding: 2.5rem; cursor: pointer; transition: all 0.3s;" onclick="toggleFAQ(this, 5)" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.6)'; this.style.boxShadow='0 8px 25px rgba(76, 201, 240, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; flex: 1;">
+                                <i class="bi bi-credit-card" style="color: #4cc9f0; font-size: 1.5rem; margin-top: 0.3rem; flex-shrink: 0;"></i>
+                                <h4 class="fw-bold mb-0" style="color: #4cc9f0; font-size: 1.1rem; line-height: 1.4;">How much does Vode cost?</h4>
+                            </div>
+                            <i class="bi bi-chevron-down faq-chevron" style="color: #4cc9f0; font-size: 1.5rem; transition: transform 0.3s ease; flex-shrink: 0;"></i>
                         </div>
-                        <p data-faq="5" style="color: #aaa; margin-top: 1rem; display: none;">Vode offers flexible pricing starting from Free tier (perfect for testing) to Pro and Enterprise plans. Most teams see ROI within 2-3 months through reduced hiring costs. <a href="#" style="color: #4cc9f0; text-decoration: none;">View pricing details →</a></p>
+                        <p data-faq="5" style="color: #fff; margin-top: 1.5rem; display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; line-height: 1.6; font-size: 0.95rem; margin-left: 2.5rem;">Vode offers flexible pricing with options for teams of all sizes. Start with our Free tier for testing and evaluation, then scale to Pro ($499/month) or Enterprise plans as your hiring volume grows. Most teams see ROI within 2-3 months through reduced hiring costs and improved candidate quality. Custom pricing is available for enterprises with unique requirements.</p>
                     </div>
                 </div>
             </div>
@@ -309,5 +328,39 @@
             box-shadow: none;
         }
     </style>
+
+    <script>
+        function toggleFAQ(element, id) {
+            const answer = element.querySelector('[data-faq="' + id + '"]');
+            const chevron = element.querySelector('.faq-chevron');
+            const isOpen = answer.style.display !== 'none';
+            
+            // Close all other FAQs
+            document.querySelectorAll('[data-faq]').forEach(item => {
+                if (item !== answer) {
+                    item.style.display = 'none';
+                    item.style.maxHeight = '0';
+                }
+            });
+            
+            // Reset all chevrons
+            document.querySelectorAll('.faq-chevron').forEach(icon => {
+                if (icon !== chevron) {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Toggle current FAQ
+            if (isOpen) {
+                answer.style.display = 'none';
+                answer.style.maxHeight = '0';
+                chevron.style.transform = 'rotate(0deg)';
+            } else {
+                answer.style.display = 'block';
+                answer.style.maxHeight = '500px';
+                chevron.style.transform = 'rotate(180deg)';
+            }
+        }
+    </script>
 
 {% endblock %}

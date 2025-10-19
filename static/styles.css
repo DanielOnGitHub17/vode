@@ -386,3 +386,16 @@ a:hover {
         font-size: 0.95rem;
     }
 }
+
+/* ===== GRADIENT ANIMATION ===== */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% center;
+    }
+    50% {
+        background-position: 100% center;
+    }
+    100% {
+        background-position: 0% center;
+    }
+}
