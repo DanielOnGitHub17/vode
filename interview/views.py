@@ -83,7 +83,7 @@ def interview(request, id: int):
     print(mock_candidate.user.get_full_name())
     
     try:
-        interview_obj = Interview.objects.filter(id=id, candidate=mock_candidate)[0]
+        interview_obj = Interview.objects.get(id=id)
 
         if interview_obj.candidate != mock_candidate:
             messages.error(request, "You are not authorized to view this interview.")
