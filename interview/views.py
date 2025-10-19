@@ -10,11 +10,13 @@ import logging
 
 from cand.models import Candidate
 from .models import Question, Interview
-from .mocks import MOCK_QUESTION
+# from .mocks import MOCK_QUESTION
 from interview.services.interview_orchestrator import InterviewOrchestrator
 
 logger = logging.getLogger(__name__)
 orchestrator = InterviewOrchestrator()
+QUESTION_THRESHOLD = 5  # could be 1000
+
 
 def end(request, id: int):
     """End the interview and save video URLs."""
@@ -198,16 +200,25 @@ def generate_interview_question(interview: Interview) -> Question:
     Returns:
         Question: A Question model instance
     """
-    # Create from mock question
+    latest_questions = Question.objects.filter(round=interview.round).order_by('-id')[:QUESTION_THRESHOLD]
+    question_titles = [question.title for question in latest_questions]
+    
+    context = {
+        "difficulty": interview.round.difficulty_level,
+        "topics": interview.round.data_structures,
+        "already_picked": ", ".join(question_titles) if question_titles else "None",
+    }
+
+    question = orchestrator.gemini.get_question(context)
     question, created = Question.objects.get_or_create(
-        title=MOCK_QUESTION["title"],
+        title=question["title"],
         defaults={
-            "statement": MOCK_QUESTION["statement"],
-            "test_cases": MOCK_QUESTION["test_cases"],
+            "statement": question["statement"],
+            "test_cases": question["test_cases"],
             "round": interview.round
         }
     )
-    
+
     return question
 
 

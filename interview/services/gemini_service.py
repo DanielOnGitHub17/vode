@@ -1,6 +1,7 @@
 import google.generativeai as genai
 from django.conf import settings
-from interview.mocks import MOCK_QUESTION
+from interview.mocks import QUESTION_GENERATION_PROMPT
+import json
 import logging
 
 logger = logging.getLogger(__name__)
@@ -11,10 +12,51 @@ class GeminiService:
         genai.configure(api_key=settings.GEMINI_API_KEY)
         self.model = genai.GenerativeModel('gemini-2.0-flash-lite')
         self.conversation_history = []
-    
-    def get_question(self):
-        """Return the Two Sum question from mocks"""
-        return MOCK_QUESTION
+
+    def get_question(self, context):
+        """
+        Generates a coding interview question using Gemini AI.
+        """
+        try:
+            # Format the prompt with context
+            prompt = QUESTION_GENERATION_PROMPT % context
+            
+            logger.info(f"Generating question for difficulty={context.get('difficulty')}, topics={context.get('topics')}")
+            
+            # Generate question using Gemini
+            response = self.model.generate_content(prompt)
+            response_text = response.text
+            
+            logger.info(f"Question generation response received: {len(response_text)} characters")
+            
+            # Extract JSON from response
+            json_start = response_text.find('{')
+            json_end = response_text.rfind('}') + 1
+            
+            if json_start == -1 or json_end == 0:
+                logger.error(f"Could not find JSON in response: {response_text[:200]}")
+                raise ValueError("Invalid response format from Gemini")
+            
+            json_str = response_text[json_start:json_end]
+            
+            # Parse JSON
+            question_data = json.loads(json_str)
+            
+            # Validate required fields
+            if 'title' not in question_data or 'statement' not in question_data or 'test_cases' not in question_data:
+                logger.error(f"Missing required fields in question data: {question_data.keys()}")
+                raise ValueError("Incomplete question data from Gemini")
+            
+            logger.info(f"Successfully generated question: {question_data['title']}")
+            
+            return question_data
+            
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON parse error generating question: {e}. Raw response: {response_text[:500]}")
+            raise ValueError(f"Failed to parse question JSON: {e}")
+        except Exception as e:
+            logger.error(f"Error generating question: {e}", exc_info=True)
+            raise
     
     def initialize_context(self, question_data, interview_context):
         """
