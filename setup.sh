@@ -12,7 +12,7 @@ fi
 
 # Add new roles to database
 ./env/bin/python manage.py shell << 'EOF'
-from recruit.models import Role, Round
+from interview.models import Role, Round
 
 print("\n📋 Adding New Roles...")
 

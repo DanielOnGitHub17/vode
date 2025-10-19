@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from interview.models import Role, Candidate
+from interview.models import Role, Interview
+from cand.models import Candidate
 
 
 def index(request):
@@ -15,7 +16,14 @@ def role_detail(request, role_id):
     
     if active_tab > role.num_rounds or active_tab < 1:
         active_tab = 1
-    candidates = role.candidates.filter(current_round=active_tab)
+    
+    # Get interviews for this role at the specific round
+    interviews = Interview.objects.filter(
+        round__role=role,
+        round__round_number=active_tab
+    ).order_by('-score').select_related('candidate')
+    
+    candidates = [interview.candidate for interview in interviews]
     rounds = list(range(1, role.num_rounds + 1))
     
     return render(request, 'recruit/role_detail.html', {
