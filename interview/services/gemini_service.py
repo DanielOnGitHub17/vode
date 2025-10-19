@@ -20,7 +20,7 @@ class GeminiService:
         try:
             # Format the prompt with context
             prompt = QUESTION_GENERATION_PROMPT % context
-            
+
             logger.info(f"Generating question for difficulty={context.get('difficulty')}, topics={context.get('topics')}")
             
             # Generate question using Gemini

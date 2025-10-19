@@ -19,6 +19,7 @@ function endInterview() {
 }
 
 async function sendTextCode(transcribedText = "", code = "") {
+    console.log("GOT SEND TEXT")
     return;
     try {
         const response = await fetch(API_URL, {
@@ -30,7 +31,7 @@ async function sendTextCode(transcribedText = "", code = "") {
             body: JSON.stringify({
                 audio_transcript: transcribedText,
                 code: code,
-                interview_id: interviewId
+                interview_id: window.interviewId
             })
         });
 
@@ -39,7 +40,11 @@ async function sendTextCode(transcribedText = "", code = "") {
         }
 
         const data = await response.json();
+        
+        // Display AI response in chat and play audio
         typeAndSay(data);
+        
+        return data;
     } catch (error) {
         console.error("sendTextCode error:", error);
         return null;
@@ -82,29 +87,24 @@ function sendHeartbeat() {
 }
 
 function submitInterview(finalCode, duration) {
-    console.log("submitInterview called:", { 
+    console.log("submitInterview called:", {
         finalCode: finalCode.substring(0, 50) + "...", 
         duration 
     });
 }
 
 function typeAndSay(data) {
-    if (!data || !data.reasoning) return;
-
-    // Add AI message to chat using sendMessage from page.js
-    if (typeof sendMessage === 'function') {
-        const typingElement = sendMessage(data.reasoning, true, 'ai-typing');
-        
-        if (typingElement) {
-            // Type animation for reasoning text in chat
-            typeText(typingElement, data.reasoning, 30);
-        }
+    if (!data || !data.reasoning) {
+        console.warn('No reasoning data received');
+        return;
     }
+
+    // Add AI message to chat
+    const aiMessageElement = sendMessage(data.reasoning, true);
     
-    // Update AI status text with typing animation
-    const aiStatus = get('AI_STATUS');
-    if (aiStatus) {
-        typeText(aiStatus, data.reasoning, 30);
+    if (aiMessageElement) {
+        // Type animation for reasoning text in chat
+        typeText(aiMessageElement, data.reasoning, 30);
     }
     
     // Play audio response if available
@@ -136,9 +136,9 @@ function typeText(element, text, delay = 30) {
             element.textContent += text[index];
             index++;
             
-            // Auto-scroll if in chat
+            // Auto-scroll chat to bottom
             const chatMessages = get('CHAT_MESSAGES');
-            if (chatMessages && element.closest('#CHAT_MESSAGES')) {
+            if (chatMessages) {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         } else {

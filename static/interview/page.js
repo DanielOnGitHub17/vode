@@ -44,21 +44,60 @@ get('LANGUAGE_SELECT').addEventListener('change', (e) => {
     monaco.editor.setModelLanguage(editor.getModel(), langMap[e.target.value]);
 });
 
-function sendMessage() {
+function sendMessage(messageText = null, isAI = false) {
+    console.log('sendMessage called:', { messageText, isAI });
+    
     const input = get('CHAT_INPUT');
     const chatMessages = get('CHAT_MESSAGES');
+    const chatInputContainer = get('CHAT_INPUT_CONTAINER');
     
-    if (!input || !chatMessages) return;
+    if (!chatMessages) {
+        console.error('CHAT_MESSAGES not found');
+        return null;
+    }
     
-    const msg = input.value.trim();
-    if (!msg) return;
+    console.log('CHAT_MESSAGES found:', chatMessages);
     
-    const msgDiv = make('div', { className: 'chat-message' });
-    msgDiv.innerHTML = `<i class="bi bi-person-fill"></i><p>${msg}</p>`;
-    add(chatMessages, msgDiv);
+    // Get message text - either from parameter or input field
+    const msg = messageText || (input ? input.value.trim() : '');
+    if (!msg) {
+        console.warn('No message text to send');
+        return null;
+    }
     
-    // chatMessages.scrollTop = chatMessages.scrollHeight;
+    console.log('Creating message div for:', msg);
+
+    // Create message div
+    const msgDiv = make('div');
+    msgDiv.className = 'chat-message';
+    
+    if (isAI) {
+        // AI message with robot icon
+        msgDiv.innerHTML = `<i class="bi bi-robot"></i><p class="ai-message"></p>`;
+    } else {
+        // User message with person icon
+        msgDiv.innerHTML = `<i class="bi bi-person-fill"></i><p>${msg}</p>`;
+    }
+    
+    console.log('Adding message to chat:', msgDiv);
+    add(msgDiv, chatMessages);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Clear input if it was used
+    if (!messageText && input) {
+        input.value = '';
+    }
+    
+    // Return the paragraph element for AI typing animation
+    if (isAI) {
+        return msgDiv.querySelector('p.ai-message');
+    }
+    
+    return msgDiv;
 }
+
+// Make sendMessage globally available
+window.sendMessage = sendMessage;
 
 // Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {

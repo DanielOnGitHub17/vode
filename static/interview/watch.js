@@ -178,20 +178,34 @@ function watchChatBox() {
 }
 
 function handleChatMessage() {
-    sendMessage();
+    console.log('handleChatMessage called');
+    
     const chatInput = get("CHAT_INPUT");
     const message = chatInput.value.trim();
-    console.log("Entered handler")
+    
+    console.log('Message from input:', message);
     
     if (message) {
-        console.log("Entered handler message")
+        // Show user message in chat immediately
+        console.log('Calling sendMessage with:', message);
+        
+        if (typeof window.sendMessage === 'function') {
+            window.sendMessage(message, false);
+        } else {
+            console.error('sendMessage function not found!');
+        }
+        
         lastChatMessage = message;
         
-        // Send chat message with current code context
+        // Send chat message with current code context to API
         const currentCode = editor ? editor.getValue() : "";
         sendText(message, currentCode);
-    };
-    chatInput.value = "";
+        
+        // Clear input
+        chatInput.value = "";
+    } else {
+        console.warn('No message to send');
+    }
 }
 
 // ============================================

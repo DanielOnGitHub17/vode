@@ -395,6 +395,9 @@ body {
     border-radius: 0.25rem;
     padding: 0.75rem;
     margin-bottom: 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
 }
 
 .chat-message.system-message {
@@ -402,15 +405,29 @@ body {
     background: rgba(6, 214, 160, 0.1);
 }
 
+/* AI message styling */
+.chat-message:has(.ai-message) {
+    border-left-color: #f72585;
+    background: rgba(247, 37, 133, 0.05);
+}
+
 .chat-message i {
     color: #4cc9f0;
-    margin-right: 0.5rem;
+    margin-right: 0;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.chat-message:has(.ai-message) i {
+    color: #f72585;
 }
 
 .chat-message p {
     margin: 0;
     line-height: 1.5;
     font-size: 0.9rem;
+    flex: 1;
 }
 
 #CHAT_INPUT_CONTAINER {
