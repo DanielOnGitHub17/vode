@@ -1,12 +1,20 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
+import json
+import logging
 
 from cand.models import Candidate
 from .models import Question, Interview
 from .mocks import MOCK_QUESTION
+from interview.services.interview_orchestrator import InterviewOrchestrator
 
-# Create your views here.
+logger = logging.getLogger(__name__)
+orchestrator = InterviewOrchestrator()
+
 
 def interview(request, id: int):
     """
@@ -37,10 +45,23 @@ def interview(request, id: int):
         else:
             question = interview_obj.question
 
+        # Prepare interview context for the AI agent
+        interview_context = {
+            'role': interview_obj.round.role.title,
+            'round': interview_obj.round.round_number,
+            'total_rounds': interview_obj.round.role.num_rounds,
+            'difficulty': interview_obj.round.difficulty_level,
+        }
+        
+        # Initialize the AI agent with full context about the problem
+        orchestrator.start_interview(interview_context)
+
         context = {
             "interview": interview_obj,
             "candidate": mock_candidate,
             "question": question,
+            "round": interview_obj.round,
+            "role": interview_obj.round.role,
         }
 
         return render(request, "interview/index.html", context)
@@ -50,10 +71,82 @@ def interview(request, id: int):
         return redirect("/candidate/")
 
 
+@require_http_methods(["POST"])
+@csrf_exempt
+def get_question_audio(request):
+    """Get question audio stream"""
+    try:
+        result = orchestrator.get_question_with_audio()
+        
+        if result['success']:
+            return HttpResponse(result['audio'], content_type='audio/mpeg')
+        else:
+            return JsonResponse({'error': result['error']}, status=500)
+    except Exception as e:
+        logger.error(f"Error getting question audio: {e}")
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def get_response(request):
+    """
+    Main endpoint: Receive continuous code + audio updates from frontend.
+    Frontend sends intermittently based on inactivity timer.
+    
+    Gemini maintains conversation history, so each call is contextualized
+    with all previous exchanges. This handles:
+    - Initial code submission
+    - Code updates
+    - Candidate questions
+    - Follow-ups (no separate endpoint needed)
+    
+    Frontend sends:
+    - code: Current code from editor (may be empty if just asking question)
+    - audio_transcript: Current audio/text from candidate
+    - interview_id: Which interview
+    
+    Backend returns:
+    - audio: MP3 audio feedback (binary response)
+    """
+    try:
+        data = json.loads(request.body)
+        code = data.get('code', '')
+        audio_transcript = data.get('audio_transcript', '')
+        interview_id = data.get('interview_id')
+        
+        # Get interview context
+        interview = Interview.objects.select_related('round', 'round__role').get(id=interview_id)
+        context = {
+            'role': interview.round.role.title,
+            'round': interview.round.round_number,
+            'difficulty': interview.round.difficulty_level,
+        }
+        
+        # Get AI coaching feedback (Gemini maintains conversation history)
+        result = orchestrator.agent_evaluate_submission(
+            code,
+            audio_transcript,
+            context
+        )
+        
+        if result['success']:
+            # Return audio as binary response
+            return HttpResponse(result['audio'], content_type='audio/mpeg')
+        else:
+            return JsonResponse({'error': result['error']}, status=500)
+    except Interview.DoesNotExist:
+        return JsonResponse({'error': 'Interview not found'}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        logger.error(f"Error processing code/transcript: {e}")
+        return JsonResponse({'error': str(e)}, status=500)
+
+
 def generate_interview_question(interview: Interview) -> Question:
     """
     Generate and create a Question object for an interview
-    Randomly selects or creates a question from the round"s question pool
     
     Args:
         interview: Interview model instance
@@ -61,12 +154,7 @@ def generate_interview_question(interview: Interview) -> Question:
     Returns:
         Question: A Question model instance
     """
-    # TODO: Implement smart question selection
-    # - Check if round has existing questions
-    # - Select one that hasn't been used for this candidate
-    # - Or create a new question from a question bank/API
-    
-    # For now, create a mock question
+    # Create from mock question
     question, created = Question.objects.get_or_create(
         title=MOCK_QUESTION["title"],
         defaults={
