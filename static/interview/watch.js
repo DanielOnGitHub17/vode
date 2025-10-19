@@ -41,8 +41,10 @@ function startCountdown(timeLeftSeconds) {
             TIMER_BADGE.classList.remove("bg-primary");
             TIMER_BADGE.classList.add("bg-danger");
             
-            // End the interview
-            endInterview();
+            // Mark interview as completed before ending
+            markInterviewCompleted().then(() => {
+                endInterview();
+            });
         } else {
             // Update timer display
             const hours = Math.floor(timeLeftSeconds / 3600);
@@ -55,9 +57,9 @@ function startCountdown(timeLeftSeconds) {
             } else {
                 displayTime = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
             }
-            
+
             TIMER_BADGE.textContent = displayTime;
-            
+
             // Change color when less than 5 minutes remaining
             if (timeLeftSeconds <= 300 && timeLeftSeconds > 0) {
                 TIMER_BADGE.classList.remove("bg-primary");
@@ -238,6 +240,43 @@ function handleTypingPause() {
 // ============================================
 // CLEANUP ON INTERVIEW END
 // ============================================
+
+async function markInterviewCompleted() {
+    try {
+        const response = await fetch('/interview/api/end-interview/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                interview_id: window.interviewId
+            })
+        });
+
+        const data = await response.json();
+        console.log('Interview marked as completed:', data);
+        return data;
+    } catch (error) {
+        console.error('Error marking interview as completed:', error);
+        return null;
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 function cleanupMonitoring() {
     // Stop speech recognition

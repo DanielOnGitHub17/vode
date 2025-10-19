@@ -9,7 +9,13 @@ function endInterview() {
 
     alert("Time is up! Your interview has ended.");
 
-    window.location.href = `/interview/end/${window.interviewId}/`;
+    // Send recordings before navigating to end page
+    if (typeof window.sendRecordings === 'function') {
+        window.sendRecordings();
+    } else {
+        // Fallback if recorder not loaded
+        window.location.href = `/interview/end/${window.interviewId}/`;
+    }
 }
 
 async function sendTextCode(transcribedText = "", code = "") {

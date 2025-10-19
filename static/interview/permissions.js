@@ -74,16 +74,30 @@ async function requestPermissions() {
             window.location.href = "/candidate/";
         };
 
-        // // Initialize speech recognition here
+        // Initialize speech recognition here
         initializeSpeechRecognition();
 
         // All permissions granted - show the page
         document.body.style.display = '';
         
+        // Dispatch custom event that streams are ready
+        const streamsReadyEvent = new CustomEvent('streamsReady', {
+            detail: {
+                screenStream: window.entire_screen_feed,
+                videoStream: window.video_feed,
+                audioStream: window.audio_feed
+            }
+        });
+        document.dispatchEvent(streamsReadyEvent);
+        console.log('Streams ready event dispatched');
+        
+        // Start recording after permissions granted (legacy support)
+        if (typeof window.startRecording === 'function') {
+            window.startRecording();
+        }
+        
         // Request fullscreen on user click
         document.body.onclick = () => {
-            // alert("please click your screen");
-            // initializeSpeechRecognition();
             document.body.requestFullscreen();
             document.body.onclick = null;
         };

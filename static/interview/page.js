@@ -57,7 +57,7 @@ function sendMessage() {
     msgDiv.innerHTML = `<i class="bi bi-person-fill"></i><p>${msg}</p>`;
     add(chatMessages, msgDiv);
     
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    // chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 // Initialize everything when DOM is ready

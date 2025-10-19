@@ -2,6 +2,7 @@ from interview.services.gemini_service import GeminiService
 from interview.services.elevenlabs_service import ElevenLabsService
 from interview.mocks import MOCK_QUESTION
 import logging
+import base64
 
 logger = logging.getLogger(__name__)
 
@@ -114,15 +115,19 @@ class InterviewOrchestrator:
             feedback = scoring_result['feedback']
             end_message = f"""Thank you for taking the time to interview with us today. We appreciate your participation and the effort you put into solving this problem. Your recruiter will be reaching out to you shortly with feedback and next steps. We look forward to staying in touch!"""
             audio = self.elevenlabs.text_to_speech(end_message)
+
+            # Convert audio bytes to base64
+            audio_base64 = base64.b64encode(audio).decode('utf-8')
             self.gemini.clear_context()
             
             return {
                 'score': score,
                 'feedback': feedback,
                 'message': end_message,
-                'audio': audio,
+                'audio': audio_base64,
                 'success': True
             }
+
         except Exception as e:
             logger.error(f"Error generating end-of-interview evaluation: {e}")
             return {
