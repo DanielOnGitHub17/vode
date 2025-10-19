@@ -41,7 +41,7 @@ class Dashboard(View):
         
         if not interview_id:
             messages.error(request, "No interview ID provided.")
-            return redirect("/cand/")
+            return redirect("/candidate/")
 
         try:
             interview = Interview.objects.get(id=interview_id)
@@ -49,18 +49,18 @@ class Dashboard(View):
             # Security validation: Verify interview belongs to this candidate
             if interview.candidate != mock_candidate:
                 messages.error(request, "You are not authorized to start this interview.")
-                return redirect("/cand/")
+                return redirect("/candidate/")
             
             # Verify interview hasn't been completed
             if interview.completed_at is not None:
                 messages.warning(request, "This interview has already been completed.")
-                return redirect("/cand/")
+                return redirect("/candidate/")
             
             # Verify interview hasn't already been started
             if interview.started_at is not None:
                 # should this not go to the interview?
                 messages.warning(request, "This interview has already been started.")
-                return redirect("/cand/")
+                return redirect("/candidate/")
             
             # Set started_at timestamp
             interview.started_at = timezone.now()
@@ -70,4 +70,4 @@ class Dashboard(View):
             return redirect(f"/interview/{interview.id}/")
         except Interview.DoesNotExist:
             messages.error(request, "Interview not found.")
-            return redirect("/cand/")
+            return redirect("/candidate/")

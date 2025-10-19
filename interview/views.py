@@ -1,81 +1,80 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from datetime import datetime
+
+from cand.models import Candidate
+from .models import Question, Interview
+from .mocks import MOCK_QUESTION
 
 # Create your views here.
 
-def interview(request):
+def interview(request, id: int):
     """
     Interview view - displays the technical interview interface
-    TODO: Will fetch role, round, candidate from database later
     """
+    mock_candidate = Candidate.objects.first()  # TODO: request.user.candidate
     
-    # Mock candidate object to simulate OneToOneField with User
-    class MockUser:
-        first_name = "John"
-        last_name = "Doe"
+    try:
+        interview_obj = Interview.objects.select_related(
+            "candidate", "round", "round__role", "question"
+        ).get(id=id)
+        
+        # Security: Verify interview belongs to this candidate
+        if interview_obj.candidate != mock_candidate:
+            messages.error(request, "You are not authorized to view this interview.")
+            return redirect("/candidate/")
+        
+        # Check if interview has been completed
+        if interview_obj.completed_at is not None:
+            messages.warning(request, "This interview has already been completed.")
+            return redirect("/candidate/")
+        
+        # Generate question if not already assigned
+        if interview_obj.question is None:
+            question = generate_interview_question(interview_obj)
+            interview_obj.question = question
+            interview_obj.save()
+        else:
+            question = interview_obj.question
 
-    class MockCandidate:
-        def __init__(self):
-            self.user = MockUser()
-    
-    context = {
-        'role': {
-            'title': 'Senior Software Engineer',
-        },
-        'round': {
-            'number': 1,
-            'time': datetime.now().strftime('%I:%M %p'),
-        },
-        'candidate': MockCandidate(),
-        'interview': {
-            'question_text': '''
-<div class="question-section">
-    <h6 class="text-muted mb-2">Description</h6>
-    <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return <strong>indices of the two numbers</strong> such that they add up to <code>target</code>.</p>
-    <p>You may assume that each input would have <strong>exactly one solution</strong>, and you may not use the same element twice.</p>
-    <p>You can return the answer in any order.</p>
-</div>
-
-<div class="question-section">
-    <h6 class="text-muted mb-2">Examples</h6>
-    
-    <div class="mb-3">
-        <strong>Example 1:</strong>
-        <pre class="code-example"><code>Input: nums = [2,7,11,15], target = 9
-Output: [0,1]
-Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].</code></pre>
-    </div>
-    
-    <div class="mb-3">
-        <strong>Example 2:</strong>
-        <pre class="code-example"><code>Input: nums = [3,2,4], target = 6
-Output: [1,2]</code></pre>
-    </div>
-    
-    <div class="mb-3">
-        <strong>Example 3:</strong>
-        <pre class="code-example"><code>Input: nums = [3,3], target = 6
-Output: [0,1]</code></pre>
-    </div>
-</div>
-
-<div class="question-section">
-    <h6 class="text-muted mb-2">Constraints</h6>
-    <ul>
-        <li>2 ≤ nums.length ≤ 10<sup>4</sup></li>
-        <li>-10<sup>9</sup> ≤ nums[i] ≤ 10<sup>9</sup></li>
-        <li>-10<sup>9</sup> ≤ target ≤ 10<sup>9</sup></li>
-        <li>Only one valid answer exists</li>
-    </ul>
-</div>
-
-<div class="question-section">
-    <h6 class="text-muted mb-2">Follow-up</h6>
-    <p>Can you come up with an algorithm that is less than <strong>O(n²)</strong> time complexity?</p>
-</div>
-''',
+        context = {
+            "interview": interview_obj,
+            "candidate": mock_candidate,
+            "question": question,
         }
-    }
 
-    return render(request, "interview/index.html", context)
+        return render(request, "interview/index.html", context)
+        
+    except Interview.DoesNotExist:
+        messages.error(request, "Interview not found.")
+        return redirect("/candidate/")
+
+
+def generate_interview_question(interview: Interview) -> Question:
+    """
+    Generate and create a Question object for an interview
+    Randomly selects or creates a question from the round"s question pool
+    
+    Args:
+        interview: Interview model instance
+    
+    Returns:
+        Question: A Question model instance
+    """
+    # TODO: Implement smart question selection
+    # - Check if round has existing questions
+    # - Select one that hasn't been used for this candidate
+    # - Or create a new question from a question bank/API
+    
+    # For now, create a mock question
+    question, created = Question.objects.get_or_create(
+        title=MOCK_QUESTION["title"],
+        defaults={
+            "statement": MOCK_QUESTION["statement"],
+            "test_cases": MOCK_QUESTION["test_cases"],
+            "round": interview.round
+        }
+    )
+    
+    return question
 

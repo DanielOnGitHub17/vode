@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interview - {{ role.title }}</title>
+    <title>Interview - {{ interview.round.role.title }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
@@ -20,7 +20,7 @@
             <div id="QUESTION_HEADER">
                 <div>
                     <h6><i class="bi bi-question-circle"></i> Problem Description</h6>
-                    <small>{{ role.title }} - Round {{ round.number }} - {{ candidate.user.first_name }} {{ candidate.user.last_name }}</small>
+                    <small>{{ interview.round.role.title }} - Round {{ interview.round.round_number }} - {{ candidate.user.first_name }} {{ candidate.user.last_name }}</small>
                 </div>
                 <div id="HEADER_STATUS">
                     <span class="badge bg-success">Live</span>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div id="QUESTION_CONTENT">
-                {{ interview.question_text|safe }}
+                {{ question.statement|safe }}
             </div>
         </section>
 
@@ -47,20 +47,6 @@
                 </select>
             </div>
             <div id="CODE_EDITOR"></div>
-            <div id="CODE_FOOTER">
-                <div id="CONSOLE_OUTPUT">
-                    <small><i class="bi bi-terminal"></i> Ready</small>
-                </div>
-                <div id="CODE_ACTIONS">
-                    <button class="btn-success" id="BTN_RUN">
-                        <i class="bi bi-play-fill"></i> Run
-                    </button>
-                    <button class="btn-primary" id="BTN_SUBMIT">
-                        <i class="bi bi-check-circle"></i> Submit
-                    </button>
-                    <span id="CODE_STATUS">Ready</span>
-                </div>
-            </div>
         </section>
     </main>
 

@@ -89,7 +89,7 @@ class Interview(models.Model):
     round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name='interviews')
     question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True, blank=True, related_name='interviews', help_text="The specific question asked in this interview")
     score = models.PositiveIntegerField(
-        default=0,
+        default=0, # set min max to 0 100 for interview score
         help_text="Interview score as percentage (0-100)"
     )
     notes = models.TextField(blank=True, help_text="Interview notes and feedback")
