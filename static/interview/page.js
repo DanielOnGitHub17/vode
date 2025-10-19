@@ -65,6 +65,4 @@ document.addEventListener('DOMContentLoaded', () => {
     windowManager = new WindowManager();
     // Timer is handled by watch.js
     initMonaco();
-    attachLanguageSelector();
-    attachChatListeners();
 });

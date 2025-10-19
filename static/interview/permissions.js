@@ -13,8 +13,8 @@ window.speechBuffer = '';
 window.isUserSpeaking = false;
 
 // Interview ID
-let url = window.location.pathname.split('/');
-window.interviewId = parseInt(url[url.length - 2]);
+window.URLL = window.location.pathname.split('/');
+window.interviewId = parseInt(URLL[URLL.length - 2]);
 
 // Audio playback for AI responses
 window.speaker = new Audio();

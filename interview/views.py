@@ -1,3 +1,4 @@
+import base64
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
@@ -109,7 +110,7 @@ def get_response(request):
             'round': interview.round.round_number,
             'difficulty': interview.round.difficulty_level,
         }
-        
+
         # Get AI coaching feedback (Gemini maintains conversation history)
         result = orchestrator.get_ai_response(
             code,
@@ -117,7 +118,7 @@ def get_response(request):
             context
         )
 
-        print("got result", result)
+        result["audio"] = base64.b64encode(result["audio"]).decode('utf-8')
 
         if result['success']:
             # Return JSON with reasoning text and audio
