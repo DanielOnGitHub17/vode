@@ -25,9 +25,7 @@ class InterviewOrchestrator:
             Dict with question and success status
         """
         try:
-            question = MOCK_QUESTION
-            
-            # Initialize the AI agent with full context
+            question = MOCK_QUESTION            
             self.gemini.initialize_context(question, interview_context)
             
             return {

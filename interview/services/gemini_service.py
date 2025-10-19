@@ -220,9 +220,7 @@ Provide ONLY valid JSON, no other text.
             
             logger.info(f"Scoring response received: {len(response_text)} characters")
             
-            # Parse the JSON response
             import json
-            # Extract JSON from response (in case there's any extra text)
             json_start = response_text.find('{')
             json_end = response_text.rfind('}') + 1
             
@@ -264,10 +262,7 @@ Provide ONLY valid JSON, no other text.
             if not feedback:
                 feedback = 'Interview completed successfully.'
             
-            logger.info(f"Interview scored: {score}/100")
-            
-            # Don't add to history as this is the final evaluation
-            
+            logger.info(f"Interview scored: {score}/100")            
             return {
                 'score': score,
                 'feedback': feedback
