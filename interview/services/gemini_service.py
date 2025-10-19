@@ -65,18 +65,17 @@ class GeminiService:
         
         Args:
             question_data: The question details (title, statement, examples, constraints)
-            interview_context: Interview metadata (role, round, difficulty)
+            interview_context: Interview metadata (role, difficulty)
         """
         context_prompt = f"""
 You are a professional AI coding interviewer designed to conduct standardized, fair, and consistent technical interviews for software engineering candidates.
 
 INTERVIEW SETUP:
 - Position: {interview_context.get('role', 'Backend Engineer')}
-- Round: {interview_context.get('round', 1)} of {interview_context.get('total_rounds', 3)}
 - Difficulty Level: {interview_context.get('difficulty', 'Medium')}
 
 PROBLEM BEING SOLVED:
-Title: {question_data.get('title', 'Two Sum')}
+Title: {question_data.get('title', '')}
 
 Problem Statement:
 {question_data.get('statement', '')}
@@ -235,15 +234,15 @@ EVALUATION METRICS:
 SCORING REQUIREMENTS:
 1. Provide a score between 0-100 indicating overall performance
 2. Generate structured feedback with:
-   - 25-35% on what they did well (be specific and positive)
-   - 65-75% on areas for improvement (be constructive and specific)
+   - 25% on what they did well (be specific and positive)
+   - 75% on areas for improvement (be constructive and specific)
 3. Be concise but informative
 4. Focus on technical skills, problem-solving approach, communication, and code quality
 
 RESPONSE FORMAT:
 {{
     "score": <number 0-100>,
-    "feedback": "<What went well (1-2 sentences). Areas for improvement: (2-3 specific areas with brief explanations)>"
+    "feedback": "<What went well (1-2 sentences). Areas for improvement: (2-5 specific areas with brief explanations)>"
 }}
 
 Provide ONLY valid JSON, no other text.

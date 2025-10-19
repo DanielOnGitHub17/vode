@@ -1,6 +1,5 @@
 from interview.services.gemini_service import GeminiService
 from interview.services.elevenlabs_service import ElevenLabsService
-from interview.mocks import MOCK_QUESTION
 import logging
 import base64
 
@@ -14,31 +13,29 @@ class InterviewOrchestrator:
         self.gemini = GeminiService()
         self.elevenlabs = ElevenLabsService()
     
-    def start_interview(self, interview_context):
+    def start_interview(self, question_data, interview_context):
         """
         Initialize interview context so the AI agent understands the problem space.
         Called when the interview page loads.
         
         Args:
-            interview_context: Dict with role, round, difficulty, total_rounds
-        
+            question_data: Dict with title, statement, test_cases from actual Question
+            interview_context: Dict with role, difficulty
+
         Returns:
-            Dict with question and success status
+            Dict with success status
         """
         try:
-            question = MOCK_QUESTION            
-            self.gemini.initialize_context(question, interview_context)
-            
+            self.gemini.initialize_context(question_data, interview_context)
+
             return {
-                'question': question,
                 'success': True
             }
         except Exception as e:
             logger.error(f"Error starting interview: {e}")
             return {
                 'success': False,
-                'error': str(e),
-                'question': MOCK_QUESTION
+                'error': str(e)
             }
     
     def get_ai_response(self, candidate_code, audio_transcript, interview_context):
