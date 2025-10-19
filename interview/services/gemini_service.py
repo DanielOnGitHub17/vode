@@ -65,14 +65,13 @@ class GeminiService:
         
         Args:
             question_data: The question details (title, statement, examples, constraints)
-            interview_context: Interview metadata (role, round, difficulty)
+            interview_context: Interview metadata (role, difficulty)
         """
         context_prompt = f"""
 You are a professional AI coding interviewer designed to conduct standardized, fair, and consistent technical interviews for software engineering candidates.
 
 INTERVIEW SETUP:
 - Position: {interview_context.get('role', 'Backend Engineer')}
-- Round: {interview_context.get('round', 1)} of {interview_context.get('total_rounds', 3)}
 - Difficulty Level: {interview_context.get('difficulty', 'Medium')}
 
 PROBLEM BEING SOLVED:

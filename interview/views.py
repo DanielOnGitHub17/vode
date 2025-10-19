@@ -82,10 +82,8 @@ def interview(request, id: int):
     mock_candidate = Candidate.objects.first()  # TODO: request.user.candidate
     
     try:
-        interview_obj = Interview.objects.select_related(
-            "candidate", "round", "round__role", "question"
-        ).get(id=id)
-        
+        interview_obj = Interview.objects.filter(candidate=mock_candidate)
+
         if interview_obj.candidate != mock_candidate:
             messages.error(request, "You are not authorized to view this interview.")
             return redirect("/candidate/")
@@ -103,13 +101,18 @@ def interview(request, id: int):
 
         interview_context = {
             "role": interview_obj.round.role.title,
-            "round": interview_obj.round.round_number,
-            "total_rounds": interview_obj.round.role.num_rounds,
             "difficulty": interview_obj.round.difficulty_level,
         }
         
+        # Prepare question data for AI initialization
+        question_data = {
+            "title": question.title,
+            "statement": question.statement,
+            "test_cases": question.test_cases,
+        }
+
         # Initialize the AI agent with full context about the problem
-        orchestrator.start_interview(interview_context)
+        orchestrator.start_interview(question_data, interview_context)
 
         context = {
             "interview": interview_obj,
@@ -159,7 +162,6 @@ def get_response(request):
         interview = Interview.objects.select_related("round", "round__role").get(id=interview_id)
         context = {
             "role": interview.round.role.title,
-            "round": interview.round.round_number,
             "difficulty": interview.round.difficulty_level,
         }
 

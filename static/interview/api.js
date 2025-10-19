@@ -72,13 +72,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function sendRecordings(screenStream, videoStream, audioStream) {
-    console.log("sendRecordings called:", { 
-        hasScreen: !!screenStream, 
-        hasVideo: !!videoStream, 
-        hasAudio: !!audioStream 
-    });
-}
 
 function sendHeartbeat() {
     console.log("sendHeartbeat called");

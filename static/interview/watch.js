@@ -42,9 +42,9 @@ function startCountdown(timeLeftSeconds) {
             TIMER_BADGE.classList.add("bg-danger");
             
             // Mark interview as completed before ending
-            markInterviewCompleted().then(() => {
-                endInterview();
-            });
+            // markInterviewCompleted().then(() => {
+            endInterview();
+            // });
         } else {
             // Update timer display
             const hours = Math.floor(timeLeftSeconds / 3600);
@@ -194,7 +194,7 @@ function handleChatMessage() {
         } else {
             console.error('sendMessage function not found!');
         }
-        
+
         lastChatMessage = message;
         
         // Send chat message with current code context to API
@@ -255,27 +255,27 @@ function handleTypingPause() {
 // CLEANUP ON INTERVIEW END
 // ============================================
 
-async function markInterviewCompleted() {
-    try {
-        const response = await fetch('/interview/api/end-interview/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({
-                interview_id: window.interviewId
-            })
-        });
+// async function markInterviewCompleted() {
+//     try {
+//         const response = await fetch('/interview/api/end-interview/', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'X-CSRFToken': getCookie('csrftoken')
+//             },
+//             body: JSON.stringify({
+//                 interview_id: window.interviewId
+//             })
+//         });
 
-        const data = await response.json();
-        console.log('Interview marked as completed:', data);
-        return data;
-    } catch (error) {
-        console.error('Error marking interview as completed:', error);
-        return null;
-    }
-}
+//         const data = await response.json();
+//         console.log('Interview marked as completed:', data);
+//         return data;
+//     } catch (error) {
+//         console.error('Error marking interview as completed:', error);
+//         return null;
+//     }
+// }
 
 function getCookie(name) {
     let cookieValue = null;
