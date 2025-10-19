@@ -55,13 +55,7 @@ class Dashboard(View):
             if interview.completed_at is not None:
                 messages.warning(request, "This interview has already been completed.")
                 return redirect("/candidate/")
-            
-            # Verify interview hasn't already been started
-            if interview.started_at is not None:
-                # should this not go to the interview?
-                messages.warning(request, "This interview has already been started.")
-                return redirect("/candidate/")
-            
+
             # Set started_at timestamp
             interview.started_at = timezone.now()
             interview.save()

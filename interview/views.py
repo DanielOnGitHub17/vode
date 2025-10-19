@@ -6,7 +6,12 @@ from cand.models import Candidate
 from .models import Question, Interview
 from .mocks import MOCK_QUESTION
 
-# Create your views here.
+def end(request, id: int):
+    """
+    End the interview.
+    """
+    pass
+
 
 def interview(request, id: int):
     """

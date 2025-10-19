@@ -44,28 +44,6 @@ get('LANGUAGE_SELECT').addEventListener('change', (e) => {
     monaco.editor.setModelLanguage(editor.getModel(), langMap[e.target.value]);
 });
 
-// Code actions
-get('BTN_RUN').addEventListener('click', () => {
-    const code = editor.getValue();
-    const output = get('CONSOLE_OUTPUT');
-    output.innerHTML = '<small><i class="bi bi-hourglass-split"></i> Running...</small>';
-    
-    setTimeout(() => {
-        output.innerHTML = '<small><i class="bi bi-check-circle"></i> Code executed successfully</small>';
-    }, 1000);
-});
-
-get('BTN_SUBMIT').addEventListener('click', () => {
-    const code = editor.getValue();
-    const output = get('CONSOLE_OUTPUT');
-    output.innerHTML = '<small><i class="bi bi-upload"></i> Submitting...</small>';
-    
-    setTimeout(() => {
-        output.innerHTML = '<small><i class="bi bi-check-circle-fill"></i> Code submitted successfully!</small>';
-        get('CODE_STATUS').textContent = 'Submitted';
-    }, 1000);
-});
-
 // Chat functionality
 get('BTN_SEND_CHAT')?.addEventListener('click', sendMessage);
 get('CHAT_INPUT')?.addEventListener('keypress', (e) => {
@@ -74,20 +52,24 @@ get('CHAT_INPUT')?.addEventListener('keypress', (e) => {
 
 function sendMessage() {
     const input = get('CHAT_INPUT');
+    const chatMessages = get('CHAT_MESSAGES');
+    
+    if (!input || !chatMessages) return;
+    
     const msg = input.value.trim();
     if (!msg) return;
     
     const msgDiv = make('div', { className: 'chat-message' });
     msgDiv.innerHTML = `<i class="bi bi-person-fill"></i><p>${msg}</p>`;
-    add(get('CHAT_MESSAGES'), msgDiv);
+    add(chatMessages, msgDiv);
     
     input.value = '';
-    get('CHAT_MESSAGES').scrollTop = get('CHAT_MESSAGES').scrollHeight;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 // Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     windowManager = new WindowManager();
-    startTimer();
+    // Timer is handled by watch.js
     initMonaco();
 });
