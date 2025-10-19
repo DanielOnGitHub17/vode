@@ -3,85 +3,115 @@
 {% block title %}Candidates - Round {{ round.round_number }}{% endblock %}
 
 {% block content %}
-    <a href="{% url 'recruit:role_detail' role.id %}" class="small d-inline-block mb-4" style="color: #fff; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.color='#4cc9f0'" onmouseout="this.style.color='#fff'">&larr; Back to Rounds</a>
-
-    <div class="mb-2">
-        <h1 class="h2 fw-bold mb-5" style="color: #fff;">{{ role.title }}</h1>
-        <p>Round {{ round.round_number }} - {{ round.name }}</p>
+    <!-- Header with Back Button -->
+    <div class="mb-5" style="background: #000; padding: 1rem 0;">
+        <a href="{% url 'recruit:role_detail' role.id %}" style="color: #fff; font-size: 0.95rem; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.color='#4cc9f0'" onmouseout="this.style.color='#fff'">
+            <i class="bi bi-arrow-left" style="margin-right: 0.5rem;"></i>Back to Rounds
+        </a>
+        <div style="margin-top: 2rem;">
+            <h1 class="h2 fw-bold mb-2" style="color: #fff;">{{ role.title }}</h1>
+            <p style="color: #aaa; font-size: 1.05rem; margin: 0;">Round {{ round.round_number }} - {{ round.name }}</p>
+        </div>
     </div>
 
     <!-- Round Overview Stats -->
-    <div class="mb-5 d-flex justify-content-end gap-5">
-        <div class="text-end">
-            <p class="mb-0" style="color: #fff; font-weight: 700; font-size: 1rem; margin-right: 1.5rem;">Total Candidates: <span style="color: #4cc9f0; font-weight: 700;">{{ round.interviews.count }}</span></p>
+    <div class="mb-5 d-flex gap-4" style="background: #000;">
+        <div style="background: rgba(76, 201, 240, 0.08); border: 2px solid rgba(76, 201, 240, 0.35); border-radius: 1rem; padding: 1.5rem; flex: 1; box-shadow: 0 0 30px rgba(76, 201, 240, 0.15), inset 0 0 20px rgba(76, 201, 240, 0.05);">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 2.5rem; height: 2.5rem; background: rgba(76, 201, 240, 0.2); border: 2px solid #4cc9f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-people-fill" style="color: #fff; font-size: 1.2rem;"></i>
+                </div>
+                <div>
+                    <p style="color: #aaa; font-size: 0.9rem; margin: 0;">Total Candidates</p>
+                    <p style="color: #fff; font-weight: 600; font-size: 1.3rem; margin: 0;">{{ round.interviews.count }}</p>
+                </div>
+            </div>
         </div>
-        <div class="text-end">
-            <p class="mb-0" style="color: #fff; font-weight: 700; font-size: 1rem; margin-right: 1.5rem;">Time Limit: <span style="color: #4cc9f0; font-weight: 700;">{{ round.time_limit }} min</span></p>
+        <div style="background: rgba(76, 201, 240, 0.08); border: 2px solid rgba(76, 201, 240, 0.35); border-radius: 1rem; padding: 1.5rem; flex: 1; box-shadow: 0 0 30px rgba(76, 201, 240, 0.15), inset 0 0 20px rgba(76, 201, 240, 0.05);">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 2.5rem; height: 2.5rem; background: rgba(208, 208, 208, 0.15); border: 2px solid #d0d0d0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-clock-fill" style="color: #d0d0d0; font-size: 1.2rem;"></i>
+                </div>
+                <div>
+                    <p style="color: #aaa; font-size: 0.9rem; margin: 0;">Time Limit</p>
+                    <p style="color: #d0d0d0; font-weight: 600; font-size: 1.3rem; margin: 0;">{{ round.time_limit }} min</p>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- No Candidates Message -->
     {% if not interviews %}
-        <div class="text-center py-5">
+        <div class="text-center py-5" style="background: #000;">
             <div class="mb-4">
-                <div style="font-size: 3rem; color: rgba(76, 201, 240, 0.3);">○</div>
+                <i class="bi bi-inbox" style="font-size: 3rem; color: rgba(76, 201, 240, 0.3);"></i>
             </div>
-            <h3 class="h5 fw-bold mb-2">No Candidates Found</h3>
-            <p class="mb-4" style="color: #fff;">
+            <h3 class="h5 fw-bold mb-2" style="color: #fff;">No Candidates Found</h3>
+            <p class="mb-4" style="color: #aaa;">
                 No candidates have been assigned to this round yet.
             </p>
-            <a href="{% url 'recruit:role_detail' role.id %}" class="btn btn-outline-primary btn-sm">Back to Rounds</a>
+            <a href="{% url 'recruit:role_detail' role.id %}" class="btn" style="background: #4cc9f0; color: #000; font-weight: 600; border: none; border-radius: 0.5rem; padding: 0.7rem 1.8rem; transition: all 0.3s;" onmouseover="this.style.background='#5fd4fb'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#4cc9f0'; this.style.transform='translateY(0)'">
+                <i class="bi bi-arrow-left" style="margin-right: 0.5rem;"></i>Back to Rounds
+            </a>
         </div>
     {% else %}
         <!-- Candidates Table -->
-        <div class="card border-dark" style="overflow: visible; background: rgba(10, 10, 10, 0.7); border: 1.5px solid rgba(76, 201, 240, 0.4); box-shadow: 0 0 30px rgba(76, 201, 240, 0.25), inset 0 0 20px rgba(76, 201, 240, 0.05); border-radius: 0.5rem;">
+        <div style="background: rgba(76, 201, 240, 0.08); border: 2px solid rgba(76, 201, 240, 0.35); border-radius: 1rem; box-shadow: 0 0 30px rgba(76, 201, 240, 0.15), inset 0 0 20px rgba(76, 201, 240, 0.05); overflow: hidden; background: #000;">
             <div class="table-responsive" style="overflow: visible; position: relative;">
-                <table class="table table-dark table-hover mb-0" style="overflow: visible; background: transparent;">
+                <table class="table table-dark table-hover mb-0" style="background: transparent;">
                     <thead>
-                        <tr class="border-bottom" style="border-bottom: 1px solid rgba(76, 201, 240, 0.15) !important; background: rgba(76, 201, 240, 0.05);">
-                            <th class="py-3 fw-bold" style="color: #4cc9f0; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Candidate</th>
-                            <th class="py-3 fw-bold" style="color: #4cc9f0; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Email</th>
-                            <th class="py-3 fw-bold text-center" style="color: #4cc9f0; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Score</th>
-                            <th class="py-3 fw-bold text-center" style="color: #4cc9f0; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Status</th>
-                            <th class="py-3 fw-bold text-center" style="color: #4cc9f0; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Actions</th>
+                        <tr style="border-bottom: 1px solid rgba(76, 201, 240, 0.2); background: rgba(76, 201, 240, 0.05);">
+                            <th class="py-3 fw-bold" style="color: #4cc9f0; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; border: none; padding-left: 1.5rem;">Candidate</th>
+                            <th class="py-3 fw-bold" style="color: #4cc9f0; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; border: none;">Email</th>
+                            <th class="py-3 fw-bold text-center" style="color: #4cc9f0; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; border: none;">Score</th>
+                            <th class="py-3 fw-bold text-center" style="color: #4cc9f0; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; border: none;">Status</th>
+                            <th class="py-3 fw-bold text-center" style="color: #4cc9f0; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; border: none; padding-right: 1.5rem;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for interview in interviews %}
-                            <tr class="border-bottom" style="border-bottom: 1px solid rgba(76, 201, 240, 0.08) !important; transition: all 0.2s;" onmouseover="this.style.backgroundColor='rgba(76, 201, 240, 0.08)'" onmouseout="this.style.backgroundColor='transparent'">
-                                <td class="py-3">
-                                    <a href="#" style="color: #4cc9f0; text-decoration: none; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.color='#6edeff'; this.style.textDecoration='underline'" onmouseout="this.style.color='#4cc9f0'; this.style.textDecoration='none'" title="View candidate report">
-                                        {{ interview.candidate.user.first_name }} {{ interview.candidate.user.last_name }}
-                                    </a>
+                            <tr style="border-bottom: 1px solid rgba(76, 201, 240, 0.1); transition: all 0.2s;" onmouseover="this.style.backgroundColor='rgba(76, 201, 240, 0.08)'" onmouseout="this.style.backgroundColor='transparent'">
+                                <td class="py-3" style="border: none; padding-left: 1.5rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <div style="width: 2rem; height: 2rem; background: rgba(76, 201, 240, 0.2); border: 2px solid #4cc9f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-person-fill" style="color: #fff; font-size: 0.9rem;"></i>
+                                        </div>
+                                        <a href="#" style="color: #4cc9f0; text-decoration: none; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.color='#6edeff'; this.style.textDecoration='underline'" onmouseout="this.style.color='#4cc9f0'; this.style.textDecoration='none'" title="View candidate report">
+                                            {{ interview.candidate.user.first_name }} {{ interview.candidate.user.last_name }}
+                                        </a>
+                                    </div>
                                 </td>
-                                <td class="py-3" style="color: #fff;">
+                                <td class="py-3" style="color: #fff; border: none;">
                                     {{ interview.candidate.user.email }}
                                 </td>
-                                <td class="py-3 text-center">
+                                <td class="py-3 text-center" style="border: none;">
                                     {% if interview.score %}
-                                        <span class="badge" style="background-color: #4cc9f0; color: #000; font-weight: 600;">{{ interview.score }}%</span>
+                                        <span class="badge" style="background-color: #4cc9f0; color: #000; font-weight: 600; padding: 0.5rem 0.9rem; font-size: 0.85rem;">{{ interview.score }}%</span>
                                     {% else %}
-                                        <span class="badge bg-secondary">—</span>
+                                        <span class="badge" style="background: rgba(192, 192, 192, 0.15); color: #d0d0d0; font-weight: 600; padding: 0.5rem 0.9rem; font-size: 0.85rem; border: 1px solid rgba(192, 192, 192, 0.3);">—</span>
                                     {% endif %}
                                 </td>
-                                <td class="py-3 text-center">
+                                <td class="py-3 text-center" style="border: none;">
                                     {% if interview.score %}
-                                        <span class="badge" style="background-color: #4cc9f0; color: #000; font-weight: 600;">Completed</span>
+                                        <span class="badge" style="background-color: #4cc9f0; color: #000; font-weight: 600; padding: 0.5rem 0.9rem; font-size: 0.85rem;">Completed</span>
                                     {% elif interview.completed_at %}
-                                        <span class="badge" style="background-color: #4cc9f0; color: #000; font-weight: 600;">Completed</span>
+                                        <span class="badge" style="background-color: #4cc9f0; color: #000; font-weight: 600; padding: 0.5rem 0.9rem; font-size: 0.85rem;">Completed</span>
                                     {% else %}
-                                        <span class="badge" style="background-color: #333; color: #4cc9f0; border: 1px solid #4cc9f0;">In Progress</span>
+                                        <span class="badge" style="background: rgba(76, 201, 240, 0.1); color: #4cc9f0; border: 1px solid #4cc9f0; font-weight: 600; padding: 0.5rem 0.9rem; font-size: 0.85rem;">In Progress</span>
                                     {% endif %}
                                 </td>
-                                <td class="py-3 text-center" style="position: relative; overflow: visible;">
+                                <td class="py-3 text-center" style="border: none; padding-right: 1.5rem; position: relative; overflow: visible;">
                                     <div class="dropdown" style="position: relative;">
-                                        <button class="btn btn-sm" style="border: 1px solid #4cc9f0; color: #4cc9f0; background: transparent; transition: all 0.2s; padding: 0.4rem 0.8rem; font-weight: 500; font-size: 0.85rem; letter-spacing: 0.3px;" data-bs-toggle="dropdown" onmouseover="this.style.backgroundColor='rgba(76, 201, 240, 0.15); box-shadow: 0 0 8px rgba(76, 201, 240, 0.3);'" onmouseout="this.style.backgroundColor='transparent'; this.style.boxShadow='none';">
-                                            Actions ▼
+                                        <button class="btn btn-sm" style="border: 1px solid rgba(76, 201, 240, 0.5); color: #4cc9f0; background: rgba(76, 201, 240, 0.05); transition: all 0.2s; padding: 0.5rem 1rem; font-weight: 500; font-size: 0.85rem; border-radius: 0.4rem;" data-bs-toggle="dropdown" onmouseover="this.style.backgroundColor='rgba(76, 201, 240, 0.15); box-shadow: 0 0 8px rgba(76, 201, 240, 0.3);'" onmouseout="this.style.backgroundColor='rgba(76, 201, 240, 0.05)'; this.style.boxShadow='none';">
+                                            <i class="bi bi-three-dots-vertical" style="margin-right: 0.3rem;"></i>
                                         </button>
-                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" style="z-index: 10000 !important; background: #0a0a0a; border: 1px solid #333; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9); border-radius: 0.4rem; min-width: 150px; position: absolute; margin-top: 0.5rem;">
-                                            <li><a class="dropdown-item" href="#" style="color: #fff; transition: all 0.2s; padding: 0.6rem 1rem; font-size: 0.9rem;" onmouseover="this.style.backgroundColor='rgba(76, 201, 240, 0.15); color: #4cc9f0; padding-left: 1.2rem;'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#fff'; this.style.paddingLeft='1rem';">→ Move Forward</a></li>
-                                            <li><hr class="dropdown-divider" style="margin: 0.4rem 0; border-top: 1px solid #333;"></li>
-                                            <li><a class="dropdown-item" href="#" style="color: #ff6b6b; transition: all 0.2s; padding: 0.6rem 1rem; font-size: 0.9rem;" onmouseover="this.style.backgroundColor='rgba(255, 107, 107, 0.15); color: #ff8787; padding-left: 1.2rem;'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ff6b6b'; this.style.paddingLeft='1rem';">✕ Remove</a></li>
+                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" style="z-index: 10000 !important; background: #0a0a0a; border: 1px solid rgba(76, 201, 240, 0.3); box-shadow: 0 4px 12px rgba(76, 201, 240, 0.15); border-radius: 0.5rem; min-width: 150px; position: absolute; margin-top: 0.5rem;">
+                                            <li><a class="dropdown-item" href="#" style="color: #fff; transition: all 0.2s; padding: 0.6rem 1rem; font-size: 0.9rem; border-bottom: 1px solid rgba(76, 201, 240, 0.1);" onmouseover="this.style.backgroundColor='rgba(76, 201, 240, 0.15); color: #4cc9f0; padding-left: 1.2rem;'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#fff'; this.style.paddingLeft='1rem';">
+                                                <i class="bi bi-arrow-right-circle" style="margin-right: 0.5rem; color: #4cc9f0;"></i>Move Forward
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="#" style="color: #ff6b6b; transition: all 0.2s; padding: 0.6rem 1rem; font-size: 0.9rem;" onmouseover="this.style.backgroundColor='rgba(255, 107, 107, 0.15); color: #ff8787; padding-left: 1.2rem;'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ff6b6b'; this.style.paddingLeft='1rem';">
+                                                <i class="bi bi-trash-fill" style="margin-right: 0.5rem;"></i>Remove
+                                            </a></li>
                                         </ul>
                                     </div>
                                 </td>
