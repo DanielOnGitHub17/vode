@@ -42,7 +42,7 @@ class Round(models.Model):
     difficulty_level = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='easy')
     data_structures = models.TextField(blank=True, help_text="Comma-separated list of topics")
     success_metrics = models.TextField(blank=True, help_text="Metrics set by SWE for each round")
-    time_limit = models.PositiveIntegerField(default=30, help_text="Time limit in minutes")
+    time_limit = models.PositiveIntegerField(default=3, help_text="Time limit in minutes")
     # score_threshold = models.PositiveIntegerField(default=70)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
