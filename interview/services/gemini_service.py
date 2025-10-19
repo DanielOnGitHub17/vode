@@ -160,3 +160,123 @@ You will now evaluate the candidate's submission and provide interview feedback 
     def clear_context(self):
         """Clear conversation history between interviews"""
         self.conversation_history = []
+    
+    def score_interview(self, success_metrics_list):
+        """
+        Analyze the entire interview conversation and generate:
+        - Score (0-100) based on provided metrics
+        - Detailed feedback with what went well and what could improve
+        
+        Args:
+            success_metrics_list: List of metrics set by SWE (e.g., ['correctness', 'code efficiency', 'communication'])
+        
+        Returns:
+            Dict with:
+            - score: Integer 0-100 (always returns a valid score, never None)
+            - feedback: String with structured feedback (25-35% what went well, rest improvements)
+        """
+        if not self.conversation_history:
+            logger.warning("No conversation history available for scoring")
+            return {
+                'score': 50,
+                'feedback': 'Interview completed. Unable to generate detailed feedback at this time.'
+            }
+        
+        metrics_str = ', '.join(success_metrics_list) if success_metrics_list else 'overall coding performance'
+        
+        scoring_prompt = f"""
+Based on the entire interview conversation history above, please evaluate the candidate's performance.
+
+EVALUATION METRICS:
+{metrics_str}
+
+SCORING REQUIREMENTS:
+1. Provide a score between 0-100 indicating overall performance
+2. Generate structured feedback with:
+   - 25-35% on what they did well (be specific and positive)
+   - 65-75% on areas for improvement (be constructive and specific)
+3. Be concise but informative
+4. Focus on technical skills, problem-solving approach, communication, and code quality
+
+RESPONSE FORMAT:
+{{
+    "score": <number 0-100>,
+    "feedback": "<What went well (1-2 sentences). Areas for improvement: (2-3 specific areas with brief explanations)>"
+}}
+
+Provide ONLY valid JSON, no other text.
+        """
+        
+        try:
+            # Add scoring prompt to conversation history
+            self.conversation_history.append({
+                "role": "user",
+                "parts": [{"text": scoring_prompt}]
+            })
+            
+            # Get response using conversation history
+            response = self.model.generate_content(self.conversation_history)
+            response_text = response.text
+            
+            logger.info(f"Scoring response received: {len(response_text)} characters")
+            
+            # Parse the JSON response
+            import json
+            # Extract JSON from response (in case there's any extra text)
+            json_start = response_text.find('{')
+            json_end = response_text.rfind('}') + 1
+            
+            if json_start == -1 or json_end == 0:
+                logger.error(f"Could not find JSON in response: {response_text[:200]}")
+                return {
+                    'score': 50,
+                    'feedback': 'Interview completed. Feedback will be provided shortly.'
+                }
+            
+            json_str = response_text[json_start:json_end]
+            
+            try:
+                result = json.loads(json_str)
+            except json.JSONDecodeError as je:
+                logger.error(f"JSON parse error: {je}. Raw JSON: {json_str[:200]}")
+                return {
+                    'score': 50,
+                    'feedback': 'Interview completed. Feedback will be provided shortly.'
+                }
+            
+            # Safely extract and validate score
+            score = result.get('score')
+            
+            if score is None:
+                logger.warning("Score is None in response")
+                score = 50
+            else:
+                try:
+                    score = int(score)
+                except (ValueError, TypeError) as e:
+                    logger.error(f"Could not convert score to int: {score}, error: {e}")
+                    score = 50
+            
+            # Ensure score is in valid range [0, 100]
+            score = max(0, min(100, score))
+            
+            feedback = result.get('feedback', 'Interview completed.')
+            if not feedback:
+                feedback = 'Interview completed successfully.'
+            
+            logger.info(f"Interview scored: {score}/100")
+            
+            # Don't add to history as this is the final evaluation
+            
+            return {
+                'score': score,
+                'feedback': feedback
+            }
+        except Exception as e:
+            logger.error(f"Error scoring interview: {e}", exc_info=True)
+            return {
+                'score': 50,
+                'feedback': 'Interview completed. Unable to generate detailed feedback at this time.'
+            }
+
+

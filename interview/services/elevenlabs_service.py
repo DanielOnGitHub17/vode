@@ -10,13 +10,12 @@ class ElevenLabsService:
         self.api_key = settings.ELEVENLABS_API_KEY
         self.base_url = "https://api.elevenlabs.io/v1"
         self.headers = {"xi-api-key": self.api_key}
-        # Male voice: Charlie (professional, natural-sounding)
-        self.voice_id = "EXAVITQu4vr4xnSDxMaL"
+        self.voice_id = "nPczCjzI2devNBz1zQrb" 
     
     def text_to_speech(self, text):
         """
         Convert text to speech using Eleven Labs.
-        Uses Charlie (male) voice with natural, human-sounding settings.
+        Uses Brian (male) voice with natural, human-sounding settings.
         """
         endpoint = f"{self.base_url}/text-to-speech/{self.voice_id}"
         
@@ -24,8 +23,8 @@ class ElevenLabsService:
             "text": text,
             "model_id": "eleven_multilingual_v2",
             "voice_settings": {
-                "stability": 0.65,      # Balanced naturalness (0-1, higher = more consistent)
-                "similarity_boost": 0.8  # More similar to original voice character
+                "stability": 0.65,      
+                "similarity_boost": 0.9
             }
         }
         

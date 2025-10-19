@@ -111,7 +111,6 @@ def get_response(request):
         )
         
         if result['success']:
-            # Return audio as binary response
             return HttpResponse(result['audio'], content_type='audio/mpeg')
         else:
             return JsonResponse({'error': result['error']}, status=500)
@@ -151,20 +150,77 @@ def generate_interview_question(interview: Interview) -> Question:
 @csrf_exempt
 def end_interview_audio(request):
     """
-    Generate end-of-interview closing message as audio.
+    End interview endpoint: Generate AI-based score, feedback, and closing audio.
     Called when interview timer runs out or candidate completes interview.
     
+    Frontend sends:
+    - interview_id: Which interview to end
+    
+    Backend:
+    1. Fetches Round.success_metrics from the interview
+    2. Calls orchestrator.end_interview() with metrics
+    3. Saves score and feedback to Interview model
+    4. Returns JSON with score, feedback, and audio MP3
+    
     Returns:
-        MP3 audio bytes with thank you message
+        JSON with score (0-100), feedback (string), audio (MP3 bytes)
     """
     try:
-        result = orchestrator.end_interview()
+        data = json.loads(request.body)
+        interview_id = data.get('interview_id')
+        
+        # Get interview to fetch metrics
+        interview = Interview.objects.select_related('round').get(id=interview_id)
+        
+        # Get success metrics from the round
+        success_metrics = interview.round.success_metrics_list
+        
+        # Get score and feedback from orchestrator
+        result = orchestrator.end_interview(success_metrics)
         
         if result['success']:
-            return HttpResponse(result['audio'], content_type='audio/mpeg')
+            # Save score and feedback to Interview model
+            score = result.get('score', 50)
+            
+            # Ensure score is valid integer between 0-100
+            if score is None:
+                score = 50
+            else:
+                try:
+                    score = int(score)
+                    score = max(0, min(100, score))
+                except (ValueError, TypeError):
+                    logger.warning(f"Invalid score value: {score}, defaulting to 50")
+                    score = 50
+            
+            feedback = result.get('feedback', '')
+            
+            interview.score = score
+            interview.notes = feedback
+            interview.completed_at = datetime.now()
+            interview.save()
+            
+            logger.info(f"Interview {interview_id} completed with score {score}/100")
+            
+            # Return JSON response with score, feedback, and audio
+            return JsonResponse({
+                'score': score,
+                'feedback': feedback,
+                'audio': None,  # Frontend will handle binary audio separately if needed
+                'message': result['message'],
+                'success': True
+            })
         else:
-            return JsonResponse({'error': result['error']}, status=500)
+            return JsonResponse({
+                'error': result.get('error', 'Unknown error'),
+                'success': False
+            }, status=500)
+    except Interview.DoesNotExist:
+        return JsonResponse({'error': 'Interview not found', 'success': False}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON', 'success': False}, status=400)
     except Exception as e:
-        logger.error(f"Error generating end-of-interview audio: {e}")
-        return JsonResponse({'error': str(e)}, status=500)
+        logger.error(f"Error ending interview: {e}")
+        return JsonResponse({'error': str(e), 'success': False}, status=500)
+
 

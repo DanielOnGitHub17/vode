@@ -63,14 +63,12 @@ class InterviewOrchestrator:
             Dict with audio bytes and success status
         """
         try:
-            # If both code and transcript are empty, return error
             if not candidate_code and not audio_transcript:
                 return {
                     'success': False,
                     'error': 'No code or transcript provided'
                 }
             
-            # Get AI agent reasoning (uses conversation history internally)
             reasoning = self.gemini.agent_reasoning(
                 candidate_code,
                 audio_transcript,
@@ -92,31 +90,48 @@ class InterviewOrchestrator:
                 'error': str(e)
             }
     
-    def end_interview(self):
+    def end_interview(self, success_metrics_list=None):
         """
-        Generate end-of-interview message and convert to speech.
-        Called when interview timer runs out or candidate submits final answer.
+        Generate end-of-interview score, feedback, and closing message.
+        Called when interview timer runs out or candidate completes interview.
+        
+        Args:
+            success_metrics_list: List of metrics (e.g., ['Correctness', 'Code Efficiency', 'Communication'])
+                                 Set by SWE for each round. If None, uses generic metrics.
         
         Returns:
-            Dict with audio bytes and success status
+            Dict with:
+            - score: Integer 0-100
+            - feedback: String with structured feedback
+            - message: Closing message text
+            - audio: MP3 audio bytes of closing message
+            - success: Boolean
         """
         try:
-            end_message = """Thank you for taking the time to interview with us today. We appreciate your participation and the effort you put into solving this problem. Your recruiter will be reaching out to you shortly with feedback and next steps. We look forward to staying in touch!"""
+            if not success_metrics_list:
+                success_metrics_list = ['Correctness', 'Code Quality', 'Problem-Solving Approach', 'Communication']
             
-            # Convert to speech
+            scoring_result = self.gemini.score_interview(success_metrics_list)
+            score = scoring_result['score']
+            feedback = scoring_result['feedback']
+            end_message = f"""Thank you for taking the time to interview with us today. We appreciate your participation and the effort you put into solving this problem. Your recruiter will be reaching out to you shortly with feedback and next steps. We look forward to staying in touch!"""
             audio = self.elevenlabs.text_to_speech(end_message)
-            
-            # Clear context for next interview
             self.gemini.clear_context()
             
             return {
-                'audio': audio,
+                'score': score,
+                'feedback': feedback,
                 'message': end_message,
+                'audio': audio,
                 'success': True
             }
         except Exception as e:
-            logger.error(f"Error generating end-of-interview message: {e}")
+            logger.error(f"Error generating end-of-interview evaluation: {e}")
             return {
+                'score': 0,
+                'feedback': 'Unable to generate feedback',
+                'message': '',
+                'audio': None,
                 'success': False,
                 'error': str(e)
             }
