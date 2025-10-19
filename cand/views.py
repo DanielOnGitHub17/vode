@@ -17,19 +17,29 @@ class Dashboard(View):
         mock_candidate = Candidate.objects.first()  # request.user.candidate
         
         if mock_candidate:
-            # Only show interviews that have not been completed
-            interviews = Interview.objects.filter(
+            # Get pending interviews
+            pending_interviews = Interview.objects.filter(
                 candidate=mock_candidate,
                 completed_at__isnull=True  # Only pending interviews
             ).select_related(
                 "round", "round__role"
-            )
+            ).order_by("round__round_number")
+            
+            # Get completed interviews
+            completed_interviews = Interview.objects.filter(
+                candidate=mock_candidate,
+                completed_at__isnull=False  # Only completed interviews
+            ).select_related(
+                "round", "round__role"
+            ).order_by("-completed_at")  # Most recent first
         else:
-            interviews = Interview.objects.none()
+            pending_interviews = Interview.objects.none()
+            completed_interviews = Interview.objects.none()
 
         context = {
             "candidate": mock_candidate,
-            "interviews": interviews,
+            "pending_interviews": pending_interviews,
+            "completed_interviews": completed_interviews,
         }
 
         return render(request, "cand/index.html", context)

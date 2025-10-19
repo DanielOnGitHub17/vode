@@ -32,13 +32,13 @@
             {% endfor %}
         {% endif %}
 
-        {% if interviews %}
-            <!-- Interviews Grid -->
-            <div>
-                <h2 class="h4 fw-bold mb-4" style="color: #fff;">You have <span style="color: #4cc9f0;">{{ interviews.count }}</span> upcoming interview{{ interviews.count|pluralize }}</h2>
+        {% if pending_interviews %}
+            <!-- Pending Interviews Section -->
+            <div class="mb-5">
+                <h2 class="h4 fw-bold mb-4" style="color: #fff;">Upcoming Interviews <span style="color: #4cc9f0;">({{ pending_interviews.count }})</span></h2>
                 
                 <div class="row row-cols-1 row-cols-md-2 g-4">
-                    {% for interview in interviews %}
+                    {% for interview in pending_interviews %}
                         <div class="col">
                             <div class="card interview-card h-100 transition-all" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
                                 <div class="card-body d-flex flex-column">
@@ -74,20 +74,13 @@
 
                                     <!-- Action -->
                                     <div class="mt-auto">
-                                        {% if not interview.completed_at %}
-                                            <form method="post" class="w-100">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="interview_id" value="{{ interview.id }}">
-                                                <button type="submit" class="btn fw-bold" style="background: #fff; color: #000; border: none; border-radius: 0.5rem; padding: 0.8rem 1.5rem; transition: all 0.3s; width: auto;" onmouseover="this.style.background='#f0f0f0'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#fff'; this.style.transform='translateY(0)'">
-                                                    Start Interview
-                                                </button>
-                                            </form>
-                                        {% else %}
-                                            <div class="p-3 rounded text-center" style="background: rgba(6, 214, 160, 0.15); border: 1px solid rgba(6, 214, 160, 0.3);">
-                                                <p class="small mb-1" style="color: #aaa;">Final Score</p>
-                                                <p class="h5 fw-bold mb-0" style="color: #06d6a0;">{{ interview.score|default:"—" }}/100</p>
-                                            </div>
-                                        {% endif %}
+                                        <form method="post" class="w-100">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="interview_id" value="{{ interview.id }}">
+                                            <button type="submit" class="btn fw-bold" style="background: #fff; color: #000; border: none; border-radius: 0.5rem; padding: 0.8rem 1.5rem; transition: all 0.3s; width: auto;" onmouseover="this.style.background='#f0f0f0'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#fff'; this.style.transform='translateY(0)'">
+                                                Start Interview
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +88,64 @@
                     {% endfor %}
                 </div>
             </div>
-        {% else %}
+        {% endif %}
+
+        {% if completed_interviews %}
+            <!-- Completed Interviews Section -->
+            <div class="mb-5">
+                <h2 class="h4 fw-bold mb-4" style="color: #fff;">Completed Interviews <span style="color: #4cc9f0;">({{ completed_interviews.count }})</span></h2>
+                
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    {% for interview in completed_interviews %}
+                        <div class="col">
+                            <div class="card interview-card h-100 transition-all" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); border-radius: 1rem; transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(76, 201, 240, 0.5)'; this.style.boxShadow='0 10px 30px rgba(76, 201, 240, 0.1)'" onmouseout="this.style.borderColor='rgba(76, 201, 240, 0.2)'; this.style.boxShadow='none'">
+                                <div class="card-body d-flex flex-column">
+                                    <!-- Role Info -->
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <div>
+                                                <h5 class="card-title fw-bold mb-1" style="color: #4cc9f0;">{{ interview.round.role.title }}</h5>
+                                                <p class="small mb-0" style="color: #fff;">Round {{ interview.round.round_number }} of {{ interview.round.role.num_rounds }}</p>
+                                            </div>
+                                            <span class="badge" style="background: rgba(76, 201, 240, 0.15); color: #4cc9f0; padding: 0.4rem 0.8rem; border-radius: 0.5rem; font-size: 0.75rem;">Completed</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Interview Details -->
+                                    <div class="mb-4 pb-4" style="border-bottom: 1px solid rgba(76, 201, 240, 0.2);">
+                                        <div class="row g-3 small">
+                                            <div class="col-12 d-flex justify-content-between">
+                                                <p class="mb-1" style="color: #fff;">Completed On</p>
+                                                <p class="fw-500" style="color: #4cc9f0;">{{ interview.completed_at|date:"M d, Y" }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Feedback Display (Scrollable) -->
+                                    {% if interview.notes %}
+                                    <div class="mb-4 flex-grow-1" style="min-height: 0;">
+                                        <p class="small mb-2 fw-bold" style="color: #fff;">Feedback:</p>
+                                        <div class="p-3 rounded" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2); max-height: 200px; overflow-y: auto;">
+                                            <p class="small mb-0" style="color: #fff; line-height: 1.6; white-space: pre-wrap;">{{ interview.notes }}</p>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <div class="mb-4 flex-grow-1">
+                                        <p class="small mb-2 fw-bold" style="color: #fff;">Feedback:</p>
+                                        <div class="p-3 rounded text-center" style="background: rgba(76, 201, 240, 0.05); border: 1px solid rgba(76, 201, 240, 0.2);">
+                                            <p class="small mb-0" style="color: #aaa;">No feedback available</p>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not pending_interviews and not completed_interviews %}
             <!-- Empty State -->
             <div class="text-center py-5">
                 <div class="mb-4">

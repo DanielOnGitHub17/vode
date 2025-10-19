@@ -80,9 +80,10 @@ def interview(request, id: int):
     Interview view - displays the technical interview interface
     """
     mock_candidate = Candidate.objects.first()  # TODO: request.user.candidate
+    print(mock_candidate.user.get_full_name())
     
     try:
-        interview_obj = Interview.objects.filter(candidate=mock_candidate)
+        interview_obj = Interview.objects.filter(id=id, candidate=mock_candidate)[0]
 
         if interview_obj.candidate != mock_candidate:
             messages.error(request, "You are not authorized to view this interview.")
