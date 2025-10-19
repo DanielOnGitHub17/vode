@@ -13,7 +13,7 @@ def interview(request):
     class MockUser:
         first_name = "John"
         last_name = "Doe"
-    
+
     class MockCandidate:
         def __init__(self):
             self.user = MockUser()

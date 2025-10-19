@@ -5,5 +5,5 @@ from .views import interview
 app_name = "interview"
 
 urlpatterns = [
-    path("", interview, name=app_name),
+    path("<int:id>/", interview, name="interview"),
 ]

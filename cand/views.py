@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.http import JsonResponse
+from django.utils import timezone
+from django.contrib import messages
 from datetime import datetime, timedelta
 
 from .models import Candidate
@@ -33,5 +35,39 @@ class Dashboard(View):
         return render(request, "cand/index.html", context)
     
     def post(self, request, *args, **kwargs):
-        # Handle POST request
-        return JsonResponse({"status": "success"})
+        # Handle POST request to start interview
+        interview_id = request.POST.get("interview_id")
+        mock_candidate = Candidate.objects.first()  # TODO: request.user.candidate
+        
+        if not interview_id:
+            messages.error(request, "No interview ID provided.")
+            return redirect("/cand/")
+
+        try:
+            interview = Interview.objects.get(id=interview_id)
+            
+            # Security validation: Verify interview belongs to this candidate
+            if interview.candidate != mock_candidate:
+                messages.error(request, "You are not authorized to start this interview.")
+                return redirect("/cand/")
+            
+            # Verify interview hasn't been completed
+            if interview.completed_at is not None:
+                messages.warning(request, "This interview has already been completed.")
+                return redirect("/cand/")
+            
+            # Verify interview hasn't already been started
+            if interview.started_at is not None:
+                # should this not go to the interview?
+                messages.warning(request, "This interview has already been started.")
+                return redirect("/cand/")
+            
+            # Set started_at timestamp
+            interview.started_at = timezone.now()
+            interview.save()
+
+            # Redirect to interview page with interview ID
+            return redirect(f"/interview/{interview.id}/")
+        except Interview.DoesNotExist:
+            messages.error(request, "Interview not found.")
+            return redirect("/cand/")

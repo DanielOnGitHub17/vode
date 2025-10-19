@@ -65,10 +65,29 @@ class Round(models.Model):
     def success_metrics_list(self):
         return [s.strip() for s in self.success_metrics.split(',') if s.strip()]
 
+class Question(models.Model):
+    """Represents a coding question for an interview round"""
+    title = models.CharField(max_length=300, unique=True, help_text="LeetCode title to avoid repeats")
+    statement = models.TextField(help_text="The problem statement/description")
+    test_cases = models.JSONField(help_text="Test cases as JSON dict")
+    round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name='questions')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['title']
+        verbose_name = "Question"
+        verbose_name_plural = "Questions"
+
+    def __str__(self):
+        return f"{self.title} (Round: {self.round})"
+
+
 class Interview(models.Model):
     """Represents an interview session between a candidate and interviewer for a specific round"""
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name='interviews')
     round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name='interviews')
+    question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True, blank=True, related_name='interviews', help_text="The specific question asked in this interview")
     score = models.PositiveIntegerField(
         default=0,
         help_text="Interview score as percentage (0-100)"
