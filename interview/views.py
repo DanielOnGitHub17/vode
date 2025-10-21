@@ -164,24 +164,41 @@ def get_response(request):
             "difficulty": interview.round.difficulty_level,
         }
 
-        # Get AI coaching feedback (Gemini maintains conversation history)
-        result = orchestrator.get_ai_response(
-            code,
-            audio_transcript,
-            context
-        )
-
-        result["audio"] = base64.b64encode(result["audio"]).decode("utf-8")
-
-        if result["success"]:
-            # Return JSON with reasoning text and audio
-            return JsonResponse({
-                "reasoning": result.get("reasoning", result.get("message", "")),
-                "audio": result.get("audio", ""),  # Base64 encoded audio
-                "success": True
-            })
-        else:
-            return JsonResponse({"error": result["error"]}, status=500)
+        reasoning = ""
+        audio_base64 = "EMPTY"
+        
+        # Try to get AI reasoning from Gemini (separate try block)
+        try:
+            result = orchestrator.get_ai_response(
+                code,
+                audio_transcript,
+                context
+            )
+            
+            if result.get("success"):
+                reasoning = result.get("reasoning", result.get("message", ""))
+                
+                # Try to encode audio (separate try block)
+                try:
+                    if result.get("audio"):
+                        audio_base64 = base64.b64encode(result["audio"]).decode("utf-8")
+                except Exception as audio_error:
+                    logger.error(f"Error encoding audio: {audio_error}")
+                    audio_base64 = "EMPTY"
+            else:
+                # If orchestrator failed, still try to return reasoning if available
+                reasoning = result.get("reasoning", result.get("message", result.get("error", "Unable to generate feedback at this time.")))
+        except Exception as gemini_error:
+            logger.error(f"Error getting AI response: {gemini_error}")
+            reasoning = "I'm having trouble processing your submission right now. Please try again."
+        
+        # Always return response with reasoning and audio (even if one failed)
+        return JsonResponse({
+            "reasoning": reasoning,
+            "audio": audio_base64,
+            "success": True
+        })
+            
     except Interview.DoesNotExist:
         return JsonResponse({"error": "Interview not found"}, status=404)
     except json.JSONDecodeError:
