@@ -17,7 +17,7 @@
 
 ## 🎯 What is VODE?
 
-**VODE** (Virtual Online Developer Examination) is an AI-powered technical interview platform that conducts real-time coding interviews with candidates. It uses advanced AI models to:
+**VODE** is an AI-powered technical interview platform that conducts real-time coding interviews with candidates. It uses advanced AI models to:
 
 - **Generate Questions**: Creates dynamic coding problems tailored to difficulty levels and topics
 - **Provide Real-Time Feedback**: Gives intelligent, context-aware coaching during the interview
