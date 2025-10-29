@@ -1,12 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interview Complete</title>
     <link rel="stylesheet" href="{% static 'interview/end.css' %}">
 </head>
+
 <body>
     <!-- Hidden audio element (no autoplay) -->
     <audio id="END_AUDIO" src="data:audio/mpeg;base64,{{ audio }}"></audio>
@@ -25,4 +27,5 @@
 
     <script src="{% static 'interview/end.js' %}"></script>
 </body>
+
 </html>
