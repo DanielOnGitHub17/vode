@@ -21,6 +21,7 @@ function endInterview() {
 }
 
 async function sendTextCode(transcribedText = "", code = "") {
+    // later, check code diff to see if any code changed so that you don't send code unnecessarily
     try {
         const response = await fetch(API_URL, {
             method: "POST",
@@ -79,6 +80,63 @@ function sendHeartbeat() {
     console.log("sendHeartbeat called");
 }
 
+function naturalSpeech(audioBase64) {
+    if (!audioBase64 || !window.speaker) {
+        console.warn("No audio or speaker not available");
+        return;
+    }
+
+    // Disable editor and mute speech recognition while audio is playing
+    disableEditorAndSpeech();
+
+    // Convert base64 audio to playable format
+    const audioBlob = base64ToBlob(audioBase64, "audio/mpeg");
+    const audioUrl = URL.createObjectURL(audioBlob);
+
+    window.speaker.src = audioUrl;
+    window.speaker.play().catch(err => {
+        console.error("Audio play error:", err);
+    });
+
+    // Re-enable editor and speech after audio ends
+    window.speaker.onended = () => {
+        // URL.revokeObjectURL(audioUrl);
+        // Want to be careful about revoking
+        // Candidate might say, "please repeat what you said - or something like that"
+        // We'd want to handle that efficiently
+        
+        // Wait second before re-enabling
+        setTimeout(() => {
+            enableEditorAndSpeech();
+        }, 500);
+    };
+}
+
+function backupSpeech(text) {
+    if (!text || !window.speechSynthesis) {
+        console.warn("No text or speechSynthesis not available");
+        return;
+    }
+
+    // Disable editor and speech recognition
+    disableEditorAndSpeech();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    utterance.onend = () => {
+        setTimeout(() => {
+            enableEditorAndSpeech();
+        }, 500);
+    };
+
+    utterance.onerror = (err) => {
+        console.error("Speech synthesis error:", err);
+        enableEditorAndSpeech();
+    };
+
+    window.speechSynthesis.speak(utterance);
+}
+
 function typeAndSay(data) {
     if (!data || !data.reasoning) {
         console.warn("No reasoning data received");
@@ -93,39 +151,22 @@ function typeAndSay(data) {
         typeText(aiMessageElement, data.reasoning, 30);
     }
 
-    // Play audio response if available
-    if (data.audio && window.speaker) {
-        // Disable editor and mute speech recognition while audio is playing
-        disableEditorAndSpeech();
-
-        // Convert base64 audio to playable format
-        const audioBlob = base64ToBlob(data.audio, "audio/mpeg");
-        const audioUrl = URL.createObjectURL(audioBlob);
-
-        window.speaker.src = audioUrl;
-        window.speaker.play().catch(err => {
-            console.error("Audio play error:", err);
-        });
-
-        // Re-enable editor and speech 1 second after audio ends
-        window.speaker.onended = () => {
-            URL.revokeObjectURL(audioUrl);
-            
-            // Wait 1 second before re-enabling
-            setTimeout(() => {
-                enableEditorAndSpeech();
-            }, 1000);
-        };
+    // Play audio response
+    if (data.audio && data.audio !== "EMPTY") {
+        naturalSpeech(data.audio);
+    } else {
+        backupSpeech(data.reasoning);
     }
 }
 
 function disableEditorAndSpeech() {
     // Disable Monaco editor
     const codeEditor = get("CODE_EDITOR");
-    if (codeEditor) {
-        codeEditor.style.pointerEvents = "none";
-        codeEditor.style.opacity = "0.5";
-    }
+    codeEditor.style.pointerEvents = "none";
+    codeEditor.style.opacity = "0.5";
+
+    // Show AI speaking overlay
+    reclass(get("AI_SPEAKING_OVERLAY"), "active")
 
     // Stop speech recognition
     if (window.recognition) {
@@ -137,10 +178,11 @@ function disableEditorAndSpeech() {
 function enableEditorAndSpeech() {
     // Re-enable Monaco editor
     const codeEditor = get("CODE_EDITOR");
-    if (codeEditor) {
-        codeEditor.style.pointerEvents = "auto";
-        codeEditor.style.opacity = "1";
-    }
+    codeEditor.style.pointerEvents = "auto";
+    codeEditor.style.opacity = "1";
+
+    // Hide AI speaking overlay
+    reclass(get("AI_SPEAKING_OVERLAY"), "active", true)
 
     // Resume speech recognition
     if (window.recognition) {
