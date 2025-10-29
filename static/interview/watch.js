@@ -31,7 +31,7 @@ function startCountdown(timeStop) {
         const timeRemainingSeconds = Math.floor(timeRemainingMs / 1000);
 
         if (timeRemainingSeconds <= 0) {
-            // Time"s up!
+            // Time's up!
             clearInterval(interval);
             TIMER_BADGE.textContent = "00:00";
             TIMER_BADGE.classList.remove("bg-primary");

@@ -37,7 +37,6 @@ function sendMessage(messageText = null, isAI = false) {
     
     const input = get("CHAT_INPUT");
     const chatMessages = get("CHAT_MESSAGES");
-    const chatInputContainer = get("CHAT_INPUT_CONTAINER");
     
     if (!chatMessages) {
         console.error("CHAT_MESSAGES not found");

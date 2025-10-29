@@ -17,7 +17,7 @@ document.addEventListener("streamsReady", (event) => {
 });
 
 function startRecording() {
-    // Use EXISTING streams from permissions.js - don"t create new ones!
+    // Use EXISTING streams from permissions.js - don't create new ones!
     
     // Create MediaRecorder for screen (already has video + system audio)
     if (window.entire_screen_feed) {

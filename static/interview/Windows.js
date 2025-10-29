@@ -122,7 +122,7 @@ class WindowManager {
     }
 
     onMouseDown(e, windowElement) {
-        // Don"t drag if clicking buttons
+        // Don't drag if clicking buttons
         if (e.target.tagName === "BUTTON" || e.target.closest("button")) {
             return;
         }

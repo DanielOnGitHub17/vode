@@ -102,7 +102,7 @@ function naturalSpeech(audioBase64) {
     window.speaker.onended = () => {
         // URL.revokeObjectURL(audioUrl);
         // Want to be careful about revoking
-        // Candidate might say, "please repeat what you said - or something like that"
+        // Candidate might say, "please repeat what you said" - or something like that
         // We'd want to handle that efficiently
         
         // Wait second before re-enabling
@@ -166,7 +166,7 @@ function disableEditorAndSpeech() {
     codeEditor.style.opacity = "0.5";
 
     // Show AI speaking overlay
-    reclass(get("AI_SPEAKING_OVERLAY"), "active")
+    reclass(get("AI_SPEAKING_OVERLAY"), "active");
 
     // Stop speech recognition
     if (window.recognition) {
@@ -182,7 +182,7 @@ function enableEditorAndSpeech() {
     codeEditor.style.opacity = "1";
 
     // Hide AI speaking overlay
-    reclass(get("AI_SPEAKING_OVERLAY"), "active", true)
+    reclass(get("AI_SPEAKING_OVERLAY"), "active", true);
 
     // Resume speech recognition
     if (window.recognition) {
