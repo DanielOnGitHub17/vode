@@ -5,12 +5,12 @@ let windowManager;
 
 // Initialize Monaco Editor
 function initMonaco() {
-    require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs' } });
-    require(['vs/editor/editor.main'], function () {
-        editor = monaco.editor.create(get('CODE_EDITOR'), {
-            value: '// Write your code here\n',
-            language: 'python',
-            theme: 'vs-dark',
+    require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs" } });
+    require(["vs/editor/editor.main"], function () {
+        editor = monaco.editor.create(get("CODE_EDITOR"), {
+            value: "// Write your code here\n",
+            language: "python",
+            theme: "vs-dark",
             automaticLayout: true,
             fontSize: 14,
             minimap: { enabled: false }
@@ -18,58 +18,46 @@ function initMonaco() {
     });
 }
 
-// Timer functionality
-function startTimer() {
-    let totalSeconds = 45 * 60;
-    timerInterval = setInterval(() => {
-        totalSeconds--;
-        const mins = Math.floor(totalSeconds / 60);
-        const secs = totalSeconds % 60;
-        get('TIMER_BADGE').textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        if (totalSeconds <= 0) clearInterval(timerInterval);
-    }, 1000);
-}
-
 // Language selector
-get('LANGUAGE_SELECT').addEventListener('change', (e) => {
+get("LANGUAGE_SELECT").addEventListener("change", (e) => {
     const langMap = {
-        'python': 'python',
-        'javascript': 'javascript',
-        'typescript': 'typescript',
-        'java': 'java',
-        'cpp': 'cpp',
-        'csharp': 'csharp',
-        'go': 'go'
+        "python": "python",
+        "javascript": "javascript",
+        "typescript": "typescript",
+        "java": "java",
+        "cpp": "cpp",
+        "csharp": "csharp",
+        "go": "go"
     };
     monaco.editor.setModelLanguage(editor.getModel(), langMap[e.target.value]);
 });
 
 function sendMessage(messageText = null, isAI = false) {
-    console.log('sendMessage called:', { messageText, isAI });
+    console.log("sendMessage called:", { messageText, isAI });
     
-    const input = get('CHAT_INPUT');
-    const chatMessages = get('CHAT_MESSAGES');
-    const chatInputContainer = get('CHAT_INPUT_CONTAINER');
+    const input = get("CHAT_INPUT");
+    const chatMessages = get("CHAT_MESSAGES");
+    const chatInputContainer = get("CHAT_INPUT_CONTAINER");
     
     if (!chatMessages) {
-        console.error('CHAT_MESSAGES not found');
+        console.error("CHAT_MESSAGES not found");
         return null;
     }
     
-    console.log('CHAT_MESSAGES found:', chatMessages);
+    console.log("CHAT_MESSAGES found:", chatMessages);
     
     // Get message text - either from parameter or input field
-    const msg = messageText || (input ? input.value.trim() : '');
+    const msg = messageText || (input ? input.value.trim() : "");
     if (!msg) {
-        console.warn('No message text to send');
+        console.warn("No message text to send");
         return null;
     }
     
-    console.log('Creating message div for:', msg);
+    console.log("Creating message div for:", msg);
 
     // Create message div
-    const msgDiv = make('div');
-    msgDiv.className = 'chat-message';
+    const msgDiv = make();
+    msgDiv.className = "chat-message";
     
     if (isAI) {
         // AI message with robot icon
@@ -79,18 +67,18 @@ function sendMessage(messageText = null, isAI = false) {
         msgDiv.innerHTML = `<i class="bi bi-person-fill"></i><p>${msg}</p>`;
     }
     
-    console.log('Adding message to chat:', msgDiv);
+    console.log("Adding message to chat:", msgDiv);
     add(msgDiv, chatMessages);
     chatMessages.scrollTop = chatMessages.scrollHeight;
     
     // Clear input if it was used
     if (!messageText && input) {
-        input.value = '';
+        input.value = "";
     }
     
     // Return the paragraph element for AI typing animation
     if (isAI) {
-        return msgDiv.querySelector('p.ai-message');
+        return msgDiv.querySelector("p.ai-message");
     }
     
     return msgDiv;
@@ -100,7 +88,7 @@ function sendMessage(messageText = null, isAI = false) {
 window.sendMessage = sendMessage;
 
 // Initialize everything when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
     windowManager = new WindowManager();
     // Timer is handled by watch.js
     initMonaco();

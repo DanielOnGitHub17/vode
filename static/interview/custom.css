@@ -569,3 +569,49 @@ body {
     background: #4cc9f0;
     border-radius: 4px;
 }
+
+/* AI Speaking Overlay */
+.ai-speaking-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    z-index: 9999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+
+.ai-speaking-overlay.active {
+    display: flex;
+}
+
+.ai-speaking-message {
+    background: rgba(76, 201, 240, 0.95);
+    color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(76, 201, 240, 0.5);
+}
+
+.ai-speaking-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.ai-speaking-message h2 {
+    margin: 0.5rem 0;
+    font-size: 1.5rem;
+}
+
+.ai-speaking-message p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    opacity: 0.9;
+}

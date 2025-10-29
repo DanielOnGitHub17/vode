@@ -15,8 +15,8 @@ Should have:
 ### 2. Environment Variables
 Check `.env` file exists with:
 ```
-GEMINI_API_KEY=AIzaSyCfXYmTJFQ8lI-dKMVcXmVNZDCO66qU9IY
-ELEVENLABS_API_KEY=sk_8255f9aac656a1c9c16dfbab2ae93b2a1840965c94c78177
+GEMINI_API_KEY=YOUR_API_KEY_GEMINI
+ELEVENLABS_API_KEY=YOUR_API_KEY_ELEVENLABS
 ```
 
 ### 3. Django System Checks

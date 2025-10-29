@@ -13,44 +13,38 @@ const TIMER_BADGE = get("TIMER_BADGE");
 function initializeTimer() {
     const timeLimitMinutes = parseInt(TIMER_BADGE.textContent.trim()); // e.g., "60" or "45"
     const startedTime = TIMER_BADGE.getAttribute("data-started-time"); // ISO timestamp when interview started
-    
-    // Calculate how much time has elapsed since interview started
-    const startTime = new Date(startedTime).getTime();
-    const now = Date.now();
-    const elapsedSeconds = Math.floor((now - startTime) / 1000);
-    
-    // Calculate time left
-    const totalAllowedSeconds = (timeLimitMinutes * 60);
-    let timeLeftSeconds = totalAllowedSeconds - elapsedSeconds;
-    
-    // Add 30 seconds grace period
-    timeLeftSeconds += 30;
-    
-    // Start the countdown
-    startCountdown(timeLeftSeconds);
+
+    // Calculate when the interview should stop
+    const timeStartMs = new Date(startedTime).getTime();
+    const timeLimitMs = timeLimitMinutes * 60 * 1000; // Convert minutes to milliseconds
+    const gracePeriodMs = 30 * 1000; // 30 seconds grace period
+    const timeStop = timeStartMs + timeLimitMs + gracePeriodMs;
+
+    // Start the countdown with absolute stop timestamp
+    startCountdown(timeStop);
 }
 
-function startCountdown(timeLeftSeconds) {
+function startCountdown(timeStop) {
     const interval = setInterval(() => {
-        timeLeftSeconds--;
+        const now = Date.now();
+        const timeRemainingMs = timeStop - now;
+        const timeRemainingSeconds = Math.floor(timeRemainingMs / 1000);
 
-        if (timeLeftSeconds <= 0) {
-            // Time's up!
+        if (timeRemainingSeconds <= 0) {
+            // Time"s up!
             clearInterval(interval);
             TIMER_BADGE.textContent = "00:00";
             TIMER_BADGE.classList.remove("bg-primary");
             TIMER_BADGE.classList.add("bg-danger");
-            
-            // Mark interview as completed before ending
-            // markInterviewCompleted().then(() => {
+
+            // End interview
             endInterview();
-            // });
         } else {
             // Update timer display
-            const hours = Math.floor(timeLeftSeconds / 3600);
-            const minutes = Math.floor((timeLeftSeconds % 3600) / 60);
-            const seconds = timeLeftSeconds % 60;
-            
+            const hours = Math.floor(timeRemainingSeconds / 3600);
+            const minutes = Math.floor((timeRemainingSeconds % 3600) / 60);
+            const seconds = timeRemainingSeconds % 60;
+
             let displayTime;
             if (hours > 0) {
                 displayTime = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
@@ -61,7 +55,7 @@ function startCountdown(timeLeftSeconds) {
             TIMER_BADGE.textContent = displayTime;
 
             // Change color when less than 5 minutes remaining
-            if (timeLeftSeconds <= 300 && timeLeftSeconds > 0) {
+            if (timeRemainingSeconds <= 300 && timeRemainingSeconds > 0) {
                 TIMER_BADGE.classList.remove("bg-primary");
                 TIMER_BADGE.classList.add("bg-warning");
             }
@@ -111,7 +105,7 @@ function setupEditorListeners() {
     // Listen to content changes in Monaco editor
     editor.onDidChangeModelContent((event) => {
         keystrokeCount++;
-        
+
         // Clear existing debounce timer
         if (debounceTimer) {
             clearTimeout(debounceTimer);
@@ -161,7 +155,7 @@ function watchChatBox() {
     const chatInput = get("CHAT_INPUT");
     const sendButton = get("BTN_SEND_CHAT");
 
-        // Monitor chat input
+    // Monitor chat input
     chatInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
             console.log("hit enter");
@@ -178,33 +172,33 @@ function watchChatBox() {
 }
 
 function handleChatMessage() {
-    console.log('handleChatMessage called');
-    
+    console.log("handleChatMessage called");
+
     const chatInput = get("CHAT_INPUT");
     const message = chatInput.value.trim();
-    
-    console.log('Message from input:', message);
-    
+
+    console.log("Message from input:", message);
+
     if (message) {
         // Show user message in chat immediately
-        console.log('Calling sendMessage with:', message);
-        
-        if (typeof window.sendMessage === 'function') {
+        console.log("Calling sendMessage with:", message);
+
+        if (typeof window.sendMessage === "function") {
             window.sendMessage(message, false);
         } else {
-            console.error('sendMessage function not found!');
+            console.error("sendMessage function not found!");
         }
 
         lastChatMessage = message;
-        
+
         // Send chat message with current code context to API
         const currentCode = editor ? editor.getValue() : "";
         sendText(message, currentCode);
-        
+
         // Clear input
         chatInput.value = "";
     } else {
-        console.warn('No message to send');
+        console.warn("No message to send");
     }
 }
 
@@ -215,11 +209,11 @@ function handleChatMessage() {
 function handleSpeechWithCode() {
     // User is speaking while coding
     const currentCode = editor ? editor.getValue() : "";
-    
+
     if (currentCode.trim().length > 0 && window.transcribedText.length > 0) {
         // Send both transcribed text and code
         sendTextCode(window.transcribedText, currentCode);
-        
+
         // Clear speech buffer after sending
         window.speechBuffer = "";
         window.transcribedText = "";
@@ -230,7 +224,7 @@ function handleSilentTyping() {
     // User has typed COUNT_TO_CHECK times without speaking
     // They are focused on coding without verbal explanation
     const currentCode = editor ? editor.getValue() : "";
-    
+
     if (currentCode !== lastCodeContent && currentCode.trim().length > 0) {
         sendCode(currentCode);
         lastCodeContent = currentCode;
@@ -241,55 +235,14 @@ function handleTypingPause() {
     // User has paused typing (debounced)
     // Send current code state
     const currentCode = editor ? editor.getValue() : "";
-    
+
     if (currentCode !== lastCodeContent && currentCode.trim().length > 0) {
         sendCode(currentCode);
         lastCodeContent = currentCode;
     }
-    
+
     // Reset keystroke counter on pause
     keystrokeCount = 0;
-}
-
-// ============================================
-// CLEANUP ON INTERVIEW END
-// ============================================
-
-// async function markInterviewCompleted() {
-//     try {
-//         const response = await fetch('/interview/api/end-interview/', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'X-CSRFToken': getCookie('csrftoken')
-//             },
-//             body: JSON.stringify({
-//                 interview_id: window.interviewId
-//             })
-//         });
-
-//         const data = await response.json();
-//         console.log('Interview marked as completed:', data);
-//         return data;
-//     } catch (error) {
-//         console.error('Error marking interview as completed:', error);
-//         return null;
-//     }
-// }
-
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
 }
 
 function cleanupMonitoring() {
@@ -311,7 +264,7 @@ function cleanupMonitoring() {
 
 // Override endInterview to include cleanup
 const originalEndInterview = window.endInterview;
-window.endInterview = function() {
+window.endInterview = function () {
     cleanupMonitoring();
     if (originalEndInterview) {
         originalEndInterview();

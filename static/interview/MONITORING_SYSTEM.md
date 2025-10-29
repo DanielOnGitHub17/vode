@@ -133,13 +133,6 @@ Periodic heartbeat to track active interview session.
 }
 ```
 
-#### `submitInterview(finalCode, duration)`
-Final submission when interview completes.
-
-**Parameters:**
-- `finalCode` (string): Final code submission
-- `duration` (number): Total duration in seconds
-
 **Backend Endpoint:** `POST /api/interview/submit/`
 ```json
 {

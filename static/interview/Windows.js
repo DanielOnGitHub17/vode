@@ -3,20 +3,20 @@ class WindowManager {
     constructor() {
         this.windows = {
             interviewer: {
-                element: get('INTERVIEWER_WINDOW'),
-                taskbarIcon: get('TASKBAR_INTERVIEWER'),
+                element: get("INTERVIEWER_WINDOW"),
+                taskbarIcon: get("TASKBAR_INTERVIEWER"),
                 isMinimized: false,
                 zIndex: 1100
             },
             video: {
-                element: get('VIDEO_WINDOW'),
-                taskbarIcon: get('TASKBAR_VIDEO'),
+                element: get("VIDEO_WINDOW"),
+                taskbarIcon: get("TASKBAR_VIDEO"),
                 isMinimized: false,
                 zIndex: 1000
             },
             chat: {
-                element: get('CHAT_WINDOW'),
-                taskbarIcon: get('TASKBAR_CHAT'),
+                element: get("CHAT_WINDOW"),
+                taskbarIcon: get("TASKBAR_CHAT"),
                 isMinimized: true,  // Start minimized
                 zIndex: 999
             }
@@ -28,7 +28,7 @@ class WindowManager {
         this.focusedWindow = null;
         this.nextZIndex = 2000;  // Start high to avoid conflicts
         
-        // Bind methods to preserve 'this' context
+        // Bind methods to preserve "this" context
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
@@ -42,20 +42,20 @@ class WindowManager {
             const win = this.windows[key];
             
             // Taskbar icon click handler
-            win.taskbarIcon.addEventListener('click', () => this.toggle(key));            
+            win.taskbarIcon.addEventListener("click", () => this.toggle(key));            
             
             // Make draggable
             this.makeDraggable(win.element);
             
             // Set initial state
             if (win.isMinimized) {
-                win.taskbarIcon.classList.add('minimized');
+                win.taskbarIcon.classList.add("minimized");
             }
         });
 
         // Global mouse events for dragging
-        document.addEventListener('mousemove', this.onMouseMove);
-        document.addEventListener('mouseup', this.onMouseUp);
+        document.addEventListener("mousemove", this.onMouseMove);
+        document.addEventListener("mouseup", this.onMouseUp);
     }
 
     toggle(windowKey) {
@@ -69,38 +69,38 @@ class WindowManager {
 
     minimize(windowKey) {
         const win = this.windows[windowKey];
-        win.element.classList.remove('active');
-        win.element.classList.add('hidden');
-        win.taskbarIcon.classList.add('minimized');
+        win.element.classList.remove("active");
+        win.element.classList.add("hidden");
+        win.taskbarIcon.classList.add("minimized");
         win.isMinimized = true;
     }
 
     restore(windowKey) {
         const win = this.windows[windowKey];
-        win.element.classList.remove('hidden');
-        win.element.classList.add('active');
-        win.taskbarIcon.classList.remove('minimized');
+        win.element.classList.remove("hidden");
+        win.element.classList.add("active");
+        win.taskbarIcon.classList.remove("minimized");
         win.isMinimized = false;
     }
 
     makeDraggable(windowElement) {
         if (!windowElement) {
-            console.error('[WindowManager] Cannot make null element draggable');
+            console.error("[WindowManager] Cannot make null element draggable");
             return;
         }
 
         // Get the drag handle (the header)
-        const handle = windowElement.querySelector('.window-header');
+        const handle = windowElement.querySelector(".window-header");
         if (!handle) {
             console.error(`[WindowManager] No .window-header found in ${windowElement.id}`);
             return;
         }
 
         // Attach mousedown to the handle
-        handle.addEventListener('mousedown', (e) => this.onMouseDown(e, windowElement));
+        handle.addEventListener("mousedown", (e) => this.onMouseDown(e, windowElement));
         
         // Also focus window on any click inside it
-        windowElement.addEventListener('mousedown', () => this.focusWindow(windowElement));
+        windowElement.addEventListener("mousedown", () => this.focusWindow(windowElement));
         
         console.log(`[WindowManager] Made ${windowElement.id} draggable`);
     }
@@ -108,12 +108,12 @@ class WindowManager {
     focusWindow(windowElement) {
         // Remove focus from previously focused window
         if (this.focusedWindow && this.focusedWindow !== windowElement) {
-            this.focusedWindow.classList.remove('focused');
+            this.focusedWindow.classList.remove("focused");
         }
 
         // Focus the clicked window
         this.focusedWindow = windowElement;
-        windowElement.classList.add('focused');
+        windowElement.classList.add("focused");
         
         // Bring to front by updating z-index
         windowElement.style.zIndex = this.nextZIndex++;
@@ -122,8 +122,8 @@ class WindowManager {
     }
 
     onMouseDown(e, windowElement) {
-        // Don't drag if clicking buttons
-        if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+        // Don"t drag if clicking buttons
+        if (e.target.tagName === "BUTTON" || e.target.closest("button")) {
             return;
         }
 
@@ -140,16 +140,16 @@ class WindowManager {
         this.dragOffset.y = e.clientY - rect.top;
 
         // Clear any right/bottom positioning so left/top can take over
-        windowElement.style.right = 'auto';
-        windowElement.style.bottom = 'auto';
+        windowElement.style.right = "auto";
+        windowElement.style.bottom = "auto";
 
         // Set initial left/top based on current position
-        windowElement.style.left = rect.left + 'px';
-        windowElement.style.top = rect.top + 'px';
+        windowElement.style.left = rect.left + "px";
+        windowElement.style.top = rect.top + "px";
 
         // Visual feedback
-        windowElement.style.cursor = 'grabbing';
-        windowElement.style.userSelect = 'none';
+        windowElement.style.cursor = "grabbing";
+        windowElement.style.userSelect = "none";
 
         console.log(`[WindowManager] Drag started: ${windowElement.id}`);
     }
@@ -167,8 +167,8 @@ class WindowManager {
         const constrainedX = Math.max(0, Math.min(newX, maxX));
         const constrainedY = Math.max(0, Math.min(newY, maxY));
 
-        this.draggedWindow.style.left = constrainedX + 'px';
-        this.draggedWindow.style.top = constrainedY + 'px';
+        this.draggedWindow.style.left = constrainedX + "px";
+        this.draggedWindow.style.top = constrainedY + "px";
     }
 
     onMouseUp() {
@@ -176,12 +176,12 @@ class WindowManager {
 
         this.isDragging = false;
         if (this.draggedWindow) {
-            this.draggedWindow.style.cursor = 'grab';
-            this.draggedWindow.style.userSelect = '';
+            this.draggedWindow.style.cursor = "grab";
+            this.draggedWindow.style.userSelect = "";
             this.draggedWindow = null;
         }
 
-        console.log('[WindowManager] Drag ended');
+        console.log("[WindowManager] Drag ended");
     }
 }
 

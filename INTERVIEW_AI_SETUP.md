@@ -125,7 +125,7 @@ Creates questions that:
 
 2. Create `.env` file with API keys:
    ```
-   GEMINI_API_KEY=AIzaSyCfXYmTJFQ8lI-dKMVcXmVNZDCO66qU9IY
+   GEMINI_API_KEY=YOUR_KEY
    ELEVENLABS_API_KEY=your_key
    ```
 
