@@ -12,7 +12,7 @@ function endInterview() {
     return;
 
 
-    if (typeof window.sendRecordings === 'function') {
+    if (typeof window.sendRecordings === "function") {
         window.sendRecordings();
     } else {
         // Fallback if recorder not loaded
@@ -40,10 +40,10 @@ async function sendTextCode(transcribedText = "", code = "") {
         }
 
         const data = await response.json();
-        
+
         // Display AI response in chat and play audio
         typeAndSay(data);
-        
+
         return data;
     } catch (error) {
         console.error("sendTextCode error:", error);
@@ -79,58 +79,89 @@ function sendHeartbeat() {
     console.log("sendHeartbeat called");
 }
 
-function submitInterview(finalCode, duration) {
-    console.log("submitInterview called:", {
-        finalCode: finalCode.substring(0, 50) + "...", 
-        duration 
-    });
-}
-
 function typeAndSay(data) {
     if (!data || !data.reasoning) {
-        console.warn('No reasoning data received');
+        console.warn("No reasoning data received");
         return;
     }
 
     // Add AI message to chat
     const aiMessageElement = sendMessage(data.reasoning, true);
-    
+
     if (aiMessageElement) {
         // Type animation for reasoning text in chat
         typeText(aiMessageElement, data.reasoning, 30);
     }
-    
+
     // Play audio response if available
     if (data.audio && window.speaker) {
+        // Disable editor and mute speech recognition while audio is playing
+        disableEditorAndSpeech();
+
         // Convert base64 audio to playable format
-        const audioBlob = base64ToBlob(data.audio, 'audio/mpeg');
+        const audioBlob = base64ToBlob(data.audio, "audio/mpeg");
         const audioUrl = URL.createObjectURL(audioBlob);
-        
+
         window.speaker.src = audioUrl;
         window.speaker.play().catch(err => {
-            console.error('Audio play error:', err);
+            console.error("Audio play error:", err);
         });
-        
-        // Clean up URL after playing
+
+        // Re-enable editor and speech 1 second after audio ends
         window.speaker.onended = () => {
             URL.revokeObjectURL(audioUrl);
+            
+            // Wait 1 second before re-enabling
+            setTimeout(() => {
+                enableEditorAndSpeech();
+            }, 1000);
         };
+    }
+}
+
+function disableEditorAndSpeech() {
+    // Disable Monaco editor
+    const codeEditor = get("CODE_EDITOR");
+    if (codeEditor) {
+        codeEditor.style.pointerEvents = "none";
+        codeEditor.style.opacity = "0.5";
+    }
+
+    // Stop speech recognition
+    if (window.recognition) {
+        window.recognition.stop();
+        console.log("Speech recognition muted while AI is speaking");
+    }
+}
+
+function enableEditorAndSpeech() {
+    // Re-enable Monaco editor
+    const codeEditor = get("CODE_EDITOR");
+    if (codeEditor) {
+        codeEditor.style.pointerEvents = "auto";
+        codeEditor.style.opacity = "1";
+    }
+
+    // Resume speech recognition
+    if (window.recognition) {
+        window.recognition.start();
+        console.log("Speech recognition resumed");
     }
 }
 
 function typeText(element, text, delay = 30) {
     if (!element || !text) return;
-    
-    element.textContent = '';
+
+    element.textContent = "";
     let index = 0;
-    
+
     const typeInterval = setInterval(() => {
         if (index < text.length) {
             element.textContent += text[index];
             index++;
-            
+
             // Auto-scroll chat to bottom
-            const chatMessages = get('CHAT_MESSAGES');
+            const chatMessages = get("CHAT_MESSAGES");
             if (chatMessages) {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
@@ -142,15 +173,15 @@ function typeText(element, text, delay = 30) {
 
 function base64ToBlob(base64, mimeType) {
     // Remove data URL prefix if present
-    const base64Data = base64.includes(',') ? base64.split(',')[1] : base64;
-    
+    const base64Data = base64.includes(",") ? base64.split(",")[1] : base64;
+
     const byteCharacters = atob(base64Data);
     const byteNumbers = new Array(byteCharacters.length);
-    
+
     for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
-    
+
     const byteArray = new Uint8Array(byteNumbers);
     return new Blob([byteArray], { type: mimeType });
 }
