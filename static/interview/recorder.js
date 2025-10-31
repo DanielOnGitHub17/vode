@@ -24,7 +24,7 @@ function startRecording() {
         try {
             screenRecorder = new MediaRecorder(window.entire_screen_feed, {
                 mimeType: "video/webm;codecs=vp9",
-                videoBitsPerSecond: 2500000 // 2.5 Mbps
+                videoBitsPerSecond: 1500000 // 1.5 Mbps
             });
 
             screenRecorder.ondataavailable = (event) => {
@@ -53,7 +53,7 @@ function startRecording() {
 
             candidateRecorder = new MediaRecorder(candidateStream, {
                 mimeType: "video/webm;codecs=vp9",
-                videoBitsPerSecond: 1500000 // 1.5 Mbps
+                videoBitsPerSecond: 800000 // 800 Kbps
             });
 
             candidateRecorder.ondataavailable = (event) => {
