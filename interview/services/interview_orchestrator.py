@@ -115,8 +115,6 @@ class InterviewOrchestrator:
         """
         score = 50  # Default score
         feedback = ""
-        end_message = "Thank you for taking the time to interview with us today. We appreciate your participation and the effort you put into solving this problem. Your recruiter will be reaching out to you shortly with feedback and next steps. We look forward to staying in touch!"
-        audio_base64 = ""
 
         try:
             if not success_metrics_list:
@@ -137,21 +135,11 @@ class InterviewOrchestrator:
                 score = 50
                 feedback = "Interview completed. Detailed feedback will be provided by your recruiter."
 
-            # Try to generate closing audio (separate try block)
-            try:
-                audio = self.elevenlabs.text_to_speech(end_message)
-                audio_base64 = base64.b64encode(audio).decode("utf-8")
-            except Exception as audio_error:
-                logger.error(f"Error generating end interview audio: {audio_error}")
-                audio_base64 = ""  # Empty audio if TTS fails
-
             self.gemini.clear_context()
 
             return {
                 "score": score,
                 "feedback": feedback,
-                "message": end_message,
-                "audio": audio_base64,
                 "success": True,
             }
 
@@ -159,11 +147,7 @@ class InterviewOrchestrator:
             logger.error(f"Error generating end-of-interview evaluation: {e}")
             return {
                 "score": score,
-                "feedback": (
-                    feedback if feedback else "Unable to generate detailed feedback"
-                ),
-                "message": end_message,
-                "audio": audio_base64,
+                "feedback": feedback or "Unable to generate detailed feedback",
                 "success": False,
                 "error": str(e),
             }

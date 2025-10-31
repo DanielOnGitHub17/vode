@@ -21,7 +21,7 @@ QUESTION_THRESHOLD = 5  # could be 1000
 
 def end(request, id: int):
     """End the interview and save video URLs."""
-    mock_candidate = Candidate.objects.first()
+    mock_candidate = Candidate.objects.first()  # will be request.user.candiate later
 
     try:
         interview_obj = Interview.objects.select_related(
@@ -58,16 +58,8 @@ def end(request, id: int):
 
         interview_obj.save()
 
-        audio_data = end_result.get("audio", b"")
-        if isinstance(audio_data, bytes):
-            audio_base64 = base64.b64encode(audio_data).decode("utf-8")
-        else:
-            audio_base64 = audio_data
-
-        context = {"audio": audio_base64}
-
         messages.success(request, "Interview completed successfully!")
-        return render(request, "interview/end.html", context)
+        return render(request, "interview/end.html")
 
     except Interview.DoesNotExist:
         messages.error(request, "Interview not found.")
