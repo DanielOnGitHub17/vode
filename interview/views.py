@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from datetime import datetime
+from django.utils import timezone
 import json
 import logging
 
@@ -48,7 +48,7 @@ def end(request, id: int):
             interview_obj.round.success_metrics_list
         )
 
-        interview_obj.completed_at = datetime.now()
+        interview_obj.completed_at = timezone.now()
         # if interview_obj.score == 0 and end_result.get("success"):
         score = end_result.get("score", 50)
         score = max(0, min(100, int(score)))
@@ -223,7 +223,7 @@ def generate_interview_question(interview: Interview) -> Question:
     context = {
         "difficulty": interview.round.difficulty_level,
         "topics": interview.round.data_structures,
-        "already_picked": ", ".join(question_titles) if question_titles else "None",
+        "already_picked": ", ".join(question_titles) or "None",
     }
 
     question = orchestrator.gemini.get_question(context)
@@ -290,7 +290,7 @@ def end_interview_audio(request):
 
             interview.score = score
             interview.notes = feedback
-            interview.completed_at = datetime.now()
+            interview.completed_at = timezone.now()
             interview.save()
 
             logger.info(f"Interview {interview_id} completed with score {score}/100")
