@@ -41,7 +41,7 @@ def end(request, id: int):
             interview_obj.candidate_video = candidate_video
 
         if screen_video or candidate_video:
-            interview_obj.save()
+            interview_obj.save()  # so I don't lose them lol
             logger.info(f"Saved video URLs for interview {id}")
 
         end_result = orchestrator.end_interview(
@@ -71,7 +71,7 @@ def interview(request, id: int):
     Interview view - displays the technical interview interface
     """
     mock_candidate = Candidate.objects.first()  # TODO: request.user.candidate
-    print(mock_candidate.user.get_full_name())
+    print("Interview starting for", mock_candidate.user.get_full_name())
 
     try:
         interview_obj = Interview.objects.get(id=id)
@@ -219,6 +219,7 @@ def generate_interview_question(interview: Interview) -> Question:
         :QUESTION_THRESHOLD
     ]
     question_titles = [question.title for question in latest_questions]
+    print("The topics to be generated for:", interview.round.data_structures)
 
     context = {
         "difficulty": interview.round.difficulty_level,
@@ -235,13 +236,17 @@ def generate_interview_question(interview: Interview) -> Question:
             "round": interview.round,
         },
     )
+    question.save()
 
     return question
 
 
+# Make end behave like this and then remove end.
+# The /interview/<id> screen could change instead of it redirecting to another page.
 @require_http_methods(["POST"])
 @csrf_exempt
 def end_interview_audio(request):
+    # Use instead of end later I guess
     """
     End interview endpoint: Generate AI-based score, feedback, and closing audio.
     Called when interview timer runs out or candidate completes interview.
