@@ -36,7 +36,7 @@ class InterviewOrchestrator:
     def get_ai_response(self, candidate_code, audio_transcript, interview_context):
         """
         AI agent evaluates continuous code + audio transcript updates.
-        Frontend sends these intermittently based on inactivity.
+        Frontend sends these intermittently.
         Gemini maintains conversation history for all exchanges.
 
         Handles:
@@ -93,7 +93,7 @@ class InterviewOrchestrator:
                     if reasoning
                     else "An error occurred processing your submission."
                 ),
-                "audio": audio if audio else b"",
+                "audio": audio,
             }
 
     def end_interview(self, success_metrics_list=None):
