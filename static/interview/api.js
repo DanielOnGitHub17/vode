@@ -10,14 +10,11 @@ function endInterview() {
     // alert("Time is up! Your interview has ended.");
     window.location.href = `/interview/end/${window.interviewId}/`;
     return;
+    // Later on, don't redirect. Debug the sendRecordings function instead.
+    // then when you get it to work, redirect in the console
 
+    window.sendRecordings();
 
-    if (typeof window.sendRecordings === "function") {
-        window.sendRecordings();
-    } else {
-        // Fallback if recorder not loaded
-        window.location.href = `/interview/end/${window.interviewId}/`;
-    }
 }
 
 async function sendTextCode(transcribedText = "", code = "") {
