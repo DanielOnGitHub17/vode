@@ -184,7 +184,7 @@ You will now evaluate the candidate's submission and provide interview feedback 
         - Challenge assumptions gently
         - Ask ONE powerful question that deepens their thinking
         
-        Keep response conversational and actionable (2-3 paragraphs max).
+        Keep response conversational actionable (1 - 3 sentences max).
         """
 
         try:
