@@ -10,14 +10,11 @@ function endInterview() {
     // alert("Time is up! Your interview has ended.");
     window.location.href = `/interview/end/${window.interviewId}/`;
     return;
+    // Later on, don't redirect. Debug the sendRecordings function instead.
+    // then when you get it to work, redirect in the console
 
+    window.sendRecordings();
 
-    if (typeof window.sendRecordings === "function") {
-        window.sendRecordings();
-    } else {
-        // Fallback if recorder not loaded
-        window.location.href = `/interview/end/${window.interviewId}/`;
-    }
 }
 
 async function sendTextCode(transcribedText = "", code = "") {
@@ -102,7 +99,7 @@ function naturalSpeech(audioBase64) {
     window.speaker.onended = () => {
         // URL.revokeObjectURL(audioUrl);
         // Want to be careful about revoking
-        // Candidate might say, "please repeat what you said - or something like that"
+        // Candidate might say, "please repeat what you said" - or something like that
         // We'd want to handle that efficiently
         
         // Wait second before re-enabling
@@ -166,7 +163,7 @@ function disableEditorAndSpeech() {
     codeEditor.style.opacity = "0.5";
 
     // Show AI speaking overlay
-    reclass(get("AI_SPEAKING_OVERLAY"), "active")
+    reclass(get("AI_SPEAKING_OVERLAY"), "active");
 
     // Stop speech recognition
     if (window.recognition) {
@@ -182,7 +179,7 @@ function enableEditorAndSpeech() {
     codeEditor.style.opacity = "1";
 
     // Hide AI speaking overlay
-    reclass(get("AI_SPEAKING_OVERLAY"), "active", true)
+    reclass(get("AI_SPEAKING_OVERLAY"), "active", true);
 
     // Resume speech recognition
     if (window.recognition) {
