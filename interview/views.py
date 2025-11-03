@@ -21,7 +21,7 @@ QUESTION_THRESHOLD = 5  # could be 1000
 
 def end(request, id: int):
     """End the interview and save video URLs."""
-    mock_candidate = Candidate.objects.first()  # will be request.user.candiate later
+    mock_candidate = Candidate.objects.first()  # will be request.user.candidate later
 
     try:
         interview_obj = Interview.objects.select_related(
@@ -236,7 +236,6 @@ def generate_interview_question(interview: Interview) -> Question:
             "round": interview.round,
         },
     )
-    question.save()
 
     return question
 

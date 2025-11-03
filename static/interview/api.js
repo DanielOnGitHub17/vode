@@ -12,6 +12,7 @@ function endInterview() {
     return;
     // Later on, don't redirect. Debug the sendRecordings function instead.
     // then when you get it to work, redirect in the console
+    // Return to prevent calling sendRecording cause. I haven't tested that part
 
     window.sendRecordings();
 

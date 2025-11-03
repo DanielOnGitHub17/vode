@@ -96,4 +96,4 @@ def test_services():
 
 if __name__ == "__main__":
     success = test_services()
-    sys.exit(int(success))
+    sys.exit(1 - success)
