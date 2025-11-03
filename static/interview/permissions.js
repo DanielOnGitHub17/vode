@@ -19,6 +19,9 @@ window.interviewId = parseInt(url[url.length - 2]);
 // Audio playback for AI responses
 window.speaker = new Audio();
 
+// Remember to have user choose which voice they want for text to speech.
+// Natural sounding or speech synthesis options
+// Or that could maybe be the recruiter/swe's job
 
 async function requestPermissions() {
     try {

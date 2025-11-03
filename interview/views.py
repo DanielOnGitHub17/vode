@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from datetime import datetime
+from django.utils import timezone
 import json
 import logging
 
@@ -21,7 +21,7 @@ QUESTION_THRESHOLD = 5  # could be 1000
 
 def end(request, id: int):
     """End the interview and save video URLs."""
-    mock_candidate = Candidate.objects.first()
+    mock_candidate = Candidate.objects.first()  # will be request.user.candidate later
 
     try:
         interview_obj = Interview.objects.select_related(
@@ -41,14 +41,14 @@ def end(request, id: int):
             interview_obj.candidate_video = candidate_video
 
         if screen_video or candidate_video:
-            interview_obj.save()
+            interview_obj.save()  # so I don't lose them lol
             logger.info(f"Saved video URLs for interview {id}")
 
         end_result = orchestrator.end_interview(
             interview_obj.round.success_metrics_list
         )
 
-        interview_obj.completed_at = datetime.now()
+        interview_obj.completed_at = timezone.now()
         # if interview_obj.score == 0 and end_result.get("success"):
         score = end_result.get("score", 50)
         score = max(0, min(100, int(score)))
@@ -58,16 +58,8 @@ def end(request, id: int):
 
         interview_obj.save()
 
-        audio_data = end_result.get("audio", b"")
-        if isinstance(audio_data, bytes):
-            audio_base64 = base64.b64encode(audio_data).decode("utf-8")
-        else:
-            audio_base64 = audio_data
-
-        context = {"audio": audio_base64}
-
         messages.success(request, "Interview completed successfully!")
-        return render(request, "interview/end.html", context)
+        return render(request, "interview/end.html")
 
     except Interview.DoesNotExist:
         messages.error(request, "Interview not found.")
@@ -79,7 +71,7 @@ def interview(request, id: int):
     Interview view - displays the technical interview interface
     """
     mock_candidate = Candidate.objects.first()  # TODO: request.user.candidate
-    print(mock_candidate.user.get_full_name())
+    print("Interview starting for", mock_candidate.user.get_full_name())
 
     try:
         interview_obj = Interview.objects.get(id=id)
@@ -227,11 +219,12 @@ def generate_interview_question(interview: Interview) -> Question:
         :QUESTION_THRESHOLD
     ]
     question_titles = [question.title for question in latest_questions]
+    print("The topics to be generated for:", interview.round.data_structures)
 
     context = {
         "difficulty": interview.round.difficulty_level,
         "topics": interview.round.data_structures,
-        "already_picked": ", ".join(question_titles) if question_titles else "None",
+        "already_picked": ", ".join(question_titles) or "None",
     }
 
     question = orchestrator.gemini.get_question(context)
@@ -247,9 +240,12 @@ def generate_interview_question(interview: Interview) -> Question:
     return question
 
 
+# Make end behave like this and then remove end.
+# The /interview/<id> screen could change instead of it redirecting to another page.
 @require_http_methods(["POST"])
 @csrf_exempt
 def end_interview_audio(request):
+    # Use instead of end later I guess
     """
     End interview endpoint: Generate AI-based score, feedback, and closing audio.
     Called when interview timer runs out or candidate completes interview.
@@ -298,7 +294,7 @@ def end_interview_audio(request):
 
             interview.score = score
             interview.notes = feedback
-            interview.completed_at = datetime.now()
+            interview.completed_at = timezone.now()
             interview.save()
 
             logger.info(f"Interview {interview_id} completed with score {score}/100")

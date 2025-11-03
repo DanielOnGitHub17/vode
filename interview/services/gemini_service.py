@@ -164,12 +164,10 @@ You will now evaluate the candidate's submission and provide interview feedback 
         CANDIDATE'S CURRENT INPUT:
         
         Code:
-        ```python
-        {candidate_code if candidate_code else '(No code provided)'}
-        ```
-        
+        ```{candidate_code or '(No code provided)'}```
+
         Candidate's Statement (from voice/text):
-        "{audio_transcript if audio_transcript else '(No statement provided)'}"
+        "{audio_transcript or '(No statement provided)'}"
         
         ANALYZE AND RESPOND:
         Evaluate this by considering:
@@ -186,7 +184,7 @@ You will now evaluate the candidate's submission and provide interview feedback 
         - Challenge assumptions gently
         - Ask ONE powerful question that deepens their thinking
         
-        Keep response conversational and actionable (2-3 paragraphs max).
+        Keep response conversational and actionable (1 - 3 sentences max).
         """
 
         try:
