@@ -31,7 +31,7 @@ function startCountdown(timeStop) {
         const timeRemainingSeconds = Math.floor(timeRemainingMs / 1000);
 
         if (timeRemainingSeconds <= 0) {
-            // Time"s up!
+            // Time's up!
             clearInterval(interval);
             TIMER_BADGE.textContent = "00:00";
             TIMER_BADGE.classList.remove("bg-primary");
@@ -69,9 +69,9 @@ function startCountdown(timeStop) {
 // ============================================
 
 // Configuration
-const COUNT_TO_CHECK = 50; // Keystroke threshold for silent typing
-const CODE_SEND_INTERVAL = 10000; // Send code every 10 seconds if actively typing
-const DEBOUNCE_DELAY = 2000; // Wait 2 seconds after last keystroke
+const COUNT_TO_CHECK = 200; // Keystroke threshold (50 default) for silent typing
+const CODE_SEND_INTERVAL = 30000; // Send code if actively typing (every 30 seconds default)
+const DEBOUNCE_DELAY = 10000; // Wait (default 2 seconds) after last keystroke
 
 // State tracking
 let keystrokeCount = 0;
