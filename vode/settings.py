@@ -26,10 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-+_3fx+#!l0-0_e1f310s6*!lf=qds&e=(6d-qr$m_yb6r4-_ge")
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-+_3fx+#!l0-0_e1f310s6*!lf=qds&e=(6d-qr$m_yb6r4-_ge")
 
 # SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -38,8 +38,8 @@ ALLOWED_HOSTS = [
 ]
 
 # Add your custom domain here when you have one
-if os.environ.get("CUSTOM_DOMAIN"):
-    ALLOWED_HOSTS.append(os.environ.get("CUSTOM_DOMAIN"))
+if os.getenv("CUSTOM_DOMAIN"):
+    ALLOWED_HOSTS.append(os.getenv("CUSTOM_DOMAIN"))
 
 
 # Application definition
@@ -101,7 +101,7 @@ DATABASES = {
 }
 
 # Use PostgreSQL on Heroku (DATABASE_URL will be set automatically by Heroku)
-if os.environ.get("DATABASE_URL"):
+if os.getenv("DATABASE_URL"):
     DATABASES["default"] = dj_database_url.config(
         conn_max_age=600,
         conn_health_checks=True,
@@ -167,9 +167,9 @@ STORAGES = {
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # AI Services Configuration
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY", "")
-GEMINI_MODEL = "gemini-2.0-flash-lite"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY", "")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "")
 
 # Logging
 LOGGING = {
