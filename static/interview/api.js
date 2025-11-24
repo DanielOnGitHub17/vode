@@ -74,10 +74,6 @@ function getCookie(name) {
 }
 
 
-function sendHeartbeat() {
-    console.log("sendHeartbeat called");
-}
-
 function naturalSpeech(audioBase64) {
     if (!audioBase64 || !window.speaker) {
         console.warn("No audio or speaker not available");
@@ -146,7 +142,7 @@ function typeAndSay(data) {
 
     if (aiMessageElement) {
         // Type animation for reasoning text in chat
-        typeText(aiMessageElement, data.reasoning, 30);
+        typeText(aiMessageElement, data.reasoning, 5);
     }
 
     // Play audio response
@@ -168,6 +164,7 @@ function disableEditorAndSpeech() {
 
     // Stop speech recognition
     if (window.recognition) {
+        window.aiSpeaking = true;
         window.recognition.stop();
         console.log("Speech recognition muted while AI is speaking");
     }
@@ -189,7 +186,7 @@ function enableEditorAndSpeech() {
     }
 }
 
-function typeText(element, text, delay = 30) {
+function typeText(element, text, delay = 5) {
     if (!element || !text) return;
 
     element.textContent = "";
